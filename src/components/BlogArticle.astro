@@ -1,0 +1,69 @@
+---
+import { Image } from "astro:assets";
+import Btn from "../components/Button.astro";
+// import type { CollectionEntry } from "astro:content";
+const { title, url, hero, summary, description, readingTime, views } =
+  Astro.props;
+---
+
+<article>
+  <div class="grid">
+    <div class="image-main">
+      <Image src={hero} alt={title} />
+    </div>
+    <div class="text-block">
+      <h2>{title}</h2>
+      <h3>{description}</h3>
+      <h4>{readingTime} minute read | Views: {views}</h4>
+      <p>{summary}</p>
+      <Btn buttonlink={url} , buttontext="Read Article" />
+    </div>
+  </div>
+</article>
+<style lang="scss">
+  article {
+    padding-left: 0%;
+    padding-right: 0%;
+  }
+  .grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .image-main {
+    grid-column: 1/3;
+    margin-left: 0.5em;
+    & img {
+      width: 100%;
+      padding: 0.5em;
+      $shadow-color: #f4f4f4;
+      box-shadow:
+        0 0 3px 3px $shadow-color,
+        0 0 3.6px -0.8px $shadow-color,
+        0 0 9px -1.7px $shadow-color,
+        0 0 21.9px -2.5px $shadow-color;
+    }
+  }
+
+  .image-main {
+    grid-row: 1/2;
+  }
+  .text-block {
+    grid-column: 3/7;
+    padding: 0 1em;
+  }
+  @media screen and (min-width: 769px) {
+    h2,
+    h3,
+    h4,
+    h5 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: calc(var(--pico-font-size) * 0.75);
+      line-height: calc(var(--pico-line-height) * 0.75);
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .grid {
+      display: block;
+    }
+  }
+</style>

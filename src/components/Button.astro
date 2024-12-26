@@ -1,0 +1,182 @@
+---
+const { buttonlink, buttontext } = Astro.props;
+---
+
+<div class="relative mt-2">
+  <a href={buttonlink} class="relative px-6 py-3 text-pico group">
+    <span
+      class="absolute inset-0 w-full h-full transition duration-300 ease-out transform -translate-x-2 -translate-y-2 bg-pico group-hover:translate-x-0 group-hover:translate-y-0"
+    ></span>
+    <span class="absolute inset-0 w-full h-full border-2 border-pico"></span>
+    <span class="relative">{buttontext}</span>
+  </a>
+</div>
+<style is:global>
+  *,
+  ::after,
+  ::before {
+    box-sizing: border-box;
+    border: 0 solid #e5e7eb;
+    --ms-border-spacing-x: 0;
+    --ms-border-spacing-y: 0;
+    --ms-translate-x: 0;
+    --ms-translate-y: 0;
+    --ms-rotate: 0;
+    --ms-skew-x: 0;
+    --ms-skew-y: 0;
+    --ms-scale-x: 1;
+    --ms-scale-y: 1;
+    --ms-pan-x: ;
+    --ms-pan-y: ;
+    --ms-pinch-zoom: ;
+    --ms-scroll-snap-strictness: proximity;
+    --ms-gradient-from-position: ;
+    --ms-gradient-via-position: ;
+    --ms-gradient-to-position: ;
+    --ms-ordinal: ;
+    --ms-slashed-zero: ;
+    --ms-numeric-figure: ;
+    --ms-numeric-spacing: ;
+    --ms-numeric-fraction: ;
+    --ms-ring-inset: ;
+    --ms-ring-offset-width: 0px;
+    --ms-ring-offset-color: #fff;
+    --ms-ring-color: rgb(59 130 246 / 0.5);
+    --ms-ring-offset-shadow: 0 0 #0000;
+    --ms-ring-shadow: 0 0 #0000;
+    --ms-shadow: 0 0 #0000;
+    --ms-shadow-colored: 0 0 #0000;
+    --ms-blur: ;
+    --ms-brightness: ;
+    --ms-contrast: ;
+    --ms-grayscale: ;
+    --ms-hue-rotate: ;
+    --ms-invert: ;
+    --ms-saturate: ;
+    --ms-sepia: ;
+    --ms-drop-shadow: ;
+    --ms-backdrop-blur: ;
+    --ms-backdrop-brightness: ;
+    --ms-backdrop-contrast: ;
+    --ms-backdrop-grayscale: ;
+    --ms-backdrop-hue-rotate: ;
+    --ms-backdrop-invert: ;
+    --ms-backdrop-opacity: ;
+    --ms-backdrop-saturate: ;
+    --ms-backdrop-sepia: ;
+  }
+  /* ::after,
+  ::before {
+    --ms-content: "";
+  } */
+  html {
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+    position: relative;
+    scroll-behavior: smooth;
+  }
+  .mt-2 {
+    margin-top: 2em;
+  }
+  .absolute {
+    position: absolute;
+  }
+  .relative {
+    position: relative;
+    &:hover {
+      color: var(--pico-primary-hover-background);
+    }
+  }
+  .inset-0 {
+    inset: 0px;
+  }
+  .h-full {
+    height: 100%;
+  }
+  .w-full {
+    width: 100%;
+  }
+  .-translate-x-2 {
+    --ms-translate-x: -0.5rem;
+    transform: translate(var(--ms-translate-x), var(--ms-translate-y))
+      rotate(var(--ms-rotate)) skewX(var(--ms-skew-x)) skewY(var(--ms-skew-y))
+      scaleX(var(--ms-scale-x)) scaleY(var(--ms-scale-y));
+  }
+  .-translate-y-2 {
+    --ms-translate-y: -0.5rem;
+    transform: translate(var(--ms-translate-x), var(--ms-translate-y))
+      rotate(var(--ms-rotate)) skewX(var(--ms-skew-x)) skewY(var(--ms-skew-y))
+      scaleX(var(--ms-scale-x)) scaleY(var(--ms-scale-y));
+  }
+  .transform {
+    transform: translate(var(--ms-translate-x), var(--ms-translate-y))
+      rotate(var(--ms-rotate)) skewX(var(--ms-skew-x)) skewY(var(--ms-skew-y))
+      scaleX(var(--ms-scale-x)) scaleY(var(--ms-scale-y));
+  }
+  .border-2 {
+    border-width: 2px;
+  }
+  .text-pico {
+    color: var(--pico-primary-background);
+    font-weight: 600;
+  }
+  .border-pico {
+    border-color: var(--pico-primary-background);
+  }
+  .bg-pico {
+    background-color: var(--pico-primary-hover);
+  }
+  .px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  .py-3 {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .transition {
+    transition-property:
+      color,
+      background-color,
+      border-color,
+      text-decoration-color,
+      fill,
+      stroke,
+      opacity,
+      box-shadow,
+      transform,
+      filter,
+      backdrop-filter,
+      -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .duration-300 {
+    transition-duration: 0.3s;
+  }
+  .ease-out {
+    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+  body {
+    /* font-size: 15px; */
+    overflow-x: hidden;
+    --ms-text-opacity: 1;
+    color: rgb(55 65 81 / var(--ms-text-opacity));
+  }
+  .group:hover .group-hover\:translate-x-0 {
+    --ms-translate-x: 0px;
+    transform: translate(var(--ms-translate-x), var(--ms-translate-y))
+      rotate(var(--ms-rotate)) skewX(var(--ms-skew-x)) skewY(var(--ms-skew-y))
+      scaleX(var(--ms-scale-x)) scaleY(var(--ms-scale-y));
+  }
+  .group:hover .group-hover\:translate-y-0 {
+    --ms-translate-y: 0px;
+    transform: translate(var(--ms-translate-x), var(--ms-translate-y))
+      rotate(var(--ms-rotate)) skewX(var(--ms-skew-x)) skewY(var(--ms-skew-y))
+      scaleX(var(--ms-scale-x)) scaleY(var(--ms-scale-y));
+  }
+</style>

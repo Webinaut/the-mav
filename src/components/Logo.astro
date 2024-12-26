@@ -1,0 +1,26 @@
+<div class="logo">
+  <a href="/">
+    <h1 class="siteTitle">The Enigmatic Maverick</h1>
+  </a>
+</div>
+<style lang="scss">
+  .logo a {
+    text-align: center;
+    display: block;
+    text-decoration: none;
+    & .siteTitle {
+      font-size: 1.9rem;
+      font-weight: 400;
+      color: var(--pico-primary);
+      margin: 0;
+    }
+    &:hover .siteTitle {
+      color: var(--pico-primary-hover);
+    }
+  }
+  @media only screen and (max-width: 768px) {
+    .logo a .siteTitle {
+      font-size: 1.2rem;
+    }
+  }
+</style>

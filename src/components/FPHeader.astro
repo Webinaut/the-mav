@@ -1,0 +1,36 @@
+---
+// import logo from "../images/MS-Logo.png?url";
+import fphero from "/assets/images/DSCF2103.jpg";
+import Logo from "./Logo.astro";
+import Navigation from "./Navigation.astro";
+import CTA from "./CTA.astro";
+import Hamburger from "./Hamburger.astro";
+// import { Breadcrumbs } from "astro-breadcrumbs";
+// import "astro-breadcrumbs/breadcrumbs.scss";
+// import "../styles/astro-breadcrumbs-config.scss";
+---
+
+<div class="container-fluid fp-header">
+  <Hamburger />
+  <Logo />
+  <Navigation />
+  <CTA />
+</div>
+
+<style lang="scss" define:vars={{ fphero: `url(${fphero.src})` }}>
+  .fp-header {
+    position: relative;
+    flex-flow: row wrap;
+    height: 500px;
+    /* background-image: var(--fphero); */
+    background-image: linear-gradient(
+        to bottom,
+        rgba(11, 72, 107, 0.3),
+        rgba(11, 72, 107, 0)
+      ),
+      var(--fphero);
+    background-size: cover;
+    background-position: bottom;
+    align-items: flex-start;
+  }
+</style>

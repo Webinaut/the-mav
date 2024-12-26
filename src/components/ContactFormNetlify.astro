@@ -1,0 +1,53 @@
+---
+
+---
+
+<form
+  name="contact"
+  method="POST"
+  netlify-honeypot="bot-field"
+  data-netlify="true"
+  data-astro-reload
+  novalidate
+>
+  <p class="hidden">
+    <label>
+      Don’t fill this out if you’re human: <input name="bot-field" />
+    </label>
+  </p>
+  <input
+    type="hidden"
+    name="subject"
+    data-remove-prefix
+    value="Contact Form from themaverick.net.au"
+  />
+  <fieldset class="grid">
+    <p><label>Name: <input type="text" name="name" /></label></p>
+    <p>
+      <label>Email Address: <input type="email" name="email" /></label>
+    </p>
+  </fieldset>
+  <fieldset>
+    <p>
+      <label>
+        Message: <textarea name="message"></textarea>
+      </label>
+    </p>
+  </fieldset>
+  <div data-netlify-recaptcha="true"></div>
+  <p>
+    <button type="submit">Send</button>
+  </p>
+</form>
+<style>
+  .hidden {
+    display: none;
+  }
+  label {
+    color: var(--pico-color);
+  }
+  button {
+    width: 50%;
+    margin-top: 2em;
+  }
+</style>

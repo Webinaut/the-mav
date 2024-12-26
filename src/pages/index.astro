@@ -1,11 +1,73 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Layout from "../layouts/FPLayout.astro";
+const pageTitle = "Home Page";
 ---
 
 <Layout>
-	<Welcome />
+  <div class="main">
+    <article>
+      <p>
+        Hi, I'm Martin. And this is my personal space for sharing thoughts and
+        life skills learnings.
+      </p>
+      <p>
+        Throughout my life others have reacted to things I have said by saying
+        "you have so much stuff in your head. You should share it". Well, here
+        it is.
+      </p>
+      <p>
+        I have always admired people who were thinkers and were interested in
+        ways of thinking. People like Jock at UCT who shared his thoughts on how
+        to go out of business. Or Edward De Bono (the inventor of lateral
+        thinking), who I was privileged to spend two days with, learning about
+        modes of thinking and "Po". Or Bill Belsen (from the London School of
+        Economics), the question design guru, who developed techniques for
+        getting beyond obvious platitudes.
+      </p>
+      <p>
+        The comment about "stuff in my head" was perhaps describing an enigmatic
+        person. ( Enigmatic - "difficult to interpret or understand;
+        mysterious").
+      </p>
+      <p>
+        Maverick - absolutely! (Maverick - "an independent-minded person"). I
+        first discovered this way of thinking when I read Ricardo Semler's book,
+        "Maverick". He loved to turns things on their head, doing the opposite
+        of what was expected. Such as allowing his employees to set their own
+        salaries, whilst justifying them to their peers.
+      </p>
+      <p>
+        The danger of this website is that it becomes self-indulgent. That is
+        why I have added a comments section below each article. I encourage you
+        to leave thoughtful comments, but please respect others who may have
+        another view.
+      </p>
+      <p>
+        A family member asked me who the target audience is. Well, this is an
+        opportunity to throw out the rules. I'm not trying to sell anything, so
+        the target audience is anyone who gets some value out of it. If you do
+        get some value out of it, or it provokes some thought, then "mission
+        accomplished".
+      </p>
+      <p>
+        If you would like to be alerted to new published articles, just enter
+        your name and email below, and you will be notified. No spam ever -
+        promise.
+      </p>
+    </article>
+
+    <p><a href="/about-me/">More About Me</a></p>
+  </div>
 </Layout>
+
+<style lang="scss">
+  .main {
+    margin-top: 3em;
+  }
+  a {
+    color: var(--pico-primary-hover);
+    &:hover {
+      color: var(--pico-text-selection-color);
+    }
+  }
+</style>

@@ -1,0 +1,40 @@
+---
+import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
+import ViewCounter from "../../components/ViewCounter.astro";
+import PostComments from "../../components/PostComments.astro";
+import Btn from "../../components/Button.astro";
+
+// SSR Code
+import { getEntry, render } from "astro:content";
+// 1. Get the slug from the incoming server request
+const { slug } = Astro.params;
+if (slug === undefined) {
+  throw new Error("Slug is required");
+}
+// 2. Query for the entry directly using the request slug
+const entry = await getEntry("articles", slug);
+// 3. Redirect if the entry does not exist
+if (entry === undefined) {
+  return Astro.redirect("/404");
+}
+// End SSR Code
+const { Content } = await render(entry);
+---
+
+<BlogPostLayout frontmatter={entry.data}>
+  <article>
+    <ViewCounter slug={slug} />
+    <Content />
+    <Btn buttonlink="/articles/" , buttontext="Back To Articles" />
+  </article>
+  <article>
+    <h3 style="text-align: center;">Comments</h3>
+    <p>
+      The comments section is a place for healthy, constructive and challenging
+      conversations. The basic rule is simple – I encourage you to share your
+      views, but be respectful of the author, yourself and your fellow
+      commenters.
+    </p>
+    <PostComments />
+  </article>
+</BlogPostLayout>

@@ -1,0 +1,145 @@
+---
+
+---
+
+<div class="cta-wrap">
+  <!-- <h2>Design, Develop, Launch and Manage</h2> -->
+  <div class="cta">
+    <div class="an">
+      <h3>An</h3>
+    </div>
+    <div class="indep">
+      <h3>Inde</h3>
+      <h3>pend</h3>
+      <h3>ent</h3>
+    </div>
+    <div class="mind">
+      <h3>Mind</h3>
+    </div>
+  </div>
+</div>
+<style lang="scss">
+  .cta-wrap {
+    width: auto;
+    text-align: center;
+    margin: 0 auto;
+    padding: 0 10% 2em 0;
+  }
+  .cta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    position: sticky;
+    padding: 3em;
+    // align-items: center;
+    & * {
+      // position: sticky;
+      color: var(--pico-primary);
+      font-weight: 500;
+    }
+    & .an {
+      justify-self: end;
+      align-self: start;
+      > h3 {
+        margin-top: 0;
+        opacity: 0;
+        animation: fadeIn 4s 0.4s ease-out forwards;
+        @keyframes fadeIn {
+          0% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+      }
+    }
+    & .indep {
+      display: grid;
+      grid-template-rows: auto auto auto;
+      padding: 0 1em;
+
+      & h3 {
+        &:first-of-type {
+          writing-mode: vertical-rl;
+          justify-self: start;
+          align-self: end;
+          margin: 0;
+          opacity: 0;
+          animation: fadeIn 4s 1.2s ease-out forwards;
+          @keyframes fadeIn {
+            0% {
+              opacity: 0;
+            }
+            100% {
+              opacity: 1;
+            }
+          }
+          /* this value feels the most magical */
+          /* and i mean that in a bad way */
+          line-height: 1.25ch;
+          padding: 0.2em 0;
+        }
+        &:nth-of-type(2) {
+          /* 1 capital tight lh with room for spacing */
+          line-height: 1.1cap;
+          text-transform: uppercase;
+          margin: 0;
+          opacity: 0;
+          animation: fadeIn 4s 2.2s ease-out forwards;
+          // animation-delay: 4s;
+          @keyframes fadeIn {
+            0% {
+              opacity: 0;
+            }
+            100% {
+              opacity: 1;
+            }
+          }
+        }
+        &:last-of-type {
+          writing-mode: vertical-rl;
+          place-self: end;
+          /* this value feels right */
+          /* lines up naturally */
+          line-height: 1ex;
+          margin: 0;
+          opacity: 0;
+          animation: fadeIn 4s 3.2s ease-out forwards;
+          // animation-delay: 6s;
+          @keyframes fadeIn {
+            0% {
+              opacity: 0;
+            }
+            100% {
+              opacity: 1;
+            }
+          }
+          padding-top: 0.2em;
+          padding-bottom: 0.2em;
+        }
+      }
+    }
+    & .mind {
+      justify-self: start;
+      align-self: end;
+      > h3 {
+        margin-bottom: 0;
+        opacity: 0;
+        animation: fadeIn 4s 4.2s ease-out forwards;
+        @keyframes fadeIn {
+          0% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+  @media screen and (min-width: 769px) {
+    .cta-wrap {
+      // margin-top: 100px;
+    }
+  }
+</style>

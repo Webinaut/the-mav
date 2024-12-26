@@ -1,0 +1,66 @@
+---
+interface Props {
+  url: string;
+  slug: string;
+}
+import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import BlogArticle from "../components/BlogArticle.astro";
+import { getReadingTime } from "../scripts/readingtime.js";
+// const { slug } = Astro.props;
+// const response = await fetch("/api/increment-views", {
+//   method: "POST",
+//   body: JSON.stringify({ slug }),
+// });
+// const views = await response.json();
+// import { getViews } from "../scripts/views.ts";
+const allPosts = await getCollection("articles");
+allPosts.sort((b, a) => b.data.ranking.valueOf() - a.data.ranking.valueOf());
+const pageTitle = "Articles";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/maverick-favicon.png" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <Layout pageTitle={pageTitle}>
+      <h3>The Musings Of An Enigmatic Maverick</h3>
+      <!-- <PageViews /> -->
+      <p>
+        The articles presented below have been inspired by things I have read or
+        have seen or heard over the years. I am especially drawn to perspectives
+        that challenge conventional ways of thinking. I hope you find them
+        interesting.
+      </p>
+      <ul>
+        {
+          allPosts.map((post) => (
+            // <BlogArticle
+            //   url={`/articles/${post.slug}/`}
+            //   title={post.data.title}
+            //   description={post.data.description}
+            //   hero={post.data.hero}
+            //   summary={post.data.summary}
+            //   readingTime={getReadingTime(post.body)}
+            //   views={getViews(post.slug)}
+            // />
+            <BlogArticle
+              url={`/articles/${post.id}/`}
+              title={post.data.title}
+              description={post.data.description}
+              hero={post.data.hero}
+              summary={post.data.summary}
+              readingTime={getReadingTime(post.body)}
+              views={post.data.views}
+            />
+          ))
+        }
+      </ul>
+    </Layout>
+  </body>
+</html>

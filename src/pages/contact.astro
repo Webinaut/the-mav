@@ -1,0 +1,20 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ContactForm from "../components/ContactFormNetlify.astro";
+const pageTitle = "Contact Me";
+---
+
+<Layout pageTitle={pageTitle}>
+  <p>
+    I would love to hear from you. Just complete the form below and I shall get
+    back to you as soon as I can.
+  </p>
+  <article>
+    <ContactForm />
+  </article>
+</Layout>
+<style>
+  h1 {
+    text-align: center;
+  }
+</style>
