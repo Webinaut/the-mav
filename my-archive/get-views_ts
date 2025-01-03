@@ -6,7 +6,7 @@ export const config: Config = {
 };
 
 export default async (req: Request) => {
-  if (req.method !== "POST") {
+  if (req.method !== "GET") {
     return new Response("Method not allowed", { status: 405 });
   }
 
@@ -33,7 +33,6 @@ export default async (req: Request) => {
     console.error("Error reading views:", error);
   }
 
-  await store.get(`${slug}.txt`, views.toString());
   // await store.get(`${slug}.txt`);
 
   return new Response(JSON.stringify({ views }), {

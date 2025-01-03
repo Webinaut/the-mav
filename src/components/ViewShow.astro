@@ -6,33 +6,32 @@ const { slug } = Astro.props;
 ---
 
 <div class="view-counter" data-slug={slug}>
-  <span class="views"></span>
+  <span class="views">Loading views...</span>
 </div>
 <script>
-  async function incrementViews(slug: string) {
+  async function viewShow(slug: string) {
     try {
-      const response = await fetch("/api/increment-views", {
+      const response = await fetch("/api/get-views", {
         method: "POST",
         body: JSON.stringify({ slug }),
       });
 
-      if (!response.ok) throw new Error("Failed to increment views");
+      if (!response.ok) throw new Error("Failed to get views");
 
       const { views } = await response.json();
 
       return views;
     } catch (error) {
-      console.error("Error incrementing views:", error);
+      console.error("Error showing views:", error);
       return null;
     }
   }
-
   // Update view count for all counters on the page
   document.querySelectorAll(".view-counter").forEach(async (counter) => {
     const slug = counter.getAttribute("data-slug");
     if (!slug) return;
 
-    const views = await incrementViews(slug);
+    const views = await viewShow(slug);
     if (views !== null) {
       const viewsSpan = counter.querySelector(".views");
       if (viewsSpan) {
@@ -45,6 +44,10 @@ const { slug } = Astro.props;
 
 <style>
   .view-counter {
-    display: none;
+    display: inline-block;
+    /* padding: 0.5rem 1rem;
+    background: #f4f4f4;
+    border-radius: 4px;
+    font-size: 0.9rem; */
   }
 </style>

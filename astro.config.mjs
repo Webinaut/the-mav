@@ -6,6 +6,9 @@ import preact from "@astrojs/preact";
 
 // https://astro.build/config
 export default defineConfig({
+  devToolbar: {
+    enabled: false,
+  },
   trailingSlash: "always",
   site: "https://themaverick.net.au",
   integrations: [sitemap(), preact()],
