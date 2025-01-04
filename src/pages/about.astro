@@ -1,0 +1,92 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Image } from "astro:assets";
+import msImage from "/assets/images/MartinSlack001-scaled.jpg";
+const pageTitle = "About Me and The Enigmatic Maverick";
+---
+
+<Layout pageTitle={pageTitle}>
+  <article>
+    <div class="ms-history">
+      <Image src={msImage} alt="Martin Slack" />
+      <p>
+        Life often leads us in many and varied directions. That has certainly
+        been the case for me and my family. This variety has served up so many
+        valuable learnings. Here is how it played out for me:
+      </p>
+      <p>
+        School days: Youth groups, football (soccer) and cricket - the value of
+        friendships, collaboration and teamwork.
+      </p>
+      <p>
+        Late teens: Rotary Exchange - how and why living in another country
+        changes your mindset.
+      </p>
+      <p>
+        Tertiary education: Learning how to think comes first. Technical skills
+        (in my case, statistics, economics and business principles) next. How to
+        apply these skills follows.
+      </p>
+      <p>
+        Main career (Market Research and Consulting): Continuous learning is
+        essential to career advancement. Reading books and articles, podcasts
+        and videos, as well as seminars and conferences. I am amazed how many
+        snippets of information I recall from time to time that originated from
+        21 years of attending marketing and research conferences.
+      </p>
+      <p>
+        Emigrating to Australia: Arriving in a new country with no business or
+        personal network required resourcefulness and a thirst for local
+        knowledge.
+      </p>
+      <p>
+        Second Career (Commercial Hydroponic Tomato Grower): Learning how to
+        grow 5500 tomato plants and harvest 25 tonnes of snacking tomatoes a
+        year was challenging. The best source of guidance proved to be
+        developing a network of experienced growers.
+      </p>
+      <p>
+        Third Career (Artisan Chocolaterie Business Support): During more than
+        five years selling artisan chocolate at farmers markets we interacted
+        with thousands of people. We learned a huge amount about human nature
+        and the buttons to push. We also learned about the success factors in
+        online marketing (more than half of our sales were online).
+      </p>
+      <p>
+        Fourth Career (Web Development): The learnings are endless - from the
+        creative and technical side to the motivations behind a client"s need
+        for a website.
+      </p>
+      <p>
+        For a large part of this time I found that my interests provided
+        learnings much larger than the interest itself. For example, flyfishing
+        - "outwit the fish, don't just throw out some bait", and golf - "when
+        you take a pill, don"t swallow the whole bottle".
+      </p>
+    </div>
+  </article>
+  <style lang="scss">
+    h1 {
+      text-align: center;
+    }
+    .ms-history {
+      display: flow-root;
+    }
+    img {
+      max-width: 40%;
+      float: left;
+      margin: 0 3em 1em 0;
+      $shadow-color: #f4f4f4;
+      box-shadow:
+        0 0 3px 3px $shadow-color,
+        0 0 3.6px -0.8px $shadow-color,
+        0 0 9px -1.7px $shadow-color,
+        0 0 21.9px -2.5px $shadow-color;
+    }
+    @media screen and (max-width: 768px) {
+      img {
+        margin: 0 1em 0 0;
+      }
+    }
+  </style>
+</Layout>
