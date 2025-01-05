@@ -3,11 +3,11 @@ caption: Illustration - <a href="https://absurd.design/" target="_blank">
   absurd.design</a>
 summary: In our daily lives, both personal and professional, we are constantly
   faced with problems. Often, we jump into solution mode as soon as a problem
-  presents itself, addressing what appears to be the core issue. However, more
-  often than not, the problem we perceive is merely a symptom of a real issue.
+  presents itself, addressing what appears to be the core issue. Frequently,
+  though, the problem we perceive is merely a symptom of the real one.
 views: 0
 title: Are You Solving the Right Problem?
-description: Getting Past The Obvious
+description: Getting Past the Obvious
 ranking: 1
 hero: /assets/images/absurd.design-chapter-1-03.png
 tags:
