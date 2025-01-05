@@ -1,17 +1,18 @@
 ---
 caption: Illustration - <a href="https://absurd.design/" target="_blank">
   absurd.design</a>
-summary: In our daily lives, both personal and professional, we are constantly
-  faced with problems. Often, we jump into solution mode as soon as a problem
-  presents itself, addressing what appears to be the core issue. However, more
-  often than not, the problem we perceive is merely a symptom of a real issue.
+summary: Problems are a ubiquitous part of our daily lives. We often jump into
+  solution mode as soon as a problem presents itself, addressing what appears,
+  to us, to be the core issue. Frequently, though, the problem we perceive is
+  merely a symptom of the real one.
 views: 0
 title: Are You Solving the Right Problem?
-description: Getting Past The Obvious
+description: Resisting the Obvious
 ranking: 1
 hero: /assets/images/absurd.design-chapter-1-03.png
 tags:
-  - article
+  - problem-solving
+  - business skills
 readingTime: 0
 ---
 In our daily lives, both personal and professional, we are constantly faced with problems. We troubleshoot technical glitches, navigate interpersonal conflicts, and grapple with complex strategic challenges. Often, we jump into solution mode as soon as a problem presents itself, addressing what appears to be the core issue. However, this reactive approach can be inefficient and even counterproductive. More often than not, the problem we perceive is merely a symptom of a deeper, underlying issue. This is the crucial distinction between the apparent problem and the real problem.   
