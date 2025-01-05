@@ -7,7 +7,7 @@ summary: Problems are a ubiquitous part of our daily lives. We often jump into
   merely a symptom of the real one.
 views: 0
 title: Are You Solving the Right Problem?
-description: Getting Past The Obvious
+description: Resisting The Obvious
 ranking: 1
 hero: /assets/images/absurd.design-chapter-1-03.png
 tags:
