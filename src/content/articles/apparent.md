@@ -2,12 +2,12 @@
 caption: Illustration - <a href="https://absurd.design/" target="_blank">
   absurd.design</a>
 summary: Problems are a ubiquitous part of our daily lives. We often jump into
-  solution mode as soon as a problem presents itself, addressing what appears to
-  be the core issue. Frequently, though, the problem we perceive is merely a
-  symptom of the real one.
+  solution mode as soon as a problem presents itself, addressing what appears,
+  to us, to be the core issue. Frequently, though, the problem we perceive is
+  merely a symptom of the real one.
 views: 0
 title: Are You Solving the Right Problem?
-description: Getting Past the Obvious
+description: Resisting the Obvious
 ranking: 1
 hero: /assets/images/absurd.design-chapter-1-03.png
 tags:
