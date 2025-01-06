@@ -6,6 +6,7 @@ const { frontmatter } = Astro.props;
 ---
 
 <Layout pageTitle={frontmatter.title}>
+  <h3>{frontmatter.description}</h3>
   <div class="image-wrapper">
     <Image src={frontmatter.hero} alt={frontmatter.title} />
     <p set:html={frontmatter.caption} />
@@ -14,6 +15,10 @@ const { frontmatter } = Astro.props;
   <slot />
 </Layout>
 <style lang="scss">
+  h3 {
+    margin-top: 0;
+    text-align: center;
+  }
   .image-wrapper {
     width: 50%;
     margin: 0 auto 1em;
