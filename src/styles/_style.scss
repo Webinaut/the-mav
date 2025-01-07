@@ -136,7 +136,26 @@ a[role="button"] {
   border-bottom: 2px solid var(--pico-primary-underline);
   border-radius: var(--pico-border-radius);
 }
-
+blockquote {
+  padding-left: 3em;
+  position: relative;
+  -moz-box-shadow: 2px 2px 15px #ccc;
+  -webkit-box-shadow: 2px 2px 15px #ccc;
+  box-shadow: 2px 2px 15px #ccc;
+}
+blockquote::before {
+  content: "\201C";
+  // color: var(--pico-color);
+  font-size: 3em;
+  font-weight: bold;
+  position: absolute;
+  left: 10px;
+  top: 5px;
+}
+blockquote::after {
+  /*Reset to make sure*/
+  content: "";
+}
 @media only screen and (min-width: 769px) {
   nav > ul > li > a,
   label {

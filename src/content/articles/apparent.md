@@ -22,14 +22,17 @@ It reminds me of a presentation given by a friend of mine, Teddy Langschmidt, wh
 
 It seems to me that this applies to problem-solving too. Too often problems are ill-defined, leading to good solutions to the wrong problem.
 
-Albert Einstein once said: "If I were given one hour to save the planet, I would spend 59 minutes defining the problem and one minute resolving it".
+Albert Einstein once said:
+
+> If I were given one hour to save the planet, I would spend 59 minutes defining the problem and one minute resolving it.
 
 Edward De Bono was a medical doctor, who was born and raised in Malta. You may remember him as the inventor of lateral thinking. He made his name as a pioneer in alternative modes of thinking. I was privileged to spend two days, as part of an audience of 2000 people, listening to him lecture on creative thinking. It made a huge and lasting impression on me.
 
-One of the many stories he told was about defining and solving the wrong problem:  
-"I often tell the story of the alarm clock in Pasadena, California. I had to get up at 4.30 a.m. to drive into Los Angeles to catch a plane to Toronto. So, I set the alarm clock on the table beside my bed in the Pasadena Hilton, to go off at 4.30 a.m. At 4.30 a.m. I was awoken and set about switching off the alarm so that all my neighbours would not also be awoken at an hour which might not have suited them. I tried everything, including disconnecting the electricity supply. Nothing had any effect. The sound continued. I was just about to drown the clock in a basin of water when I suddenly noticed that the sound was coming from my travel clock which I had set and then forgotten all about.
+One of the many stories he told was about defining and solving the wrong problem:
 
-I had defined the problem as "how do I tum off this alarm clock?" In hindsight, it is easy to say that I should have defined the problem as "how do I stop this alarm sound?"
+> I often tell the story of the alarm clock in Pasadena, California. I had to get up at 4.30 a.m. to drive into Los Angeles to catch a plane to Toronto. So, I set the alarm clock on the table beside my bed in the Pasadena Hilton, to go off at 4.30 a.m. At 4.30 a.m. I was awoken and set about switching off the alarm so that all my neighbours would not also be awoken at an hour which might not have suited them. I tried everything, including disconnecting the electricity supply. Nothing had any effect. The sound continued. I was just about to drown the clock in a basin of water when I suddenly noticed that the sound was coming from my travel clock which I had set and then forgotten all about.
+>
+> I had defined the problem as "how do I tum off this alarm clock?" In hindsight, it is easy to say that I should have defined the problem as "how do I stop this alarm sound?
 
 It seems to me that a large part of the problem is caused by straight-line thinking. That is what leads us down a rabbit hole.
 
