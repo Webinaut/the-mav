@@ -1,4 +1,4 @@
-const WORDS_PER_MINUTE = 200;
+const WORDS_PER_MINUTE = 220;
 
 export function getReadingTime(content) {
   if (!content) return;
