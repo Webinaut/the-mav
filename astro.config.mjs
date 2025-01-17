@@ -13,7 +13,6 @@ export default defineConfig({
   site: "https://themaverick.net.au",
   integrations: [sitemap(), preact()],
   markdown: {
-    // remarkPlugins: [remarkReadingTime],
     extendDefaultPlugins: true,
   },
   output: "server",
