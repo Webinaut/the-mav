@@ -1,5 +1,6 @@
 ---
 import Layout from "./Layout.astro";
+import "../styles/article-styles.scss";
 import { Image } from "astro:assets";
 // const { minutesRead } = Astro.props.frontmatter;
 const { frontmatter } = Astro.props;
@@ -11,7 +12,6 @@ const { frontmatter } = Astro.props;
     <Image src={frontmatter.hero} alt={frontmatter.title} />
     <p set:html={frontmatter.caption} />
   </div>
-  <!-- <p>{minutesRead}</p> -->
   <slot />
 </Layout>
 <style lang="scss">
@@ -20,7 +20,7 @@ const { frontmatter } = Astro.props;
     text-align: center;
   }
   .image-wrapper {
-    width: 50%;
+    width: 40%;
     margin: 0 auto 1em;
     padding: 0.5em;
     $shadow-color: #f4f4f4;
@@ -30,8 +30,14 @@ const { frontmatter } = Astro.props;
       0 0 9px -1.7px $shadow-color,
       0 0 21.9px -2.5px $shadow-color;
     & p {
-      text-align: right;
+      text-align: center;
       font-size: 0.6em;
+      margin-top: var(--pico-typography-spacing-vertical);
+    }
+  }
+  @media only screen and (max-width: 768px) {
+    .image-wrapper {
+      width: 100%;
     }
   }
 </style>

@@ -18,7 +18,7 @@ readingTime: 0
 
 Have you ever experienced the frustration of trying to solve a problem and discovering that your solution isn't a solution at all? It happens to me far too often. And, after disappearing down a rabbit hole, you end up being annoyed and frustrated with yourself.
 
-It reminds me of a presentation given by a friend of mine, Teddy Langschmidt, who had a market research company called Integrated Marketing. He started with words to the effect of - "for almost everything in life there is a given reason and a real reason". He then went on to say that our job as researchers was to uncover real reasons.
+It reminds me of a presentation given by a friend, Teddy Langschmidt, who had a market research company called Integrated Marketing. He started with words to the effect of - "for almost everything in life there is a given reason and a real reason". He then went on to say that our job as researchers was to uncover real reasons.
 
 It seems to me that this applies to problem-solving too. Too often problems are ill-defined, leading to good solutions to the wrong problem.
 
@@ -34,7 +34,7 @@ One of the many stories he told was about defining and solving the wrong problem
 >
 > I had defined the problem as "how do I tum off this alarm clock?" In hindsight, it is easy to say that I should have defined the problem as "how do I stop this alarm sound?
 
-It seems to me that a large part of the problem is caused by straight-line thinking. That is what leads us down a rabbit hole.
+<span style="float: left;width: 40%;margin:1em 2em 0 0;">![Rabbit Hole](/assets/images/RabbitHole.jpg)</span>It seems to me that a large part of the problem is caused by straight-line thinking. That is what leads us down a rabbit hole.
 
 I recently came across the world's shortest IQ test, the Cognitive Reflection Test (CRT). It is designed to test your ability to ignore your gut response and think slower and more rationally. It consists of three questions, the second of which is "If it takes 5 machines 5 minutes to make 5 widgets, how long would it take 100 machines to make 100 widgets?" (You can Google it to get all three questions).
 

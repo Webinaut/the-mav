@@ -1,0 +1,18 @@
+/**
+ * Styling for BlogPostLayout
+ */
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+th,
+td {
+  text-align: center;
+}
+@media only screen and (max-width: 768px) {
+  th,
+  td {
+    font-size: small;
+    padding: 1em 0;
+  }
+}
