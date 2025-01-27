@@ -22,7 +22,7 @@ His “secret” party trick is revealed below in the Rhyming Number Peg System.
 
 I’m sure you have heard about people like Ben Pridmore, the former world memory champion. He broke the 30 seconds barrier when he memorised the order of an entire shuffled deck of cards and recalled them in order in 26 seconds. We may not all be potential memory champions, but we are all capable of amazing memory feats.
 
-<span style="float: left;width: 40%;margin:1em 2em 0 0;">![Simonedes](/assets/images/simonides-of-ceos.png)_Simonides of Ceos_</span>Let’s go back a little, 2500 years or so, to the time of Simonides of Ceos. He was the Ancient Greek lyric poet, who lived from 556 to 468 BC.
+<span style="float: left;width: 40%;margin:1em 2em 0 0;">![Simonedes](../../assets/simonides-of-ceos.png)_Simonides of Ceos_</span>Let’s go back a little, 2500 years or so, to the time of Simonides of Ceos. He was the Ancient Greek lyric poet, who lived from 556 to 468 BC.
 
 Simonides was at a feast hosted by one of his patrons when he was called out of the feast hall to see two visitors who had arrived and were asking for him. As soon as he left the hall, it collapsed, killing everyone inside. During the subsequent excavation of the rubble of the dining hall, Simonides was called upon to identify each person killed. Their bodies had been crushed beyond recognition, but he completed the gruesome task by correlating their identities to their positions (loci in Latin) at the table before his departure. This events were said to have inspired him to develop a system of mnemonics based on images and places called the method of loci (today known as the memory theatre or memory palace).
 
@@ -40,7 +40,7 @@ One of the champions was Joshua Foer, who used to be like most of us, forgetting
 
 Another was Ed Cooke, a young memory grand master from England. He was asked whether he had a photographic memory. He laughed before answering: “Photographic memory is a detestable myth. Doesn't exist. In fact, my memory is quite average. All of us here have average memories. What you should understand is that even average memories are remarkably powerful if used properly”. This was after he had recited back 252 random digits as effortlessly as if they’d been his own telephone number.
 
-The closest thing to photographic memory (which has been proven to not exist) is eidetic memory, the ability to recall vivid details of an image briefly after seeing it. It's often seen in children, including those with developmental difficulties, who can recall an image in great detail for a short period of time.<span style="float: right;width: 40%;margin:1em 0 0 2em;">![Golf Green](/assets/images/GolfGreen.jpg)</span>
+The closest thing to photographic memory (which has been proven to not exist) is eidetic memory, the ability to recall vivid details of an image briefly after seeing it. It's often seen in children, including those with developmental difficulties, who can recall an image in great detail for a short period of time.<span style="float: right;width: 40%;margin:1em 0 0 2em;">![Golf Green](../../assets/GolfGreen.jpg)</span>
 
 I am always amazed at how my golf mates and I can remember the score we had, hole by hole, after each round of golf. The score we had for each hole the previous week is replaced in our memories. We do so by visualising each hole. This gives a clue about how memories work and their principles.
 
@@ -82,7 +82,7 @@ Making up your own mnemonics isn’t too hard. It may just require breaking up t
 
 ### The Memory Palace
 
-<span style="float: left;width: 40%;margin:1em 2em 0 0;">![Floor Plan](/assets/images/FloorPlan.png)</span>Simonides’ Method of Loci is particularly powerful. It has certainly stood the test of time, lasting 2500 years and still going strong.
+<span style="float: left;width: 40%;margin:1em 2em 0 0;">![Floor Plan](../../assets/FloorPlan.png)</span>Simonides’ Method of Loci is particularly powerful. It has certainly stood the test of time, lasting 2500 years and still going strong.
 Today it is best known as the Memory Palace. All that is required for a “palace” is that it has “rooms”. The golf course example (above) for remembering scores is an example of a memory palace. Its rooms are its eighteen greens.
 
 The route from green to green is predetermined – 1 then 2, etc. However, using your home as a memory palace will require a route as well (if you need to remember the order of items). You may decide that this route is first lounge room, then kitchen, then dining room, then guest bedroom, and so on.
@@ -123,13 +123,13 @@ Try it – you will be amazed at how easy it is to implement. Once you have the 
 
 I use this system for list items 11 to 20, which means that I use it less often. However, it is just as powerful as the Rhyming Number System because it uses memorable images.
 
-| Number |                                                            Shape                                                             | Number |                                                              Shape                                                               |
-| :----: | :--------------------------------------------------------------------------------------------------------------------------: | :----: | :------------------------------------------------------------------------------------------------------------------------------: |
-|   1    |    <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Candle](/assets/icons/1.png)_Candle_</span>    |   6    | <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Fishing Rod](/assets/icons/6.png)_Fishing Rod_</span> |
-|   2    |      <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Swan](/assets/icons/2.png)_Swan_</span>      |   7    |       <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Cliff](/assets/icons/7.png)_Cliff_</span>       |
-|   3    | <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Moustache](/assets/icons/3.png)_Moustache_</span> |   8    |     <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Snowman](/assets/icons/8.png)_Snowman_</span>     |
-|   4    |     <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Yacht](/assets/icons/4.png)_Yacht_</span>     |   9    | <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Toilet Roll](/assets/icons/9.png)_Toilet Roll_</span> |
-|   5    |     <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Snake](/assets/icons/5.png)_Snake_</span>     |   10   | <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Bat & Ball](/assets/icons/10.png)_Bat & Ball_</span>  |
+| Number |                                                               Shape                                                               | Number |                                                                 Shape                                                                 |
+| :----: | :-------------------------------------------------------------------------------------------------------------------------------: | :----: | :-----------------------------------------------------------------------------------------------------------------------------------: |
+|   1    |    <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Candle](../../assets/icons/1.png)_Candle_</span>    |   6    | <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Fishing Rod](../../assets/icons/6.png)_Fishing Rod_</span> |
+|   2    |      <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Swan](../../assets/icons/2.png)_Swan_</span>      |   7    |       <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Cliff](../../assets/icons/7.png)_Cliff_</span>       |
+|   3    | <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Moustache](../../assets/icons/3.png)_Moustache_</span> |   8    |     <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Snowman](../../assets/icons/8.png)_Snowman_</span>     |
+|   4    |     <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Yacht](../../assets/icons/4.png)_Yacht_</span>     |   9    | <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Toilet Roll](../../assets/icons/9.png)_Toilet Roll_</span> |
+|   5    |     <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Snake](../../assets/icons/5.png)_Snake_</span>     |   10   | <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Bat & Ball](../../assets/icons/10.png)_Bat & Ball_</span>  |
 
 You can personalise these images too. For me, one isn’t a candle, it is the TV tower in the city of Sydney. It seems to be iconic in any tourist photo of the city centre.
 To use this system for a daily task list, for example, the first three items could be:
