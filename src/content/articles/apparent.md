@@ -34,7 +34,7 @@ One of the many stories he told was about defining and solving the wrong problem
 >
 > I had defined the problem as "how do I tum off this alarm clock?" In hindsight, it is easy to say that I should have defined the problem as "how do I stop this alarm sound?
 
-XXXyIt seems to me that a large part of the problem is caused by straight-line thinking. That is what leads us down a rabbit hole.
+<span style="float: left;width: 40%;margin:1em 2em 0 0;">![Rabbit Hole](../../assets/RabbitHole.jpg)</span>It seems to me that a large part of the problem is caused by straight-line thinking. That is what leads us down a rabbit hole.
 
 I recently came across the world's shortest IQ test, the Cognitive Reflection Test (CRT). It is designed to test your ability to ignore your gut response and think slower and more rationally. It consists of three questions, the second of which is "If it takes 5 machines 5 minutes to make 5 widgets, how long would it take 100 machines to make 100 widgets?" (You can Google it to get all three questions).
 

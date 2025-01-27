@@ -20,7 +20,7 @@ It seems to me that there are several ways of dealing with this topic. I'm not a
 
 In business, hard issues tend to include things like skills, training, techniques, measurement, product quality. Soft things are things like intuition, gutfeel, branding, image, reputation. Hard issues can be understood by reasoning and rational analysis. Soft issues are best understood through examples.
 
-<span style="float: left;width: 40%;margin:1em 2em 0 0;">![Halo Effect](/assets/images/Halo.jpg)</span>Some time ago my business partner introduced me to a phenomenon he called "The Pope Syndrome". He said that if you were seen standing next to the Pope, people would assume that you were also a "good guy" (this may not necessarily be as true today!). In retrospect, he was referring to the halo effect, which is a type of cognitive bias.
+<span style="float: left;width: 40%;margin:1em 2em 0 0;">![Halo Effect](../../assets/Halo.jpg)</span>Some time ago my business partner introduced me to a phenomenon he called "The Pope Syndrome". He said that if you were seen standing next to the Pope, people would assume that you were also a "good guy" (this may not necessarily be as true today!). In retrospect, he was referring to the halo effect, which is a type of cognitive bias.
 
 The halo effect was first identified in the 1920s by psychologist Edward Thorndike, who observed it during performance reviews in the military. He found that officers who were rated as physically attractive or neat were also deemed more capable in unrelated areas, such as leadership or intelligence.
 
