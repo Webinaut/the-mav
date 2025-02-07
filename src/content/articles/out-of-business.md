@@ -21,7 +21,7 @@ Let’s go back a bit. It seems like yesterday to me. I was a 19-year-old first 
 2. Focusing on revenue, not profit.
 3. Running out of cash.”
 
-   In the decades since then I learned that Jock’s pronouncements, whilst being essentially correct, need some elaboration.
+In the decades since then I learned that Jock’s pronouncements, whilst being essentially correct, need some elaboration.
 
 ### Trusting Experts
 
