@@ -18,7 +18,7 @@ Let’s go back a bit. It seems like yesterday to me. I was a 19-year-old first 
 “You must understand”, he said. “There are three certain ways to go out of business:
 
 1. Trusting experts.
-2. focusing on revenue, not profit.
+2. Focusing on revenue, not profit.
 3. Running out of cash.”
 
    In the decades since then I learned that Jock’s pronouncements, whilst being essentially correct, need some elaboration.
