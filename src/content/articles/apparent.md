@@ -12,7 +12,7 @@ ranking: 1
 hero: /assets/images/absurd.design-chapter-1-03.png
 tags:
   - problem-solving
-  - business skills
+  - business-skills
 readingTime: 0
 ---
 

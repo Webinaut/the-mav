@@ -7,7 +7,7 @@ caption: Illustration - <a href="https://absurd.design/" target="_blank"> absurd
 summary: In every profession there are tangible, hard elements as well as intangible, soft ones. The soft ones are inevitably more important, but also more difficult to grasp. What about your profession?
 tags:
   - mindset
-  - business skills
+  - business-skills
 readingTime: 0
 views: 0
 ---
