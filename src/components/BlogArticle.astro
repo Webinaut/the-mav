@@ -4,7 +4,7 @@ import readingImage from "/assets/images/fluent-mdl2--reading-mode.svg";
 import viewsImage from "/assets/images/ph--eyes-fill-rotated.svg";
 import ViewShow from "./ViewShow.astro";
 import Btn from "../components/Button.astro";
-const { title, url, url2, hero, summary, description, readingTime, views } =
+const { title, url, url2, hero, summary, description, readingTime } =
   Astro.props;
 ---
 
@@ -42,11 +42,6 @@ const { title, url, url2, hero, summary, description, readingTime, views } =
       width: 100%;
       padding: 0.5em;
       $shadow-color: #f4f4f4;
-      box-shadow:
-        0 0 3px 3px $shadow-color,
-        0 0 3.6px -0.8px $shadow-color,
-        0 0 9px -1.7px $shadow-color,
-        0 0 21.9px -2.5px $shadow-color;
     }
   }
 

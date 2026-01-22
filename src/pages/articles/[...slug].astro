@@ -1,6 +1,9 @@
 ---
 import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
 import ViewCounter from "../../components/ViewCounter.astro";
+// const { frontmatter, url } = Astro.props;
+// const slug = url.split("/").pop() || "home";
+// console.log({ slug2 });
 import PostComments from "../../components/PostComments.astro";
 import Btn from "../../components/Button.astro";
 
@@ -11,6 +14,7 @@ const { slug } = Astro.params;
 if (slug === undefined) {
   throw new Error("Slug is required");
 }
+// console.log({ slug });
 // 2. Query for the entry directly using the request slug
 const entry = await getEntry("articles", slug);
 // 3. Redirect if the entry does not exist
