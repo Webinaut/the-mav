@@ -1,12 +1,7 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
-// import { remarkReadingTime } from "./remark-reading-time.mjs";
 import netlify from "@astrojs/netlify";
 import preact from "@astrojs/preact";
-
-// import node from "@astrojs/node";
-
-// https://astro.build/config
 export default defineConfig({
   devToolbar: {
     enabled: false,
@@ -19,7 +14,4 @@ export default defineConfig({
   },
   output: "server",
   adapter: netlify(),
-  // adapter: node({
-  //   mode: "standalone",
-  // }),
 });

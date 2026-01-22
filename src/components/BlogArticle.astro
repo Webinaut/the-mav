@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import readingImage from "/assets/images/fluent-mdl2--reading-mode.svg";
 import viewsImage from "/assets/images/ph--eyes-fill-rotated.svg";
-import ViewShow from "./ViewShow.astro";
+// import ViewShow from "./ViewShow.astro";
 import Btn from "../components/Button.astro";
 const { title, url, url2, hero, summary, description, readingTime } =
   Astro.props;
@@ -19,7 +19,7 @@ const { title, url, url2, hero, summary, description, readingTime } =
       <h4>
         <Image src={readingImage} alt="Reading Icon" />
         {readingTime} minute read | <Image src={viewsImage} alt="Views Icon" />
-        <ViewShow slug={url2} /> views <br />
+        <!-- <ViewShow slug={url2} /> views <br /> -->
       </h4>
       <p>{summary}</p>
       <Btn buttonlink={url} , buttontext="Read Article" />

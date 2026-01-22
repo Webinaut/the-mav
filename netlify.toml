@@ -1,6 +1,0 @@
-[[edge_functions]]
-  path = "/api/increment-views"
-  function = "increment-views"
-[[edge_functions]]
-  path = "/api/get-views"
-  function = "get-views"
