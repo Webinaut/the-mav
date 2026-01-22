@@ -1,6 +1,6 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
-import netlify from "@astrojs/netlify/functions";
+// import netlify from "@astrojs/netlify";
 import preact from "@astrojs/preact";
 export default defineConfig({
   devToolbar: {
@@ -13,5 +13,5 @@ export default defineConfig({
     extendDefaultPlugins: true,
   },
   output: "server",
-  adapter: netlify(),
+  // adapter: netlify(),
 });
