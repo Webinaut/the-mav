@@ -4,7 +4,7 @@ import sitemap from "@astrojs/sitemap";
 import netlify from "@astrojs/netlify";
 import preact from "@astrojs/preact";
 
-import node from "@astrojs/node";
+// import node from "@astrojs/node";
 
 // https://astro.build/config
 export default defineConfig({
@@ -19,7 +19,7 @@ export default defineConfig({
   },
   output: "server",
   adapter: netlify(),
-  adapter: node({
-    mode: "standalone",
-  }),
+  // adapter: node({
+  //   mode: "standalone",
+  // }),
 });
