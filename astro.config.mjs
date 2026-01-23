@@ -1,8 +1,8 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import preact from "@astrojs/preact";
-// import netlify from "@astrojs/netlify";
-import node from "@astrojs/node";
+import netlify from "@astrojs/netlify";
+// import node from "@astrojs/node";
 
 export default defineConfig({
   devToolbar: {
@@ -19,8 +19,8 @@ export default defineConfig({
 
   // adapter: netlify(),
   output: "server",
-  adapter: node({
-    mode: "standalone",
-  }),
-  // adapter: netlify(),
+  // adapter: node({
+  //   mode: "standalone",
+  // }),
+  adapter: netlify(),
 });
