@@ -7,7 +7,7 @@ description: The Path Well-Trodden
 ranking: 0
 hero: ../../assets/Hero-OOB-Cropped.jpg
 tags:
-  - business-skills
+  - business
 readingTime: 0
 ---
 

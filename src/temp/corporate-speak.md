@@ -1,18 +1,19 @@
 ---
 caption: Words Matter
-summary: Does it seem sad to you that the stream of businesses closing their doors seems to be endless, regardless of economic conditions? Is it just widespread bad luck, or is there a pattern? Looking from the outside, the reasons seem clearer to us than it seems to be for the owners, don’t you think?
+summary: In the modern workplace, language is rarely just a tool for communication; it is a strategic asset. While the stated goal of "corporate speak" is to streamline operations and align company culture, its true function often lies in the subtle negotiation of power. From "synergizing" to "taking it offline," the lexicon of the office serves as an invisible architecture that defines who belongs, who leads, and who is kept at arm’s length.
 views: 0
-title: Between the Lines
-description: Hiding Meaning in Plain Sight
+title: Corporate Speak and Power Games
+description: The Invisible Architecture of Control
 ranking: 0
 hero: ../../assets/A-word-please.png
 tags:
-  - business-skills
-  - life skills
+  - business
 readingTime: 0
 ---
 
-Has it ever puzzled you that all too often, when a business seems to be doing well, it suddenly goes “belly-up”? What always amazes me is that the business’ leadership invariably has a list of “bad luck” reasons for its demise, whilst observers often see obvious failings.
+In the modern workplace, language is rarely just a tool for communication; it is a strategic asset. While the stated goal of "corporate speak" is to streamline operations and align company culture, its true function often lies in the subtle negotiation of power. From "synergizing" to "taking it offline," the lexicon of the office serves as an invisible architecture that defines who belongs, who leads, and who is kept at arm’s length.
+
+---
 
 Let’s go back a bit. It seems like yesterday to me. I was a 19-year-old first year Business Science student sitting in a lecture room listening to Mr Jochelson, or “Jock” as we called him, imparting his wisdom to his captive audience.
 

@@ -11,7 +11,17 @@ import { getReadingTime } from "../scripts/readingtime.js";
 
 const allPosts = await getCollection("articles");
 allPosts.sort((b, a) => b.data.ranking.valueOf() - a.data.ranking.valueOf());
-const pageTitle = "Articles";
+
+const selectedTags = ["life", "problem-solving"];
+
+// Filter posts that contain ANY of the selected tags
+const filteredPosts =
+  selectedTags.length > 0
+    ? allPosts.filter((post) =>
+        post.data.tags.some((tag) => selectedTags.includes(tag)),
+      )
+    : allPosts;
+const pageTitle = "Articles About Life";
 ---
 
 <html lang="en">
@@ -24,7 +34,7 @@ const pageTitle = "Articles";
   </head>
   <body>
     <Layout pageTitle={pageTitle}>
-      <h3>The Musings Of An Enigmatic Maverick</h3>
+      <!-- <h3>The Musings Of An Enigmatic Maverick</h3> -->
       <p>
         The articles presented below have been inspired by things I have read or
         have seen or heard over the years. I am especially drawn to perspectives
@@ -33,7 +43,7 @@ const pageTitle = "Articles";
       </p>
       <ul>
         {
-          allPosts.map((post) => (
+          filteredPosts.map((post) => (
             <BlogArticle
               url={`/articles/${post.id}/`}
               url2={`${post.id}`}

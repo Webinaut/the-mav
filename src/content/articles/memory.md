@@ -8,7 +8,7 @@ ranking: 0.9
 hero: /assets/images/the-persistence-of-memory.jpg
 tags:
   - thinking
-  - life skills
+  - life
 readingTime: 0
 ---
 

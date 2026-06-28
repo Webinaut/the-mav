@@ -1,5 +1,5 @@
 ---
-
+import DownIcon from "./QuillInlineDown.astro";
 ---
 
 <nav class="main-nav">
@@ -8,8 +8,24 @@
       <a href="/">Home</a>
     </li>
     <li>
-      <a href="/articles/">Articles</a>
+      <a href="#">
+        <label for="sm1" title="Open Sub-menu" class="drop-icon"
+          >Articles <DownIcon />
+        </label>
+      </a>
+      <input type="checkbox" class="dropdown" id="sm1" />
+      <aside>
+        <ul class="sub-menu articles">
+          <li><a href="/articles/">All</a></li>
+          <li><a href="/business/">Business</a></li>
+          <li><a href="/life/">Life</a></li>
+          <li><a href="#">Technology</a></li>
+        </ul>
+      </aside>
     </li>
+    <!-- <li>
+      <a href="/articles/">Articles</a>
+    </li> -->
     <li>
       <a href="/about/">About</a>
     </li>
