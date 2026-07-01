@@ -25,6 +25,16 @@ const { pageTitle } = Astro.props;
 
       gtag("config", "G-RFKRQM019D");
     </script>
+    <script is:inline>
+      // Check if the URL contains a Netlify Identity recovery or confirmation token
+      if (
+        window.location.hash &&
+        window.location.hash.startsWith("#recovery_token=")
+      ) {
+        // Redirect them directly to the admin page while preserving the token
+        window.location.href = `/admin/${window.location.hash}`;
+      }
+    </script>
     <link rel="sitemap" href="/sitemap-index.xml" />
   </head>
   <body>
