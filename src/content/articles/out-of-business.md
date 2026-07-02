@@ -5,7 +5,7 @@ views: 0
 title: How to Go Out of Business
 description: The Path Well-Trodden
 ranking: 0
-hero: ../../assets/Hero-OOB-Cropped.jpg
+hero: ../../assets/images/Hero-OOB-Cropped.jpg
 tags:
   - business
 readingTime: 0
@@ -25,7 +25,7 @@ In the decades since then I learned that Jock’s pronouncements, whilst being e
 
 ### Trusting Experts
 
-<span style="float: left;width: 40%;margin:.5em 2em 1em 0;">![Certificate](../../assets/Certificate.jpg)</span>The problem with “trusting” is that it often means “abrogating responsibility for”. Business owners feel that they lack specialist expertise and need to hand over responsibility to an “expert”.
+<span style="float: left;width: 40%;margin:.5em 2em 1em 0;">![Certificate](../../assets/images/Certificate.jpg)</span>The problem with “trusting” is that it often means “abrogating responsibility for”. Business owners feel that they lack specialist expertise and need to hand over responsibility to an “expert”.
 
 Whilst responsibility can be handed over, accountability cannot. In the end, you are still accountable for something your so-called expert did.
 
@@ -37,7 +37,7 @@ I am not suggesting that you never turn to the experts when faced with a busines
 
 ### Focusing on Revenue, not Profit
 
-<span style="float: right;width: 40%;margin:.5em 0 1em 2em;">![Flying Notes](../../assets/FlyingNotes.jpg)</span>It is so easy and exciting for small businesses to focus on “feet through the door”. How do I ramp up sales? How about offering a special price? Let’s launch an advertising campaign.
+<span style="float: right;width: 40%;margin:.5em 0 1em 2em;">![Flying Notes](../../assets/images/FlyingNotes.jpg)</span>It is so easy and exciting for small businesses to focus on “feet through the door”. How do I ramp up sales? How about offering a special price? Let’s launch an advertising campaign.
 
 Whilst businesses cannot make a profit without sales revenue, the reverse isn’t true. Achieving good sales without making a profit is all too common. It always boils down to the same thing – financial mismanagement - failing to track expenses and neglecting to understand and control profit margins.
 
@@ -51,7 +51,7 @@ To control profitability a budget is essential. Then, businesses need to have a 
 
 ### Running Out of Cash
 
-<span style="float: left;width: 40%;margin:.5em 2em 1em 0;">![Empty Wallet](../../assets/EmptyWallet.jpg)</span>Jock pointed out that it is possible to be profitable and go out of business. The reason for this is extended collection periods – making sales on credit but lacking confidence in collecting payments timeously.
+<span style="float: left;width: 40%;margin:.5em 2em 1em 0;">![Empty Wallet](../../assets/images/EmptyWallet.jpg)</span>Jock pointed out that it is possible to be profitable and go out of business. The reason for this is extended collection periods – making sales on credit but lacking confidence in collecting payments timeously.
 
 Sometimes, this is because there is a fear of upsetting valued customers by pushing for payment. Those customers probably have no qualms about badgering their customers, though. And they know how to delay their supplier payments. That is why their bank balances are probably healthy!
 
@@ -103,7 +103,7 @@ Customers also notice the atmosphere and inter-personal dynamic in a business. A
 
 #### Winking in the Dark
 
-<span style="float: right;width: 30%;margin:.5em 0 1em 2em;">![Owl Winking](../../assets/OwlDark.jpg)</span>Having the best product or service in the world is irrelevant if no one knows about it. It’s like winking in the dark. You know what you are doing, but no-one else does.
+<span style="float: right;width: 30%;margin:.5em 0 1em 2em;">![Owl Winking](../../assets/images/OwlDark.jpg)</span>Having the best product or service in the world is irrelevant if no one knows about it. It’s like winking in the dark. You know what you are doing, but no-one else does.
 
 Unless your business is visible, you cannot expect queues of customers. Marketing is an investment, not an expense (despite what the accounting experts might tell you!). Neglecting to engage with both current and potential customers will leave you invisible in a crowded marketplace.
 
