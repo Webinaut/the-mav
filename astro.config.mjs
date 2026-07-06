@@ -11,9 +11,9 @@ export default defineConfig({
   trailingSlash: "always",
   site: "https://themaverick.net.au",
   integrations: [sitemap()],
-  markdown: {
-    extendDefaultPlugins: true,
-  },
+  // markdown: {
+  //   extendDefaultPlugins: true,
+  // },
   site: "https://themaverick.net.au",
   output: "server",
   adapter: netlify(),

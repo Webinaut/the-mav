@@ -2,18 +2,23 @@ backend:
   name: git-gateway
   branch: main # Branch to update (optional; defaults to master)
 # 1. FORCE DECAP TO USE LOCAL RELATIVE PATHS FOR PREVIEWS
-media_folder_relative: true
-media_folder: "src/assets/images" # Location where files will be stored in the repo
-public_folder: "/src/assets/images" # The src attribute for uploaded media
+media_folder_relative: false
+media_folder: "public/images/uploads" # Location where files will be stored in the repo
+public_folder: "/images/uploads" # The src attribute for uploaded media
 publish_mode: editorial_workflow
 
 collections:
   - name: "articles" # Used in routes, e.g., /admin/collections/articles
     label: "Articles" # Used in the UI
     folder: "src/content/articles" # The path to the folder where the documents are stored
-    media_folder: "../../assets/images" # Relative path to the media folder from articles folder
-    public_folder: ""
     create: true # Allow users to create new documents in this collection
+      # Use relative paths so images are saved in the specific blog post folder
+    media_folder: "" 
+    public_folder: ""
+    path: "{{slug}}/index"  # Use relative paths so images are saved in the specific blog post folder
+    media_folder: "" 
+    public_folder: ""
+    path: "{{slug}}/index"
     fields: # The fields for each document, usually in frontmatter
       - {
           label: "Layout",
