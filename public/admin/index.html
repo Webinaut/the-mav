@@ -7,8 +7,83 @@
     <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
     <title>Content Manager</title>
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script src="https://unpkg.com/decap-cms@^3.1.2/dist/decap-cms.js"></script>
   </head>
   <body>
-    <script src="https://unpkg.com/decap-cms@^3.1.2/dist/decap-cms.js"></script>
+    <script>
+      const BlogPreview = createClass({
+        render: function () {
+          const entry = this.props.entry;
+          const getAsset = this.props.getAsset;
+
+          // 1. Fetch metadata fields safely
+          const title = entry.getIn(["data", "title"]);
+
+          // 2. Extract raw markdown body text
+          const rawBody = entry.getIn(["data", "body"]) || "";
+
+          // 3. REGEX to find relative markdown images: ![alt](filename.png)
+          // This catches filenames and ignores absolute URLs (http:// or /)
+          const markdownImageRegex =
+            /!\[(.*?)\]\((?!(?:https?:\/\/|\/))(.*?)\)/g;
+
+          // 4. Intercept text and transform paths to production Git blob URLs
+          const transformedBody = rawBody.replace(
+            markdownImageRegex,
+            (match, alt, src) => {
+              // Decap's getAsset pulls the real file directly out of your hosted Git branch
+              const asset = getAsset(src);
+              const resolvedUrl = asset ? asset.toString() : src;
+              return `![${alt}](${resolvedUrl})`;
+            },
+          );
+
+          // 5. Use Decap's built-in Markdown-to-HTML parser component
+          // to cleanly output the transformed markdown body
+          const MarkdownOutput = CMS.getWidget("markdown").control;
+
+          return h(
+            "div",
+            {
+              style: {
+                padding: "20px",
+                fontFamily: "sans-serif",
+                maxWidth: "800px",
+                margin: "0 auto",
+              },
+            },
+            h("h1", null, title),
+            h("hr", null),
+            h(
+              "div",
+              { className: "markdown-body" },
+              h(MarkdownOutput, {
+                value: transformedBody,
+                onChange: function () {}, // Required stub by widget template
+                classNameWrapper: "preview-markdown",
+              }),
+            ),
+          );
+        },
+      });
+
+      // Register specifically to your blog collection
+      CMS.registerPreviewTemplate("articles", BlogPreview);
+
+      // Make sure images resize correctly inside the iframe
+      CMS.registerPreviewStyle(
+        `
+      .markdown-body img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 6px;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        display: block;
+        margin: 1.5rem 0;
+      }
+    `,
+        { raw: true },
+      );
+    </script>
   </body>
 </html>
