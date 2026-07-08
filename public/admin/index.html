@@ -10,42 +10,5 @@
   </head>
   <body>
     <script src="https://unpkg.com/decap-cms@^3.1.2/dist/decap-cms.js"></script>
-    <script>
-      // Safe vanilla component registration that avoids 'createClass' or 'h' errors
-      CMS.registerPreviewTemplate(
-        "articles",
-        window.createClass({
-          render: function () {
-            const entry = this.props.entry;
-            const title = entry.getIn(["data", "title"]) || "";
-            const body = this.props.widgetFor("body");
-
-            // Safely invoke React via the globally exposed window instance
-            return window.h(
-              "div",
-              {
-                style: { padding: "20px", maxWidth: "800px", margin: "0 auto" },
-              },
-              window.h("h1", null, title),
-              window.h("hr", null),
-              window.h("div", { className: "markdown-body" }, body),
-            );
-          },
-        }),
-      );
-
-      // Make sure body images responsively downscale inside the preview window frame
-      CMS.registerPreviewStyle(
-        `
-      .markdown-body img {
-        max-width: 100% !important;
-        height: auto !important;
-        display: block;
-        margin: 1.5rem 0;
-      }
-    `,
-        { raw: true },
-      );
-    </script>
   </body>
 </html>
