@@ -11,46 +11,35 @@
   <body>
     <script src="https://unpkg.com/decap-cms@^3.1.2/dist/decap-cms.js"></script>
     <script>
-      const BlogPreview = createClass({
-        render: function () {
-          const entry = this.props.entry;
-          const getAsset = this.props.getAsset;
+      // Safe vanilla component registration that avoids 'createClass' or 'h' errors
+      CMS.registerPreviewTemplate(
+        "articles",
+        window.createClass({
+          render: function () {
+            const entry = this.props.entry;
+            const title = entry.getIn(["data", "title"]) || "";
+            const body = this.props.widgetFor("body");
 
-          // 1. Fetch text data safely
-          const title = entry.getIn(["data", "title"]);
-
-          // 2. Safely capture the compiled widget container directly from the React props layer.
-          // This natively invokes the parser without relying on CMS.getWidget lookups.
-          const compiledBody = this.props.widgetFor("body");
-
-          return h(
-            "div",
-            {
-              style: {
-                padding: "20px",
-                fontFamily: "sans-serif",
-                maxWidth: "800px",
-                margin: "0 auto",
+            // Safely invoke React via the globally exposed window instance
+            return window.h(
+              "div",
+              {
+                style: { padding: "20px", maxWidth: "800px", margin: "0 auto" },
               },
-            },
-            h("h1", null, title),
-            h("hr", null),
-            // 3. Render the widget container inside our custom wrapper layout
-            h("div", { className: "markdown-body" }, compiledBody),
-          );
-        },
-      });
+              window.h("h1", null, title),
+              window.h("hr", null),
+              window.h("div", { className: "markdown-body" }, body),
+            );
+          },
+        }),
+      );
 
-      // Register specifically to your blog collection
-      CMS.registerPreviewTemplate("articles", BlogPreview);
-
-      // Inject iframe responsive styling rules securely
+      // Make sure body images responsively downscale inside the preview window frame
       CMS.registerPreviewStyle(
         `
       .markdown-body img {
         max-width: 100% !important;
         height: auto !important;
-        border-radius: 6px;
         display: block;
         margin: 1.5rem 0;
       }
