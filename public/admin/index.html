@@ -10,5 +10,109 @@
   </head>
   <body>
     <script src="https://unpkg.com/decap-cms@^3.1.2/dist/decap-cms.js"></script>
+    <script>
+      // Register a custom "Floated Image" shortcode component for the Markdown editor
+      CMS.registerEditorComponent({
+        id: "floated-image",
+        label: "Floated Image",
+        fields: [
+          { label: "Image", name: "image", widget: "image" },
+          { label: "Alt Text", name: "alt", widget: "string" },
+          { label: "Caption", name: "caption", widget: "string" },
+          {
+            label: "Float Direction",
+            name: "float",
+            widget: "select",
+            options: ["left", "right"],
+            default: "left",
+          },
+        ],
+        // This is what gets saved to your Markdown source file
+        toBlock: function (obj) {
+          return `<div class="float-${obj.float || "left"}"><img src="${obj.image || ""}" alt="${obj.alt || ""}"><em>${obj.caption || ""}</em></div>`;
+        },
+        // Tells Decap CMS how to read it back when parsing an existing post file
+        fromBlock: function (match) {
+          return {
+            float: match[1],
+            image: match[2],
+            alt: match[3],
+            caption: match[4],
+          };
+        },
+        // This is the magical part: it converts the relative local path into a live preview Blob!
+        toPreview: function (obj, getAsset) {
+          const asset = getAsset(obj.image);
+          const imgUrl = asset ? asset.toString() : "";
+          const floatStyle =
+            obj.float === "right"
+              ? "float: right; margin: 1em 0 1em 2em;"
+              : "float: left; margin: 1em 2em 1em 0;";
+
+          return `<span style="${floatStyle} width: 40%; display: block;"><img src="${imgUrl}" style="width: 100%; height: auto;" alt="${obj.alt}"><em>${obj.caption}</em></span>`;
+        },
+      });
+      // 1. Create a custom template for your 'articles' collection
+      const ArticlesPreview = window.createClass({
+        render: function () {
+          const entry = this.props.entry;
+
+          // Fetch and resolve the main 'hero' image using Decap's asset proxy wrapper
+          const heroField = entry.getIn(["data", "hero"]);
+          const resolvedHeroImg = this.props.getAsset(heroField);
+
+          // Use the built-in widgetFor to render the body Markdown.
+          // Decap natively resolves inline Markdown images inside widgetFor using its media store!
+          const bodyContent = this.props.widgetFor("body");
+
+          return window.h(
+            "div",
+            { style: { padding: "20px", fontFamily: "sans-serif" } },
+            window.h("h1", null, entry.getIn(["data", "title"])),
+            window.h(
+              "p",
+              { style: { fontStyle: "italic", color: "#666" } },
+              entry.getIn(["data", "description"]),
+            ),
+
+            // Render hero preview image if it exists
+            resolvedHeroImg
+              ? window.h("img", {
+                  src: resolvedHeroImg.toString(),
+                  style: {
+                    maxWidth: "100%",
+                    height: "auto",
+                    marginBottom: "10px",
+                  },
+                })
+              : null,
+
+            window.h(
+              "p",
+              { style: { fontSize: "0.9rem", color: "#888" } },
+              entry.getIn(["data", "caption"]),
+            ),
+            window.h("hr", null),
+
+            // Render body container where inline images live
+            window.h("div", { className: "article-body" }, bodyContent),
+          );
+        },
+      });
+
+      // 2. Register the preview template to exactly match your collection name: "articles"
+      CMS.registerPreviewTemplate("articles", ArticlesPreview);
+
+      // 3. Netlify Identity Redirection Logic
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", (user) => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
+            });
+          }
+        });
+      }
+    </script>
   </body>
 </html>
