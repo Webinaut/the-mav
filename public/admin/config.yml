@@ -1,27 +1,18 @@
-backend:
-  name: github
-  repo: Webinaut/the-mav
-  branch: main # or master
-  base_url: https://api.netlify.com
-# 1. FORCE DECAP TO USE LOCAL RELATIVE PATHS FOR PREVIEWS
-media_folder: "src/assets/images"
-public_folder: "/src/assets/images"
-media_folder_relative: true # Enables relative paths globally
-# publish_mode: editorial_workflow
-
 collections:
-  - name: "articles" # Used in routes, e.g., /admin/collections/articles
-    label: "Articles" # Used in the UI
-    folder: "src/content/articles" # The path to the folder where the documents are stored
-    create:
-      true # Allow users to create new documents in this collection
-      # Use relative paths so images are saved in the specific blog post folder
+  - name: "articles"
+    label: "Articles"
+    folder: "src/content/articles"
+    create: true
     media_folder: "./"
     public_folder: "./"
-    path: "{{slug}}/index" # Use relative paths so images are saved in the specific blog post folder
+    path: "{{slug}}/index"
     extension: "mdx"
+
+    # FORCE CORRECT DELIMITER DETECTION FOR MDX
     format: "frontmatter"
-    fields: # The fields for each document, usually in frontmatter
+    body_field: "body" # Tells Sveltia exactly which widget handles the markdown string
+
+    fields:
       - {
           label: "Layout",
           name: "layout",
@@ -42,7 +33,7 @@ collections:
       - { label: "Tags", name: "tags", widget: "list", default: ["articles"] }
       - {
           label: "Body",
-          name: "body",
+          name: "body", # Matches body_field target option above
           widget: "markdown",
           editor_components: ["floated-image"],
         }
