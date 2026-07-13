@@ -1,8 +1,6 @@
 backend:
-  name: github
-  repo: Webinaut/the-mav
-  branch: main # or master
-  base_url: https://api.netlify.com
+  name: git-gateway
+  branch: main # Branch to update (optional; defaults to master)
 # 1. FORCE DECAP TO USE LOCAL RELATIVE PATHS FOR PREVIEWS
 media_folder: "src/assets/images"
 public_folder: "/src/assets/images"
