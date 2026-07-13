@@ -3,6 +3,7 @@ import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
 import ViewCounter from "../../components/ViewCounter.astro";
 import PostComments from "../../components/PostComments.astro";
 import Btn from "../../components/Button.astro";
+import FloatedImage from "../../components/FloatedImage.astro";
 
 // SSR Code
 import { getEntry, render } from "astro:content";
@@ -24,7 +25,8 @@ const { Content } = await render(entry);
 <BlogPostLayout frontmatter={entry.data}>
   <article>
     <ViewCounter slug={slug} />
-    <Content />
+    <!-- <Content /> -->
+    <Content components={{ FloatedImage }} />
     <Btn buttonlink="/articles/" , buttontext="Back To Articles" />
   </article>
   <article>

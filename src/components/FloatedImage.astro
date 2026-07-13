@@ -1,0 +1,51 @@
+---
+import { Image } from "astro:assets";
+
+interface Props {
+  src: string;
+  alt: string;
+  align: "left" | "right" | "center";
+}
+
+const { src, alt, align } = Astro.props;
+
+// Dynamically match your CMS image directory (adjust path to match your config.yml media_folder)
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/images/**/*.{jpeg,jpg,png,gif,webp}",
+);
+
+// Clean up relative path formatting if Sveltia outputs leading slashes or dots
+const cleanSrc = src.startsWith("/") ? src : `/${src}`;
+const imagePath = `/src${cleanSrc}`;
+
+if (!images[imagePath]) {
+  throw new Error(`"${imagePath}" does not exist in your glob path.`);
+}
+---
+
+<div class={`cms-img-wrap ${align}`}>
+  <Image src={images[imagePath]()} alt={alt} width={600} format="webp" />
+</div>
+
+<style>
+  .cms-img-wrap {
+    display: inline;
+  }
+  .cms-img-wrap.left {
+    float: left;
+    margin: 0 1.5rem 1rem 0;
+    max-width: 45%;
+  }
+  .cms-img-wrap.right {
+    float: right;
+    margin: 0 0 1rem 1.5rem;
+    max-width: 45%;
+  }
+  .cms-img-wrap.center {
+    display: block;
+    float: none;
+    margin: 2rem auto;
+    text-align: center;
+    max-width: 100%;
+  }
+</style>

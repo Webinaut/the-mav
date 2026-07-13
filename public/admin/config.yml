@@ -7,7 +7,7 @@ backend:
 media_folder: "src/assets/images"
 public_folder: "/src/assets/images"
 media_folder_relative: true # Enables relative paths globally
-# publish_mode: editorial_workflow
+publish_mode: editorial_workflow
 
 collections:
   - name: "articles" # Used in routes, e.g., /admin/collections/articles
@@ -38,5 +38,10 @@ collections:
       - { label: "Image Caption", name: "caption", widget: "string" }
       - { label: "Articles Page Summary", name: "summary", widget: "text" }
       - { label: "Tags", name: "tags", widget: "list", default: ["articles"] }
-      - { label: "Body", name: "body", widget: "markdown" }
+      - {
+          label: "Body",
+          name: "body",
+          widget: "markdown",
+          editor_components: ["floated-image"],
+        }
     sortable_fields: ["title", "ranking", "tags"]

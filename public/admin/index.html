@@ -9,6 +9,39 @@
     <!-- <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script> -->
   </head>
   <body>
-    <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
+    <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js">
+            CMS.registerEditorComponent({
+        id: 'floated-image',
+        label: 'Floated Image',
+        icon: 'image',
+        fields: [
+          { name: 'image', label: 'Select Image', widget: 'image', required: true },
+          { name: 'alt', label: 'Alt Text', widget: 'string', required: true },
+          {
+            name: 'align',
+            label: 'Alignment',
+            widget: 'select',
+            options: [
+              { label: 'Float Left', value: 'left' },
+              { label: 'Float Right', value: 'right' },
+              { label: 'Center', value: 'center' }
+            ],
+            default: 'right'
+          }
+        ],
+        // Matches the custom self-closing MDX component tag
+        pattern: /<FloatedImage\s+src="(.+?)"\s+alt="(.*?)"\s+align="(left|right|center)"\s*\/>/,
+        fromBlock: function(match) {
+          return { image: match[1], alt: match[2], align: match[3] };
+        },
+        // Inserts a JSX-style component tag into your .mdx content files
+        toBlock: function(data) {
+          return `<FloatedImage src="${data.image}" alt="${data.alt}" align="${data.align}" />`;
+        },
+        toPreview: function(data) {
+          return `<div style="float: ${data.align}; max-width: 45%; margin: 10px;"><img src="${data.image}" alt="${data.alt}" style="width:100%;"/></div>`;
+        }
+      });
+    </script>
   </body>
 </html>
