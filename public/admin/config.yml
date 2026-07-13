@@ -7,7 +7,7 @@ backend:
 media_folder: "src/assets/images"
 public_folder: "/src/assets/images"
 media_folder_relative: true # Enables relative paths globally
-publish_mode: editorial_workflow
+# publish_mode: editorial_workflow
 
 collections:
   - name: "articles" # Used in routes, e.g., /admin/collections/articles
