@@ -9,9 +9,12 @@
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body>
-    <script src="https://unpkg.com/decap-cms@^3.1.2/dist/decap-cms.js"></script>
+    <!-- 1. SCRIPTS PLACED AT THE BOTTOM OF BODY TO ENSURE DOM IS READY -->
+    </script>
+    <script src="https://unpkg.com@^3.0.0/dist/decap-cms.js"></script>
+
     <script>
-      // Register a custom "Floated Image" shortcode component for the Markdown editor
+      // 2. REGISTER THE FLOATED IMAGE COMPONENT (With full regex matching engine)
       CMS.registerEditorComponent({
         id: "floated-image",
         label: "Floated Image",
@@ -19,93 +22,81 @@
           { label: "Image", name: "image", widget: "image" },
           { label: "Alt Text", name: "alt", widget: "string" },
           { label: "Caption", name: "caption", widget: "string" },
-          {
-            label: "Float Direction",
-            name: "float",
-            widget: "select",
-            options: ["left", "right"],
-            default: "left",
-          },
+          { 
+            label: "Float Direction", 
+            name: "float", 
+            widget: "select", 
+            options: ["left", "right"], 
+            default: "left" 
+          }
         ],
-        // This is what gets saved to your Markdown source file
-        toBlock: function (obj) {
-          return `<div class="float-${obj.float || "left"}"><img src="${obj.image || ""}" alt="${obj.alt || ""}"><em>${obj.caption || ""}</em></div>`;
+        // Generates standard inline HTML block in markdown files for Astro rendering
+        toBlock: function(obj) {
+          return `<div class="float-${obj.float || 'left'}" style="float: ${obj.float || 'left'}; width: 40%; margin: ${obj.float === 'right' ? '1em 0 1em 2em' : '1em 2em 1em 0'};"><img src="${obj.image || ''}" alt="${obj.alt || ''}" style="width:100%; height:auto;"><em style="display:block; text-align:center;">${obj.caption || ''}</em></div>`;
         },
-        // Tells Decap CMS how to read it back when parsing an existing post file
-        fromBlock: function (match) {
+        // Decap parses markdown using this pattern to turn it back into form data fields
+        pattern: /<div class="float-(left|right)"[\s\S]*?src="([^"]*)"\s+alt="([^"]*)"[\s\S]*?<em[\s\S]*?>([\s\S]*?)<\/em><\/div>/,
+        fromBlock: function(match) {
           return {
             float: match[1],
             image: match[2],
             alt: match[3],
-            caption: match[4],
+            caption: match[4]
           };
         },
-        // This is the magical part: it converts the relative local path into a live preview Blob!
-        toPreview: function (obj, getAsset) {
+        // Converts local file string into live blob inside preview interface frame
+        toPreview: function(obj, getAsset) {
+          if (!obj.image) return null;
+          
           const asset = getAsset(obj.image);
-          const imgUrl = asset ? asset.toString() : "";
-          const floatStyle =
-            obj.float === "right"
-              ? "float: right; margin: 1em 0 1em 2em;"
-              : "float: left; margin: 1em 2em 1em 0;";
+          const imgUrl = asset ? asset.toString() : '';
+          const marginStyle = obj.float === 'right' ? '1em 0 1em 2em' : '1em 2em 1em 0';
 
-          return `<span style="${floatStyle} width: 40%; display: block;"><img src="${imgUrl}" style="width: 100%; height: auto;" alt="${obj.alt}"><em>${obj.caption}</em></span>`;
-        },
-      });
-      // 1. Create a custom template for your 'articles' collection
-      const ArticlesPreview = window.createClass({
-        render: function () {
-          const entry = this.props.entry;
-
-          // Fetch and resolve the main 'hero' image using Decap's asset proxy wrapper
-          const heroField = entry.getIn(["data", "hero"]);
-          const resolvedHeroImg = this.props.getAsset(heroField);
-
-          // Use the built-in widgetFor to render the body Markdown.
-          // Decap natively resolves inline Markdown images inside widgetFor using its media store!
-          const bodyContent = this.props.widgetFor("body");
-
-          return window.h(
-            "div",
-            { style: { padding: "20px", fontFamily: "sans-serif" } },
-            window.h("h1", null, entry.getIn(["data", "title"])),
-            window.h(
-              "p",
-              { style: { fontStyle: "italic", color: "#666" } },
-              entry.getIn(["data", "description"]),
-            ),
-
-            // Render hero preview image if it exists
-            resolvedHeroImg
-              ? window.h("img", {
-                  src: resolvedHeroImg.toString(),
-                  style: {
-                    maxWidth: "100%",
-                    height: "auto",
-                    marginBottom: "10px",
-                  },
-                })
-              : null,
-
-            window.h(
-              "p",
-              { style: { fontSize: "0.9rem", color: "#888" } },
-              entry.getIn(["data", "caption"]),
-            ),
-            window.h("hr", null),
-
-            // Render body container where inline images live
-            window.h("div", { className: "article-body" }, bodyContent),
+          return window.h('span', {
+            style: {
+              float: obj.float || 'left',
+              width: '40%',
+              margin: marginStyle,
+              display: 'block'
+            }
+          },
+            window.h('img', { src: imgUrl, alt: obj.alt || '', style: { width: '100%', height: 'auto' } }),
+            obj.caption ? window.h('em', { style: { display: 'block', textAlign: 'center', color: '#555', fontSize: '0.85em' } }, obj.caption) : null
           );
-        },
+        }
       });
 
-      // 2. Register the preview template to exactly match your collection name: "articles"
+      // 3. CREATE THE PREVIEW TEMPLATE CONTAINER
+      const ArticlesPreview = window.createClass({
+        render: function() {
+          const entry = this.props.entry;
+          const heroField = entry.getIn(['data', 'hero']);
+          const resolvedHeroImg = this.props.getAsset(heroField);
+          const bodyWidget = this.props.widgetFor('body');
+
+          return window.h('div', { style: { padding: '20px', fontFamily: 'sans-serif' } },
+            window.h('h1', null, entry.getIn(['data', 'title'])),
+            window.h('p', { style: { fontStyle: 'italic', color: '#666' } }, entry.getIn(['data', 'description'])),
+            
+            resolvedHeroImg ? window.h('img', { 
+              src: resolvedHeroImg.toString(), 
+              style: { maxWidth: '100%', height: 'auto', marginBottom: '10px' } 
+            }) : null,
+            
+            window.h('p', { style: { fontSize: '0.9rem', color: '#888' } }, entry.getIn(['data', 'caption'])),
+            window.h('hr', null),
+            
+            window.h('div', { className: 'article-body' }, bodyWidget)
+          );
+        }
+      });
+
+      // 4. REGISTER THE CONFIGURATION HOOKS
       CMS.registerPreviewTemplate("articles", ArticlesPreview);
 
-      // 3. Netlify Identity Redirection Logic
+      // 5. NETLIFY IDENTITY REDIRECTION UTILITY
       if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", (user) => {
+        window.netlifyIdentity.on("init", user => {
           if (!user) {
             window.netlifyIdentity.on("login", () => {
               document.location.href = "/admin/";
