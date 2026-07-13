@@ -1,119 +1,14 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Content Manager</title>
-    <!-- 1. IDENTIFY CONFIG LOADING AND PREVENT EARLY AUTO-INIT BACKGROUND CRASHES -->
+    <meta name="robots" content="noindex" />
     <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
-    <script>
-      window.CMS_MANUAL_INIT = true;
-    </script>
-
-    <!-- 2. STABLE DEPENDENCY SCRIPT IMPORTS -->
-    </script>
-
+    <title>Content Manager</title>
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body>
-    <script>
-      // 3. EXECUTE REGISTRATIONS DIRECTLY IN RENDER LINE
-      if (typeof CMS !== 'undefined') {
-
-        // 4. REGISTER THE FLOATED IMAGE PLUGIN INTERFACE COMPONENT
-        CMS.registerEditorComponent({
-          id: "floated-image",
-          label: "Floated Image",
-          fields: [
-            { label: "Image", name: "image", widget: "image" },
-            { label: "Alt Text", name: "alt", widget: "string" },
-            { label: "Caption", name: "caption", widget: "string" },
-            { 
-              label: "Float Direction", 
-              name: "float", 
-              widget: "select", 
-              options: ["left", "right"], 
-              default: "left" 
-            }
-          ],
-          // Markdown block output string configuration template
-          toBlock: function(obj) {
-            return `<div class="float-${obj.float || 'left'}" style="float: ${obj.float || 'left'}; width: 40%; margin: ${obj.float === 'right' ? '1em 0 1em 2em' : '1em 2em 1em 0'};"><img src="${obj.image || ''}" alt="${obj.alt || ''}" style="width:100%; height:auto;"><em style="display:block; text-align:center;">${obj.caption || ''}</em></div>`;
-          },
-          // Pattern parser matching structure parameters
-          pattern: /<div class="float-(left|right)"[\s\S]*?src="([^"]*)"\s+alt="([^"]*)"[\s\S]*?<em[\s\S]*?>([\s\S]*?)<\/em><\/div>/,
-          fromBlock: function(match) {
-            return {
-              float: match[1],
-              image: match[2],
-              alt: match[3],
-              caption: match[4]
-            };
-          },
-          // Standard React component generator logic via window.h() element helpers
-          toPreview: function(obj, getAsset) {
-            if (!obj.image) return null;
-            
-            const asset = getAsset(obj.image);
-            const imgUrl = asset ? asset.toString() : '';
-            const marginStyle = obj.float === 'right' ? '1em 0 1em 2em' : '1em 2em 1em 0';
-
-            return window.h('span', {
-              style: {
-                float: obj.float || 'left',
-                width: '40%',
-                margin: marginStyle,
-                display: 'block'
-              }
-            },
-              window.h('img', { src: imgUrl, alt: obj.alt || '', style: { width: '100%', height: 'auto' } }),
-              obj.caption ? window.h('em', { style: { display: 'block', textAlign: 'center', color: '#555', fontSize: '0.85em' } }, obj.caption) : null
-            );
-          }
-        });
-
-        // 5. DEFINE PREVIEW LAYOUT WRAPPER RENDERER
-        const ArticlesPreview = window.createClass({
-          render: function() {
-            const entry = this.props.entry;
-            const heroField = entry.getIn(['data', 'hero']);
-            const resolvedHeroImg = this.props.getAsset(heroField);
-            const bodyWidget = this.props.widgetFor('body');
-
-            return window.h('div', { style: { padding: '20px', fontFamily: 'sans-serif' } },
-              window.h('h1', null, entry.getIn(['data', 'title'])),
-              window.h('p', { style: { fontStyle: 'italic', color: '#666' } }, entry.getIn(['data', 'description'])),
-              
-              resolvedHeroImg ? window.h('img', { 
-                src: resolvedHeroImg.toString(), 
-                style: { maxWidth: '100%', height: 'auto', marginBottom: '10px' } 
-              }) : null,
-              
-              window.h('p', { style: { fontSize: '0.9rem', color: '#888' } }, entry.getIn(['data', 'caption'])),
-              window.h('hr', null),
-              
-              window.h('div', { className: 'article-body' }, bodyWidget)
-            );
-          }
-        });
-
-        // 6. ATTACH THE PREVIEW PANEL TEMPLATE TO DECAP
-        CMS.registerPreviewTemplate("articles", ArticlesPreview);
-
-        // 7. FIRE SAFE INITIALISATION ENGINE
-        CMS.init();
-      }
-
-      // 8. SECURITY AND ACCESS IDENTITY STATE MANAGEMENT
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", user => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
-            });
-          }
-        });
-      }
-    </script>
-        <script src="https://unpkg.com@^3.0.0/dist/decap-cms.js"></script>
+    <script src="https://unpkg.com/decap-cms@^3.1.2/dist/decap-cms.js"></script>
   </body>
 </html>
