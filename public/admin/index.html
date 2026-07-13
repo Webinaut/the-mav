@@ -1,100 +1,105 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="noindex" />
-    <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
     <title>Content Manager</title>
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  </head>
-  <body>
-    <!-- 1. SCRIPTS PLACED AT THE BOTTOM OF BODY TO ENSURE DOM IS READY -->
+    <!-- 1. CORRECT APPLICATION AND PATH ROUTING LINKS -->
+    <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
+    
+    <!-- 2. NETLIFY IDENTITY AND DECAP CMS GLOBAL CORE LIFECYCLE ENGINE -->
     </script>
     <script src="https://unpkg.com@^3.0.0/dist/decap-cms.js"></script>
-
+  </head>
+  <body>
     <script>
-      // 2. REGISTER THE FLOATED IMAGE COMPONENT (With full regex matching engine)
-      CMS.registerEditorComponent({
-        id: "floated-image",
-        label: "Floated Image",
-        fields: [
-          { label: "Image", name: "image", widget: "image" },
-          { label: "Alt Text", name: "alt", widget: "string" },
-          { label: "Caption", name: "caption", widget: "string" },
-          { 
-            label: "Float Direction", 
-            name: "float", 
-            widget: "select", 
-            options: ["left", "right"], 
-            default: "left" 
-          }
-        ],
-        // Generates standard inline HTML block in markdown files for Astro rendering
-        toBlock: function(obj) {
-          return `<div class="float-${obj.float || 'left'}" style="float: ${obj.float || 'left'}; width: 40%; margin: ${obj.float === 'right' ? '1em 0 1em 2em' : '1em 2em 1em 0'};"><img src="${obj.image || ''}" alt="${obj.alt || ''}" style="width:100%; height:auto;"><em style="display:block; text-align:center;">${obj.caption || ''}</em></div>`;
-        },
-        // Decap parses markdown using this pattern to turn it back into form data fields
-        pattern: /<div class="float-(left|right)"[\s\S]*?src="([^"]*)"\s+alt="([^"]*)"[\s\S]*?<em[\s\S]*?>([\s\S]*?)<\/em><\/div>/,
-        fromBlock: function(match) {
-          return {
-            float: match[1],
-            image: match[2],
-            alt: match[3],
-            caption: match[4]
-          };
-        },
-        // Converts local file string into live blob inside preview interface frame
-        toPreview: function(obj, getAsset) {
-          if (!obj.image) return null;
-          
-          const asset = getAsset(obj.image);
-          const imgUrl = asset ? asset.toString() : '';
-          const marginStyle = obj.float === 'right' ? '1em 0 1em 2em' : '1em 2em 1em 0';
+      // 3. LISTEN FOR INTERFACE CONTEXT SETUP TO PREVENT EMPTY COMPONENT CRASHES
+      document.addEventListener('DOMContentLoaded', () => {
+        if (typeof CMS === 'undefined') return;
 
-          return window.h('span', {
-            style: {
-              float: obj.float || 'left',
-              width: '40%',
-              margin: marginStyle,
-              display: 'block'
+        // 4. REGISTER THE FLOATED IMAGE PLUGIN FORM COMPONENT
+        CMS.registerEditorComponent({
+          id: "floated-image",
+          label: "Floated Image",
+          fields: [
+            { label: "Image", name: "image", widget: "image" },
+            { label: "Alt Text", name: "alt", widget: "string" },
+            { label: "Caption", name: "caption", widget: "string" },
+            { 
+              label: "Float Direction", 
+              name: "float", 
+              widget: "select", 
+              options: ["left", "right"], 
+              default: "left" 
             }
+          ],
+          // Creates markdown text structure when saving your changes
+          toBlock: function(obj) {
+            return `<div class="float-${obj.float || 'left'}" style="float: ${obj.float || 'left'}; width: 40%; margin: ${obj.float === 'right' ? '1em 0 1em 2em' : '1em 2em 1em 0'};"><img src="${obj.image || ''}" alt="${obj.alt || ''}" style="width:100%; height:auto;"><em style="display:block; text-align:center;">${obj.caption || ''}</em></div>`;
           },
-            window.h('img', { src: imgUrl, alt: obj.alt || '', style: { width: '100%', height: 'auto' } }),
-            obj.caption ? window.h('em', { style: { display: 'block', textAlign: 'center', color: '#555', fontSize: '0.85em' } }, obj.caption) : null
-          );
-        }
+          // Regex pattern engine configured to locate custom inline elements
+          pattern: /<div class="float-(left|right)"[\s\S]*?src="([^"]*)"\s+alt="([^"]*)"[\s\S]*?<em[\s\S]*?>([\s\S]*?)<\/em><\/div>/,
+          // FIX: Maps data arrays back into form fields based on regex matching groups
+          fromBlock: function(match) {
+            return {
+              float: match[1],
+              image: match[2],
+              alt: match[3],
+              caption: match[4]
+            };
+          },
+          // Generates the visual design look inside the live content view panel
+          toPreview: function(obj, getAsset) {
+            if (!obj.image) return null;
+            
+            const asset = getAsset(obj.image);
+            const imgUrl = asset ? asset.toString() : '';
+            const marginStyle = obj.float === 'right' ? '1em 0 1em 2em' : '1em 2em 1em 0';
+
+            return window.h('span', {
+              style: {
+                float: obj.float || 'left',
+                width: '40%',
+                margin: marginStyle,
+                display: 'block'
+              }
+            },
+              window.h('img', { src: imgUrl, alt: obj.alt || '', style: { width: '100%', height: 'auto' } }),
+              obj.caption ? window.h('em', { style: { display: 'block', textAlign: 'center', color: '#555', fontSize: '0.85em' } }, obj.caption) : null
+            );
+          }
+        });
+
+        // 5. DEFINE PREVIEW LAYOUT CONTAINER CONTROLLER
+        const ArticlesPreview = window.createClass({
+          render: function() {
+            const entry = this.props.entry;
+            const heroField = entry.getIn(['data', 'hero']);
+            const resolvedHeroImg = this.props.getAsset(heroField);
+            const bodyWidget = this.props.widgetFor('body');
+
+            return window.h('div', { style: { padding: '20px', fontFamily: 'sans-serif' } },
+              window.h('h1', null, entry.getIn(['data', 'title'])),
+              window.h('p', { style: { fontStyle: 'italic', color: '#666' } }, entry.getIn(['data', 'description'])),
+              
+              resolvedHeroImg ? window.h('img', { 
+                src: resolvedHeroImg.toString(), 
+                style: { maxWidth: '100%', height: 'auto', marginBottom: '10px' } 
+              }) : null,
+              
+              window.h('p', { style: { fontSize: '0.9rem', color: '#888' } }, entry.getIn(['data', 'caption'])),
+              window.h('hr', null),
+              
+              window.h('div', { className: 'article-body' }, bodyWidget)
+            );
+          }
+        });
+
+        // 6. INITIALISE THE INTERFACE LAYOUT ATTACHMENT
+        CMS.registerPreviewTemplate("articles", ArticlesPreview);
       });
 
-      // 3. CREATE THE PREVIEW TEMPLATE CONTAINER
-      const ArticlesPreview = window.createClass({
-        render: function() {
-          const entry = this.props.entry;
-          const heroField = entry.getIn(['data', 'hero']);
-          const resolvedHeroImg = this.props.getAsset(heroField);
-          const bodyWidget = this.props.widgetFor('body');
-
-          return window.h('div', { style: { padding: '20px', fontFamily: 'sans-serif' } },
-            window.h('h1', null, entry.getIn(['data', 'title'])),
-            window.h('p', { style: { fontStyle: 'italic', color: '#666' } }, entry.getIn(['data', 'description'])),
-            
-            resolvedHeroImg ? window.h('img', { 
-              src: resolvedHeroImg.toString(), 
-              style: { maxWidth: '100%', height: 'auto', marginBottom: '10px' } 
-            }) : null,
-            
-            window.h('p', { style: { fontSize: '0.9rem', color: '#888' } }, entry.getIn(['data', 'caption'])),
-            window.h('hr', null),
-            
-            window.h('div', { className: 'article-body' }, bodyWidget)
-          );
-        }
-      });
-
-      // 4. REGISTER THE CONFIGURATION HOOKS
-      CMS.registerPreviewTemplate("articles", ArticlesPreview);
-
-      // 5. NETLIFY IDENTITY REDIRECTION UTILITY
+      // 7. HANDLE GIT GATEWAY SIGN IN UTILITIES
       if (window.netlifyIdentity) {
         window.netlifyIdentity.on("init", user => {
           if (!user) {
