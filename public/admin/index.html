@@ -4,20 +4,22 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Content Manager</title>
-    <!-- 1. CORRECT APPLICATION AND PATH ROUTING LINKS -->
+    <!-- 1. IDENTIFY CONFIG LOADING AND PREVENT EARLY AUTO-INIT BACKGROUND CRASHES -->
     <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
-    
-    <!-- 2. NETLIFY IDENTITY AND DECAP CMS GLOBAL CORE LIFECYCLE ENGINE -->
+    <script>
+      window.CMS_MANUAL_INIT = true;
+    </script>
+
+    <!-- 2. STABLE DEPENDENCY SCRIPT IMPORTS -->
     </script>
     <script src="https://unpkg.com@^3.0.0/dist/decap-cms.js"></script>
   </head>
   <body>
     <script>
-      // 3. LISTEN FOR INTERFACE CONTEXT SETUP TO PREVENT EMPTY COMPONENT CRASHES
-      document.addEventListener('DOMContentLoaded', () => {
-        if (typeof CMS === 'undefined') return;
+      // 3. EXECUTE REGISTRATIONS DIRECTLY IN RENDER LINE
+      if (typeof CMS !== 'undefined') {
 
-        // 4. REGISTER THE FLOATED IMAGE PLUGIN FORM COMPONENT
+        // 4. REGISTER THE FLOATED IMAGE PLUGIN INTERFACE COMPONENT
         CMS.registerEditorComponent({
           id: "floated-image",
           label: "Floated Image",
@@ -33,13 +35,12 @@
               default: "left" 
             }
           ],
-          // Creates markdown text structure when saving your changes
+          // Markdown block output string configuration template
           toBlock: function(obj) {
             return `<div class="float-${obj.float || 'left'}" style="float: ${obj.float || 'left'}; width: 40%; margin: ${obj.float === 'right' ? '1em 0 1em 2em' : '1em 2em 1em 0'};"><img src="${obj.image || ''}" alt="${obj.alt || ''}" style="width:100%; height:auto;"><em style="display:block; text-align:center;">${obj.caption || ''}</em></div>`;
           },
-          // Regex pattern engine configured to locate custom inline elements
+          // Pattern parser matching structure parameters
           pattern: /<div class="float-(left|right)"[\s\S]*?src="([^"]*)"\s+alt="([^"]*)"[\s\S]*?<em[\s\S]*?>([\s\S]*?)<\/em><\/div>/,
-          // FIX: Maps data arrays back into form fields based on regex matching groups
           fromBlock: function(match) {
             return {
               float: match[1],
@@ -48,7 +49,7 @@
               caption: match[4]
             };
           },
-          // Generates the visual design look inside the live content view panel
+          // Standard React component generator logic via window.h() element helpers
           toPreview: function(obj, getAsset) {
             if (!obj.image) return null;
             
@@ -70,7 +71,7 @@
           }
         });
 
-        // 5. DEFINE PREVIEW LAYOUT CONTAINER CONTROLLER
+        // 5. DEFINE PREVIEW LAYOUT WRAPPER RENDERER
         const ArticlesPreview = window.createClass({
           render: function() {
             const entry = this.props.entry;
@@ -95,11 +96,14 @@
           }
         });
 
-        // 6. INITIALISE THE INTERFACE LAYOUT ATTACHMENT
+        // 6. ATTACH THE PREVIEW PANEL TEMPLATE TO DECAP
         CMS.registerPreviewTemplate("articles", ArticlesPreview);
-      });
 
-      // 7. HANDLE GIT GATEWAY SIGN IN UTILITIES
+        // 7. FIRE SAFE INITIALISATION ENGINE
+        CMS.init();
+      }
+
+      // 8. SECURITY AND ACCESS IDENTITY STATE MANAGEMENT
       if (window.netlifyIdentity) {
         window.netlifyIdentity.on("init", user => {
           if (!user) {
