@@ -1,3 +1,13 @@
+backend:
+  name: github
+  repo: Webinaut/the-mav
+  branch: main
+  base_url: https://netlify.com
+media_folder: "src/assets/images"
+public_folder: "/src/assets/images"
+media_folder_relative: true
+publish_mode: editorial_workflow
+
 collections:
   - name: "articles"
     label: "Articles"
