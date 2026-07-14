@@ -1,13 +1,12 @@
 backend:
   name: github
   repo: Webinaut/the-mav
-  branch: main # or master
-  base_url: https://api.netlify.com
-# 1. FORCE DECAP TO USE LOCAL RELATIVE PATHS FOR PREVIEWS
+  branch: main
+  base_url: https://netlify.com
 media_folder: "src/assets/images"
 public_folder: "/src/assets/images"
-media_folder_relative: true # Enables relative paths globally
-# publish_mode: editorial_workflow
+media_folder_relative: true
+publish_mode: editorial_workflow
 
 collections:
   - name: "articles"
@@ -16,12 +15,13 @@ collections:
     create: true
     media_folder: "./"
     public_folder: "./"
-    path: "{{slug}}/index"
-    extension: "mdx"
 
-    # FIX: Use the explicit layout parser string instead of standard "frontmatter"
-    format: "yaml-frontmatter"
-    body_field: "body"
+    # 1. FIXED MDX SPECIFIC PARSING RULES
+    extension: "mdx"
+    format: "frontmatter" # This is the exact keyword needed for MDX files
+
+    slug: "{{title}}"
+    path: "{{slug}}/index"
 
     fields:
       - {
@@ -42,10 +42,13 @@ collections:
       - { label: "Image Caption", name: "caption", widget: "string" }
       - { label: "Articles Page Summary", name: "summary", widget: "text" }
       - { label: "Tags", name: "tags", widget: "list", default: ["articles"] }
+
+      # 2. FIXED EMPTY FALLBACK FOR NEW MDX POSTS
       - {
           label: "Body",
           name: "body",
           widget: "markdown",
+          default: "", # Guarantees a clean initialization for new posts
           editor_components: ["floated-image"],
         }
     sortable_fields: ["title", "ranking", "tags"]
