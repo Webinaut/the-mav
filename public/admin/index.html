@@ -10,7 +10,7 @@
   </head>
   <body>
     <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js">
-            CMS.registerEditorComponent({
+                  CMS.registerEditorComponent({
         id: 'floated-image',
         label: 'Floated Image',
         icon: 'image',
@@ -29,17 +29,30 @@
             default: 'right'
           }
         ],
-        // Matches the custom self-closing MDX component tag
-        pattern: /<FloatedImage\s+src="(.+?)"\s+alt="(.*?)"\s+align="(left|right|center)"\s*\/>/,
+
+        // FIX: Loose regex validation checks that won't break if properties shift positions
+        pattern: /<FloatedImage\s+([^>]+)\s*\/?>/,
+
+        // Safely extracts values regardless of what order they are typed inside the file
         fromBlock: function(match) {
-          return { image: match[1], alt: match[2], align: match[3] };
+          const attrs = match[1];
+          const srcMatch = attrs.match(/src=["'](.+?)["']/);
+          const altMatch = attrs.match(/alt=["'](.*?)["']/);
+          const alignMatch = attrs.match(/align=["'](left|right|center)["']/);
+
+          return {
+            image: srcMatch ? srcMatch[1] : '',
+            alt: altMatch ? altMatch[1] : '',
+            align: alignMatch ? alignMatch[1] : 'right'
+          };
         },
-        // Inserts a JSX-style component tag into your .mdx content files
+
         toBlock: function(data) {
           return `<FloatedImage src="${data.image}" alt="${data.alt}" align="${data.align}" />`;
         },
+
         toPreview: function(data) {
-          return `<div style="float: ${data.align}; max-width: 45%; margin: 10px;"><img src="${data.image}" alt="${data.alt}" style="width:100%;"/></div>`;
+          return `<div style="float: ${data.align}; max-width: 45%; margin: 1em;"><img src="${data.image}" alt="${data.alt}" style="width:100%; display:block;"/></div>`;
         }
       });
     </script>

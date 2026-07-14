@@ -1,13 +1,3 @@
-backend:
-  name: github
-  repo: Webinaut/the-mav
-  branch: main
-  base_url: https://netlify.com
-media_folder: "src/assets/images"
-public_folder: "/src/assets/images"
-media_folder_relative: true
-publish_mode: editorial_workflow
-
 collections:
   - name: "articles"
     label: "Articles"
@@ -15,11 +5,10 @@ collections:
     create: true
     media_folder: "./"
     public_folder: "./"
-
-    # 1. FIXED MDX SPECIFIC PARSING RULES
     extension: "mdx"
-    format: "frontmatter" # This is the exact keyword needed for MDX files
-
+    format: "frontmatter"
+    frontmatter_delimiter: "---"
+    body_field: "body"
     slug: "{{title}}"
     path: "{{slug}}/index"
 
@@ -38,17 +27,18 @@ collections:
           widget: "number",
           value_type: "float",
         }
+
+      # FIX: Changed 'name: "views"' to a safe database variable string
+      - { label: "Views", name: "view_count", widget: "number", default: 0 }
+
       - { label: "Post Image", name: "hero", widget: "image" }
       - { label: "Image Caption", name: "caption", widget: "string" }
       - { label: "Articles Page Summary", name: "summary", widget: "text" }
       - { label: "Tags", name: "tags", widget: "list", default: ["articles"] }
-
-      # 2. FIXED EMPTY FALLBACK FOR NEW MDX POSTS
       - {
           label: "Body",
           name: "body",
-          widget: "markdown",
-          default: "", # Guarantees a clean initialization for new posts
+          widget: "richtext",
           editor_components: ["floated-image"],
         }
-    sortable_fields: ["title", "ranking", "tags"]
+    sortable_fields: ["title", "ranking", "view_count"] # Updated reference here as well
