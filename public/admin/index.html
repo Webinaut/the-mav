@@ -10,7 +10,7 @@
   </head>
   <body>
     <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js">
-                  CMS.registerEditorComponent({
+                        CMS.registerEditorComponent({
         id: 'floated-image',
         label: 'Floated Image',
         icon: 'image',
@@ -30,12 +30,22 @@
           }
         ],
 
-        // FIX: Loose regex validation checks that won't break if properties shift positions
-        pattern: /<FloatedImage\s+([^>]+)\s*\/?>/,
+        // Matches either the clean MDX tag OR your old inline span syntax on disk
+        pattern: /(?:<FloatedImage\s+([^>]+)\s*\/?>|<span\s+style="float:\s*(left|right)[^>]*">\s*!\[(.*?)\]\((.*?)\)\s*<\/span>)/,
 
-        // Safely extracts values regardless of what order they are typed inside the file
+        // Normalizes the captured data layout regardless of how it was originally written
         fromBlock: function(match) {
-          const attrs = match[1];
+          // If it matched the old HTML <span> style syntax block
+          if (match[2]) {
+            return {
+              align: match[2],
+              alt: match[3],
+              image: match[4]
+            };
+          }
+
+          // Fallback: If it matched the modern MDX component tag format
+          const attrs = match[1] || '';
           const srcMatch = attrs.match(/src=["'](.+?)["']/);
           const altMatch = attrs.match(/alt=["'](.*?)["']/);
           const alignMatch = attrs.match(/align=["'](left|right|center)["']/);
@@ -47,6 +57,7 @@
           };
         },
 
+        // Saves clean, optimized MDX blocks back to your file when editing is finished
         toBlock: function(data) {
           return `<FloatedImage src="${data.image}" alt="${data.alt}" align="${data.align}" />`;
         },

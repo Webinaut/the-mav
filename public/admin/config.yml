@@ -48,7 +48,7 @@ collections:
       - {
           label: "Body",
           name: "body",
-          widget: "richtext",
+          widget: "markdown",
           editor_components: ["floated-image"],
         }
     sortable_fields: ["title", "ranking", "view_count"] # Updated reference here as well
