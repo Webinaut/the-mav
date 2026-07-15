@@ -29,7 +29,7 @@ Simonides was at a feast hosted by one of his patrons when he was called out of 
 Themistocles wasn’t so impressed!
 
 > I would rather a technique of forgetting, for I remember what I would rather not remember and cannot forget what I would rather forget.
-> >
+> 
 > _Themistocles, according to Cicero_
 
 There is even a name for Themistocles’ problem - Hyperthymestic syndrome. People with this condition can recall daily events nonstop, uncontrollably, and automatically. It is apparently an exhausting affliction.
@@ -115,7 +115,7 @@ How I would use it for a shopping list of ingredients for dinner. The first thre
 Try it – you will be amazed at how easy it is to implement. Once you have the ten rhyming images memorised, it takes much less time and effort than you think. And, it is easy to remember items out of sequence. “What was two”, “what was seven”, and so on.
 
 > The best results are achieved by using the right amount of effort in the right place at the right time. And this right amount is usually less than we think we need.
-> >
+> 
 > _Tony Buzan_
 
 ### The Number Shape Peg System
