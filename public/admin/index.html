@@ -10,10 +10,10 @@
   </head>
   <body>
     <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js">
-                             CMS.registerEditorComponent({
+        CMS.registerEditorComponent({
         id: 'floated-image',
         label: 'Floated Image',
-        icon: 'image',
+        icon: 'image', // Uses a Material Symbols icon name
         fields: [
           { name: 'image', label: 'Select Image', widget: 'image', required: true },
           { name: 'alt', label: 'Alt Text', widget: 'string', required: true },
@@ -22,32 +22,24 @@
             label: 'Alignment',
             widget: 'select',
             options: [
-              { label: 'Float Left', value: 'left' },
-              { label: 'Float Right', value: 'right' },
-              { label: 'Center', value: 'center' }
+              { label: 'left', value: 'left' },
+              { label: 'right', value: 'right' },
+              { label: 'center', value: 'center' }
             ],
             default: 'right'
           }
         ],
 
-        // Strict, isolated match for the modern MDX component block tag
-        pattern: /^<FloatedImage\s+src="([^"]+)"\s+alt="([^"]*)"\s+align="([^"]+)"\s*\/?>$/,
+        // FIX: Sveltia strictly requires named capture groups matching your field names exactly
+        pattern: /<FloatedImage\s+src="(?<image>[^"]+)"\s+alt="(?<alt>[^"]*)"\s+align="(?<align>[^"]+)"\s*\/?>/,
 
-        // Maps the sequential regex capture groups perfectly to the form inputs
-        fromBlock: function(match) {
-          return {
-            image: match[1],
-            alt: match[2],
-            align: match[3]
-          };
-        },
+        // Sveltia automatically reads the fields out of the named capture groups above,
+        // so fromBlock can be safely omitted to minimize parsing bugs!
 
-        // Saves a clean MDX data block tag directly to your index.mdx file
         toBlock: function(data) {
           return `<FloatedImage src="${data.image}" alt="${data.alt}" align="${data.align}" />`;
         },
 
-        // Controls how it draws inside Sveltia's internal preview dashboard box
         toPreview: function(data) {
           return `<div style="float: ${data.align}; max-width: 45%; margin: 1em;"><img src="${data.image}" alt="${data.alt}" style="width:100%; display:block;"/></div>`;
         }

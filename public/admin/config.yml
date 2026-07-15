@@ -37,18 +37,17 @@ collections:
           widget: "number",
           value_type: "float",
         }
-
-      # FIX: Changed 'name: "views"' to a safe database variable string
       - { label: "Views", name: "view_count", widget: "number", default: 0 }
-
       - { label: "Post Image", name: "hero", widget: "image" }
       - { label: "Image Caption", name: "caption", widget: "string" }
       - { label: "Articles Page Summary", name: "summary", widget: "text" }
       - { label: "Tags", name: "tags", widget: "list", default: ["articles"] }
+
+      # FIX: Must be "markdown" widget type to render custom block shortcodes accurately
       - {
           label: "Body",
           name: "body",
           widget: "markdown",
           editor_components: ["floated-image"],
         }
-    sortable_fields: ["title", "ranking", "view_count"] # Updated reference here as well
+    sortable_fields: ["title", "ranking", "view_count"]
