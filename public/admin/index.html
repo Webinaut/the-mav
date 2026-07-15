@@ -10,10 +10,10 @@
   </head>
   <body>
     <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js">
-        CMS.registerEditorComponent({
+              CMS.registerEditorComponent({
         id: 'floated-image',
         label: 'Floated Image',
-        icon: 'image', // Uses a Material Symbols icon name
+        icon: 'image',
         fields: [
           { name: 'image', label: 'Select Image', widget: 'image', required: true },
           { name: 'alt', label: 'Alt Text', widget: 'string', required: true },
@@ -30,14 +30,13 @@
           }
         ],
 
-        // FIX: Sveltia strictly requires named capture groups matching your field names exactly
-        pattern: /<FloatedImage\s+src="(?<image>[^"]+)"\s+alt="(?<alt>[^"]*)"\s+align="(?<align>[^"]+)"\s*\/?>/,
+        // FIX: Uses a safe shortcode RegExp pattern with named capture groups
+        pattern: /^\[floated-image\s+image="(?<image>[^"]+)"\s+alt="(?<alt>[^"]*)"\s+align="(?<align>[^"]+)"\s*\]$/,
 
-        // Sveltia automatically reads the fields out of the named capture groups above,
-        // so fromBlock can be safely omitted to minimize parsing bugs!
+        // Sveltia auto-maps variables out of the named capture groups above
 
         toBlock: function(data) {
-          return `<FloatedImage src="${data.image}" alt="${data.alt}" align="${data.align}" />`;
+          return `[floated-image image="${data.image}" alt="${data.alt}" align="${data.align}"]`;
         },
 
         toPreview: function(data) {

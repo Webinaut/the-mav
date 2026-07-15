@@ -3,41 +3,94 @@ import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
 import ViewCounter from "../../components/ViewCounter.astro";
 import PostComments from "../../components/PostComments.astro";
 import Btn from "../../components/Button.astro";
-import FloatedImage from "../../components/FloatedImage.astro";
 
 // SSR Code
 import { getEntry, render } from "astro:content";
-// 1. Get the slug from the incoming server request
+
 const { slug } = Astro.params;
 if (slug === undefined) {
   throw new Error("Slug is required");
 }
-// 2. Query for the entry directly using the request slug
+
 const entry = await getEntry("articles", slug);
-// 3. Redirect if the entry does not exist
 if (entry === undefined) {
   return Astro.redirect("/404");
 }
-// End SSR Code
+
+// FIX: Intercept the body raw string text and map the shortcode to standard HTML output elements
+if (entry.body) {
+  const shortcodeRegex =
+    /\[floated-image\s+image="([^"]+)"\s+alt="([^"]*)"\s+align="([^"]+)"\s*\]/g;
+
+  entry.body = entry.body.replace(
+    shortcodeRegex,
+    (match, image, alt, align) => {
+      // Computes relative asset resolution path parameters if image tracks locally
+      const cleanSrc = image.startsWith("./") ? image.substring(2) : image;
+
+      return `<div class="floated-image-container align-${align}">
+      <img src="${cleanSrc}" alt="${alt}" />
+    </div>`;
+    },
+  );
+}
+
 const { Content } = await render(entry);
 ---
 
 <BlogPostLayout frontmatter={entry.data}>
-  <article>
+  <article class="article-content">
     <ViewCounter slug={slug} />
-    <!-- <Content /> -->
-    <Content components={{ FloatedImage }} />
-    <Btn buttonlink="/articles/" , buttontext="Back To Articles" />
+    {/* Safely render the compiled contents cleanly */}
+    <Content />
+    <Btn buttonlink="/articles/" buttontext="Back To Articles" />
   </article>
+
   <article>
     <h3 style="text-align: center;">Comments</h3>
     <p>
       The comments section is a place for healthy, constructive and challenging
       conversations. The basic rule is simple – I encourage you to share your
       views, but be respectful of the author, yourself and your fellow
-      commenters. To comment, register or sign in to Github (it's free). This
+      commenters. To comment, register or sign in to GitHub (it's free). This
       protects us from spam.
     </p>
     <PostComments />
   </article>
 </BlogPostLayout>
+
+<style is:global>
+  /* Global styles to ensure the injected HTML floats layout properly */
+  .floated-image-container {
+    max-width: 45%;
+    margin-bottom: 1rem;
+    height: auto;
+  }
+  .floated-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+  }
+  .align-left {
+    float: left;
+    margin-right: 2rem;
+    margin-top: 0.5rem;
+  }
+  .align-right {
+    float: right;
+    margin-left: 2rem;
+    margin-top: 0.5rem;
+  }
+  .align-center {
+    float: none;
+    margin: 2rem auto;
+    max-width: 80%;
+  }
+  /* Clears the floats so elements following the article don't collapse */
+  .article-content::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+</style>
