@@ -1,11 +1,11 @@
 ---
-caption: A Common Sight
-summary: Does it seem sad to you that the stream of businesses closing their doors seems to be endless, regardless of economic conditions? Is it just widespread bad luck, or is there a pattern? Looking from the outside, the reasons seem clearer to us than it seems to be for the owners, don’t you think?
-view_count: 0
 title: How to Go Out of Business
 description: The Path Well-Trodden
 ranking: 0
+view_count: 0
 hero: Hero-OOB-Cropped.jpg
+caption: A Common Sight
+summary: Does it seem sad to you that the stream of businesses closing their doors seems to be endless, regardless of economic conditions? Is it just widespread bad luck, or is there a pattern? Looking from the outside, the reasons seem clearer to us than it seems to be for the owners, don’t you think?
 tags:
   - business
 readingTime: 0
@@ -25,12 +25,7 @@ In the decades since then I learned that Jock’s pronouncements, whilst being e
 
 ### Trusting Experts
 
-<span style="float: left;width: 40%;margin:.5em 2em 1em 0;">
-  ![Certificate](Certificate.jpg)
-</span>
-The problem with “trusting” is that it often means “abrogating responsibility
-for”. Business owners feel that they lack specialist expertise and need to hand
-over responsibility to an “expert”.
+<span style="float: left;width: 40%;margin:.5em 2em 1em 0;"> ![Certificate](Certificate.jpg)</span>The problem with “trusting” is that it often means “abrogating responsibility for”. Business owners feel that they lack specialist expertise and need to hand over responsibility to an “expert”.
 
 Whilst responsibility can be handed over, accountability cannot. In the end, you are still accountable for something your so-called expert did.
 
@@ -42,31 +37,21 @@ I am not suggesting that you never turn to the experts when faced with a busines
 
 ### Focusing on Revenue, not Profit
 
-<span style="float: right;width: 40%;margin:.5em 0 1em 2em;">
-  ![Flying Notes](FlyingNotes.jpg)
-</span>
-It is so easy and exciting for small businesses to focus on “feet through the
-door”. How do I ramp up sales? How about offering a special price? Let’s launch
-an advertising campaign.
+<span style="float: right;width: 40%;margin:.5em 0 1em 2em;"> ![Flying Notes](FlyingNotes.jpg)</span>It is so easy and exciting for small businesses to focus on “feet through the door”. How do I ramp up sales? How about offering a special price? Let’s launch an advertising campaign.
 
 Whilst businesses cannot make a profit without sales revenue, the reverse isn’t true. Achieving good sales without making a profit is all too common. It always boils down to the same thing – financial mismanagement - failing to track expenses and neglecting to understand and control profit margins.
 
 Small businesses often only find out if they've made a profit when preparing their annual tax returns. By then, it may be too late to save a sick business.
 
 > Definition of an auditor: Someone who goes onto the battlefield after the battle has been fought and bayonets the wounded.
->
+> >
 > Anon.
 
 To control profitability a budget is essential. Then, businesses need to have a tracking system to flag cost over-runs. This could be as simple as a spreadsheet. One of the large businesses I worked at used a system of spreadsheets and pivot tables to manage finances for many years before investing in a management accounting system.
 
 ### Running Out of Cash
 
-<span style="float: left;width: 40%;margin:.5em 2em 1em 0;">
-  ![Empty Wallet](EmptyWallet.jpg)
-</span>
-Jock pointed out that it is possible to be profitable and go out of business.
-The reason for this is extended collection periods – making sales on credit but
-lacking confidence in collecting payments timeously.
+<span style="float: left;width: 40%;margin:.5em 2em 1em 0;"> ![Empty Wallet](EmptyWallet.jpg)</span>Jock pointed out that it is possible to be profitable and go out of business. The reason for this is extended collection periods – making sales on credit but lacking confidence in collecting payments timeously.
 
 Sometimes, this is because there is a fear of upsetting valued customers by pushing for payment. Those customers probably have no qualms about badgering their customers, though. And they know how to delay their supplier payments. That is why their bank balances are probably healthy!
 
@@ -87,7 +72,7 @@ A brilliant product or service means nothing if there's no demand for it. So oft
 Is the business thinking about what it likes to sell, or what customers want to buy?
 
 > The aim of marketing is to know and understand the customer so well the product or service fits him and sells itself.
->
+> >
 > Peter Drucker
 
 Most markets are fluid and dynamic. Sticking stubbornly to a superseded business model is a sure path to obsolescence. Failing to innovate is a death sentence in today's fast-paced business environment.
@@ -95,7 +80,7 @@ Most markets are fluid and dynamic. Sticking stubbornly to a superseded business
 Consider the market for books. The traditional bookstore still exists, but it has had to adapt to online competition as well as competition from alternative formats, like Kindle. Those bookstores that did not adapt have disappeared, like a well-known local chain.
 
 > Mastery is great, but even that is not enough. You have to be able to change course without a bead of sweat, or remorse.
->
+> >
 > Tom Peters
 
 #### Alienating Your Customers
@@ -113,17 +98,12 @@ However, retail customers who get ignored whilst staff are immersed in doing thi
 Customers also notice the atmosphere and inter-personal dynamic in a business. A toxic work environment stemming from poor leadership quickly demoralizes even the most motivated employees and leads to decreased performance. The best performers are usually the first to leave. The poorer performers feel threatened and resist change. What normally ensues is a race to the bottom.
 
 > The magic formula that successful businesses have discovered is to treat customers like guests and employees like people.
->
+> >
 > Tom Peters
 
 #### Winking in the Dark
 
-<span style="float: right;width: 30%;margin:.5em 0 1em 2em;">
-  ![Owl Winking](OwlDark.jpg)
-</span>
-Having the best product or service in the world is irrelevant if no one knows
-about it. It’s like winking in the dark. You know what you are doing, but no-one
-else does.
+<span style="float: right;width: 30%;margin:.5em 0 1em 2em;"> ![Owl Winking](OwlDark.jpg)</span>Having the best product or service in the world is irrelevant if no one knows about it. It’s like winking in the dark. You know what you are doing, but no-one else does.
 
 Unless your business is visible, you cannot expect queues of customers. Marketing is an investment, not an expense (despite what the accounting experts might tell you!). Neglecting to engage with both current and potential customers will leave you invisible in a crowded marketplace.
 
