@@ -10,7 +10,7 @@
   </head>
   <body>
     <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js">
-              CMS.registerEditorComponent({
+                    CMS.registerEditorComponent({
         id: 'floated-image',
         label: 'Floated Image',
         icon: 'image',
@@ -22,21 +22,21 @@
             label: 'Alignment',
             widget: 'select',
             options: [
-              { label: 'left', value: 'left' },
-              { label: 'right', value: 'right' },
-              { label: 'center', value: 'center' }
+              { label: 'Float Left', value: 'left' },
+              { label: 'Float Right', value: 'right' },
+              { label: 'Center', value: 'center' }
             ],
             default: 'right'
           }
         ],
 
-        // FIX: Uses a safe shortcode RegExp pattern with named capture groups
-        pattern: /^\[floated-image\s+image="(?<image>[^"]+)"\s+alt="(?<alt>[^"]*)"\s+align="(?<align>[^"]+)"\s*\]$/,
+        // Matches a standard Markdown image format ending with an alignment hash parameter
+        pattern: /^!\[(?<alt>[^\]]*)\]\((?<image>[^)#]+)#(?<align>left|right|center)\)$/,
 
-        // Sveltia auto-maps variables out of the named capture groups above
+        // Sveltia automatically reads the fields out of the named capture groups above
 
         toBlock: function(data) {
-          return `[floated-image image="${data.image}" alt="${data.alt}" align="${data.align}"]`;
+          return `![${data.alt}](${data.image}#${data.align})`;
         },
 
         toPreview: function(data) {

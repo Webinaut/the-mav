@@ -60,34 +60,26 @@ const { Content } = await render(entry);
 </BlogPostLayout>
 
 <style is:global>
-  /* Global styles to ensure the injected HTML floats layout properly */
-  .floated-image-container {
-    max-width: 45%;
-    margin-bottom: 1rem;
-    height: auto;
-  }
-  .floated-image-container img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 4px;
-  }
-  .align-left {
+  /* Target the images inside your article content using their URL string hash attributes */
+  .article-content img[src*="#left"] {
     float: left;
-    margin-right: 2rem;
-    margin-top: 0.5rem;
+    max-width: 40%;
+    margin: 1rem 2rem 1rem 0;
   }
-  .align-right {
+
+  .article-content img[src*="#right"] {
     float: right;
-    margin-left: 2rem;
-    margin-top: 0.5rem;
+    max-width: 40%;
+    margin: 1rem 0 1rem 2rem;
   }
-  .align-center {
-    float: none;
+
+  .article-content img[src*="#center"] {
+    display: block;
     margin: 2rem auto;
     max-width: 80%;
   }
-  /* Clears the floats so elements following the article don't collapse */
+
+  /* Clear fix layout helper wrapper */
   .article-content::after {
     content: "";
     display: table;
