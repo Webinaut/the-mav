@@ -10,7 +10,7 @@
   </head>
   <body>
     <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js">
-                    CMS.registerEditorComponent({
+                          CMS.registerEditorComponent({
         id: 'floated-image',
         label: 'Floated Image',
         icon: 'image',
@@ -30,10 +30,8 @@
           }
         ],
 
-        // Matches a standard Markdown image format ending with an alignment hash parameter
-        pattern: /^!\[(?<alt>[^\]]*)\]\((?<image>[^)#]+)#(?<align>left|right|center)\)$/,
-
-        // Sveltia automatically reads the fields out of the named capture groups above
+        // FIX: Loose regex matching without strict line anchors (^ and $)
+        pattern: /!\[(?<alt>[^\]]*)\]\((?<image>[^)#]+)#(?<align>left|right|center)\)/,
 
         toBlock: function(data) {
           return `![${data.alt}](${data.image}#${data.align})`;

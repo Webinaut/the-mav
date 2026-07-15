@@ -50,5 +50,8 @@ collections:
           name: "body",
           widget: "markdown",
           editor_components: ["floated-image"],
+          # CRITICAL FIX: Forces Sveltia to display the Visual editor toolbar workspace
+          modes: ["rich-text", "raw"],
         }
+
     sortable_fields: ["title", "ranking", "view_count"]
