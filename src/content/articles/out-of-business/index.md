@@ -44,7 +44,7 @@ Whilst businesses cannot make a profit without sales revenue, the reverse isn’
 Small businesses often only find out if they've made a profit when preparing their annual tax returns. By then, it may be too late to save a sick business.
 
 > Definition of an auditor: Someone who goes onto the battlefield after the battle has been fought and bayonets the wounded.
-> >
+> 
 > Anon.
 
 To control profitability a budget is essential. Then, businesses need to have a tracking system to flag cost over-runs. This could be as simple as a spreadsheet. One of the large businesses I worked at used a system of spreadsheets and pivot tables to manage finances for many years before investing in a management accounting system.
@@ -72,7 +72,7 @@ A brilliant product or service means nothing if there's no demand for it. So oft
 Is the business thinking about what it likes to sell, or what customers want to buy?
 
 > The aim of marketing is to know and understand the customer so well the product or service fits him and sells itself.
-> >
+> 
 > Peter Drucker
 
 Most markets are fluid and dynamic. Sticking stubbornly to a superseded business model is a sure path to obsolescence. Failing to innovate is a death sentence in today's fast-paced business environment.
@@ -80,7 +80,7 @@ Most markets are fluid and dynamic. Sticking stubbornly to a superseded business
 Consider the market for books. The traditional bookstore still exists, but it has had to adapt to online competition as well as competition from alternative formats, like Kindle. Those bookstores that did not adapt have disappeared, like a well-known local chain.
 
 > Mastery is great, but even that is not enough. You have to be able to change course without a bead of sweat, or remorse.
-> >
+> 
 > Tom Peters
 
 #### Alienating Your Customers
@@ -98,7 +98,7 @@ However, retail customers who get ignored whilst staff are immersed in doing thi
 Customers also notice the atmosphere and inter-personal dynamic in a business. A toxic work environment stemming from poor leadership quickly demoralizes even the most motivated employees and leads to decreased performance. The best performers are usually the first to leave. The poorer performers feel threatened and resist change. What normally ensues is a race to the bottom.
 
 > The magic formula that successful businesses have discovered is to treat customers like guests and employees like people.
-> >
+> 
 > Tom Peters
 
 #### Winking in the Dark
