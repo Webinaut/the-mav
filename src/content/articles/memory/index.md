@@ -1,11 +1,11 @@
 ---
-caption: Salvador Dalí’s famous painting The Persistence of Memory. It explores the fluidity of time, the relationship between reality and dreams, and the relativity of time.
-summary: Have you ever wondered why some people seem blessed with effortless recall? Are they gifted with a “photographic memory”? Absolutely not – your memory is no different. It just needs to be cultivated and strengthened. Your brain excels at forming connections. Here are some methods to unlock your memory’s potential.
-view_count: 0
 title: Mastering Your Memory
 description: Unlocking the Filing System of Your Mind
 ranking: 0.9
+view_count: 0
 hero: the-persistence-of-memory.jpg
+caption: Salvador Dalí’s famous painting The Persistence of Memory. It explores the fluidity of time, the relationship between reality and dreams, and the relativity of time.
+summary: Have you ever wondered why some people seem blessed with effortless recall? Are they gifted with a “photographic memory”? Absolutely not – your memory is no different. It just needs to be cultivated and strengthened. Your brain excels at forming connections. Here are some methods to unlock your memory’s potential.
 tags:
   - thinking
   - life
@@ -22,8 +22,7 @@ His “secret” party trick is revealed below in the Rhyming Number Peg System.
 
 I’m sure you have heard about people like Ben Pridmore, the former world memory champion. He broke the 30 seconds barrier when he memorised the order of an entire shuffled deck of cards and recalled them in order in 26 seconds. We may not all be potential memory champions, but we are all capable of amazing memory feats.
 
-<span style="float: left;width: 40%;margin:1em 2em 0 0;">
-  ![Simonedes](simonides-of-ceos.png)_Simonides of Ceos_
+<span style="float: left;width: 40%;margin:1em 2em 0 0;">  ![Simonedes](simonides-of-ceos.png)_Simonides of Ceos_
 </span>
 Let’s go back a little, 2500 years or so, to the time of Simonides of Ceos. He
 was the Ancient Greek lyric poet, who lived from 556 to 468 BC.
@@ -33,7 +32,7 @@ Simonides was at a feast hosted by one of his patrons when he was called out of 
 Themistocles wasn’t so impressed!
 
 > I would rather a technique of forgetting, for I remember what I would rather not remember and cannot forget what I would rather forget.
->
+> >
 > _Themistocles, according to Cicero_
 
 There is even a name for Themistocles’ problem - Hyperthymestic syndrome. People with this condition can recall daily events nonstop, uncontrollably, and automatically. It is apparently an exhausting affliction.
@@ -109,13 +108,13 @@ This system uses images of things that rhyme with the numbers 1 to 10. I use it 
 
 To remember a list, associate each item with the corresponding peg.
 
-| Number |   Peg    | Number |           Peg            |
-| :----: | :------: | :----: | :----------------------: |
-|   1    | Bun/Gun  |   6    | Sticks/<br />Drum Sticks |
-|   2    |   Shoe   |   7    |          Heaven          |
-|   3    | Tree/Bee |   8    |           Gate           |
-|   4    |   Door   |   9    |        Vine/Wine         |
-|   5    |   Hive   |   10   |           Hen            |
+| Number | Peg | Number | Peg |
+| --- | --- | --- | --- |
+| 1 | Bun/Gun | 6 | Sticks/<br />Drum Sticks |
+| 2 | Shoe | 7 | Heaven |
+| 3 | Tree/Bee | 8 | Gate |
+| 4 | Door | 9 | Vine/Wine |
+| 5 | Hive | 10 | Hen |
 
 How I would use it for a shopping list of ingredients for dinner. The first three items may be:
 
@@ -126,20 +125,20 @@ How I would use it for a shopping list of ingredients for dinner. The first thre
 Try it – you will be amazed at how easy it is to implement. Once you have the ten rhyming images memorised, it takes much less time and effort than you think. And, it is easy to remember items out of sequence. “What was two”, “what was seven”, and so on.
 
 > The best results are achieved by using the right amount of effort in the right place at the right time. And this right amount is usually less than we think we need.
->
+> >
 > _Tony Buzan_
 
 ### The Number Shape Peg System
 
 I use this system for list items 11 to 20, which means that I use it less often. However, it is just as powerful as the Rhyming Number System because it uses memorable images.
 
-| Number |                                                     Shape                                                      | Number |                                                       Shape                                                        |
-| :----: | :------------------------------------------------------------------------------------------------------------: | :----: | :----------------------------------------------------------------------------------------------------------------: |
-|   1    |    <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Candle](1.png)_Candle_</span>    |   6    | <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Fishing Rod](6.png)_Fishing Rod_</span> |
-|   2    |      <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Swan](2.png)_Swan_</span>      |   7    |       <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Cliff](7.png)_Cliff_</span>       |
-|   3    | <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Moustache](3.png)_Moustache_</span> |   8    |     <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Snowman](8.png)_Snowman_</span>     |
-|   4    |     <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Yacht](4.png)_Yacht_</span>     |   9    | <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Toilet Roll](9.png)_Toilet Roll_</span> |
-|   5    |     <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Snake](5.png)_Snake_</span>     |   10   | <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Bat & Ball](10.png)_Bat & Ball_</span>  |
+| Number | Shape | Number | Shape |
+| --- | --- | --- | --- |
+| 1 | <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Candle](1.png)*Candle*</span> | 6 | <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Fishing Rod](6.png)*Fishing Rod*</span> |
+| 2 | <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Swan](2.png)*Swan*</span> | 7 | <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Cliff](7.png)*Cliff*</span> |
+| 3 | <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Moustache](3.png)*Moustache*</span> | 8 | <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Snowman](8.png)*Snowman*</span> |
+| 4 | <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Yacht](4.png)*Yacht*</span> | 9 | <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Toilet Roll](9.png)*Toilet Roll*</span> |
+| 5 | <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Snake](5.png)*Snake*</span> | 10 | <span style="display: block;margin: 0 auto;width: 5em;font-size: small;">![Bat & Ball](10.png)*Bat & Ball*</span> |
 
 You can personalise these images too. For me, one isn’t a candle, it is the TV tower in the city of Sydney. It seems to be iconic in any tourist photo of the city centre.
 To use this system for a daily task list, for example, the first three items could be:
