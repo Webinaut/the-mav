@@ -2,13 +2,13 @@
 title: Are You Solving the Right Problem?
 description: Resisting the Seemingly Obvious
 ranking: 1
+view_count: 0
 hero: absurd.design-chapter-1-03.png
 caption: Illustration - <a href="https://absurd.design/" target="_blank"> absurd.design</a>
 summary: Problems are a ubiquitous part of our daily lives. We often jump into solution mode as soon as a problem presents itself, addressing what appears, to us, to be the core issue. Frequently, though, the problem we perceive is merely a symptom of the real one.
 tags:
   - problem-solving
   - business
-view_count: 0
 readingTime: 0
 ---
 
@@ -27,12 +27,10 @@ Edward De Bono was a medical doctor, who was born and raised in Malta. You may r
 One of the many stories he told was about defining and solving the wrong problem:
 
 > I often tell the story of the alarm clock in Pasadena, California. I had to get up at 4.30 a.m. to drive into Los Angeles to catch a plane to Toronto. So, I set the alarm clock on the table beside my bed in the Pasadena Hilton, to go off at 4.30 a.m. At 4.30 a.m. I was awoken and set about switching off the alarm so that all my neighbours would not also be awoken at an hour which might not have suited them. I tried everything, including disconnecting the electricity supply. Nothing had any effect. The sound continued. I was just about to drown the clock in a basin of water when I suddenly noticed that the sound was coming from my travel clock which I had set and then forgotten all about.
->
+> >
 > > I had defined the problem as "how do I turn off this alarm clock?" In hindsight, it is easy to say that I should have defined the problem as "how do I stop this alarm sound?
 
-<FloatedImage src="RabbitHole.jpg" alt="Rabbit Hole" align="left" />
-It seems to me that a large part of the problem is caused by straight-line
-thinking. That is what leads us down a rabbit hole.
+<span style="float: left;width: 40%;margin:.5em 2em 1em 0;"> ![Rabbit Hole](RabbitHole.jpg)</span>It seems to me that a large part of the problem is caused by straight-line thinking. That is what leads us down a rabbit hole.
 
 I recently came across the world's shortest IQ test, the Cognitive Reflection Test (CRT). It is designed to test your ability to ignore your gut response and think slower and more rationally. It consists of three questions, the second of which is "If it takes 5 machines 5 minutes to make 5 widgets, how long would it take 100 machines to make 100 widgets?" (You can Google it to get all three questions).
 
