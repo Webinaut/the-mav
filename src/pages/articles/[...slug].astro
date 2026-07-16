@@ -60,26 +60,62 @@ const { Content } = await render(entry);
 </BlogPostLayout>
 
 <style is:global>
-  /* Target the images inside your article content using their URL string hash attributes */
-  .article-content img[src*="#left"] {
+  /* Base Image Styles */
+  .article-content img {
+    height: auto;
+    display: inline-block;
+    border-radius: 6px;
+  }
+
+  /* --- ALIGNMENT CLASSES --- */
+  .article-content img[src*="#left_"] {
     float: left;
-    max-width: 40%;
-    margin: 1rem 2rem 1rem 0;
   }
-
-  .article-content img[src*="#right"] {
+  .article-content img[src*="#right_"] {
     float: right;
-    max-width: 40%;
-    margin: 1rem 0 1rem 2rem;
   }
-
-  .article-content img[src*="#center"] {
+  .article-content img[src*="#center_"] {
     display: block;
-    margin: 2rem auto;
-    max-width: 80%;
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  /* Clear fix layout helper wrapper */
+  /* --- WIDTH LAYOUT CLASSES --- */
+  .article-content img[src*="_size-small"] {
+    width: 30%;
+  }
+  .article-content img[src*="_size-medium"] {
+    width: 45%;
+  }
+  .article-content img[src*="_size-large"] {
+    width: 60%;
+  }
+  .article-content img[src*="_size-full"] {
+    width: 100%;
+    display: block;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  /* --- MARGIN CONFIGURATION CLASSES --- */
+  /* Left Aligned Spacing rules */
+  .article-content img[src*="#left"][src*="_margin-normal"] {
+    margin: 0.5rem 1.5rem 1rem 0;
+  }
+  .article-content img[src*="#left"][src*="_margin-wide"] {
+    margin: 1.5rem 2.5rem 2rem 0;
+  }
+
+  /* Right Aligned Spacing rules */
+  .article-content img[src*="#right"][src*="_margin-normal"] {
+    margin: 0.5rem 0 1rem 1.5rem;
+  }
+  .article-content img[src*="#right"][src*="_margin-wide"] {
+    margin: 1.5rem 0 2rem 2.5rem;
+  }
+
+  /* Layout container clearfix to keep text flowing smoothly */
   .article-content::after {
     content: "";
     display: table;

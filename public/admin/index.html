@@ -13,7 +13,6 @@
 
     <!-- STEP 2: Create a completely separate, dedicated script tag for your custom plugin -->
     <script>
-      // Ensure the CMS object exists before calling its methods
       window.CMS = window.CMS || {};
 
       if (typeof CMS !== "undefined" && CMS.registerEditorComponent) {
@@ -45,18 +44,45 @@
               ],
               default: "right",
             },
+            // NEW FIELD: Easily select widths and custom margin styling classes
+            {
+              name: "size_class",
+              label: "Image Display Style",
+              widget: "select",
+              options: [
+                {
+                  label: "Small Width (30%) + Normal Margin",
+                  value: "size-small_margin-normal",
+                },
+                {
+                  label: "Medium Width (45%) + Normal Margin",
+                  value: "size-medium_margin-normal",
+                },
+                {
+                  label: "Large Width (60%) + Extra Margin",
+                  value: "size-large_margin-wide",
+                },
+                { label: "Full Width (100%)", value: "size-full" },
+              ],
+              default: "size-medium_margin-normal",
+            },
           ],
 
-          // Loose internal regex match pattern for parsing existing markdown
+          // Match string: looks for layout pattern like `filename.jpg#left_size-medium_margin-normal`
           pattern:
-            /!\[(?<alt>[^\]]*)\]\((?<image>[^)#]+)#(?<align>left|right|center)\)/,
+            /!\[(?<alt>[^\]]*)\]\((?<image>[^)#]+)#(?<align>left|right|center)_(?<size_class>[a-zA-Z0-9_-]+)\)/,
 
           toBlock: function (data) {
-            return `![${data.alt}](${data.image}#${data.align})`;
+            return `![${data.alt}](${data.image}#${data.align}_${data.size_class})`;
           },
 
           toPreview: function (data) {
-            return `<div style="float: ${data.align}; max-width: 45%; margin: 1em;"><img src="${data.image}" alt="${data.alt}" style="width:100%; display:block;"/></div>`;
+            // Extracts basic preview settings for Sveltia dashboard rendering comfort
+            const isCenter = data.align === "center";
+            return `<div style="float: ${isCenter ? "none" : data.align}; margin: 1em auto; max-width: 50%; border: 1px dashed #ccc; padding: 4px;">
+            <img src="${data.image}" alt="${data.alt}" style="width:100%; display:block;"/>
+            <small style="display:block; text-align:center; color:#666;">[${data.align} | ${data.size_class}]</small>
+          </div>`;
           },
         });
       }
