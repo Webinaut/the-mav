@@ -6,45 +6,58 @@
     <meta name="robots" content="noindex" />
     <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
     <title>Content Manager</title>
-    <!-- <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script> -->
   </head>
   <body>
-    <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js">
-            // Wrap inside an assignment lookup to prevent loading execution race-conditions
-              window.CMS = window.CMS || {};
+    <!-- STEP 1: Load Sveltia CMS library from the external source CDN -->
+    <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
 
-      if (typeof CMS !== 'undefined' && CMS.registerEditorComponent) {
+    <!-- STEP 2: Create a completely separate, dedicated script tag for your custom plugin -->
+    <script>
+      // Ensure the CMS object exists before calling its methods
+      window.CMS = window.CMS || {};
+
+      if (typeof CMS !== "undefined" && CMS.registerEditorComponent) {
         CMS.registerEditorComponent({
-          id: 'floated-image',
-          label: 'Floated Image',
-          icon: 'image', // Pulls standard visual asset icon
+          id: "floated-image",
+          label: "Floated Image",
+          icon: "image",
           fields: [
-            { name: 'image', label: 'Select Image', widget: 'image', required: true },
-            { name: 'alt', label: 'Alt Text', widget: 'string', required: true },
             {
-              name: 'align',
-              label: 'Alignment',
-              widget: 'select',
+              name: "image",
+              label: "Select Image",
+              widget: "image",
+              required: true,
+            },
+            {
+              name: "alt",
+              label: "Alt Text",
+              widget: "string",
+              required: true,
+            },
+            {
+              name: "align",
+              label: "Alignment",
+              widget: "select",
               options: [
-                { label: 'Float Left', value: 'left' },
-                { label: 'Float Right', value: 'right' },
-                { label: 'Center', value: 'center' }
+                { label: "Float Left", value: "left" },
+                { label: "Float Right", value: "right" },
+                { label: "Center", value: "center" },
               ],
-              default: 'right'
-            }
+              default: "right",
+            },
           ],
 
-          // Loose internal scanner layout pattern
-          pattern: /!\[(?<alt>[^\]]*)\]\((?<image>[^)#]+)#(?<align>left|right|center)\)/,
+          // Loose internal regex match pattern for parsing existing markdown
+          pattern:
+            /!\[(?<alt>[^\]]*)\]\((?<image>[^)#]+)#(?<align>left|right|center)\)/,
 
-          // Explicit modern data parameter layout structure
-          toBlock: function(data) {
+          toBlock: function (data) {
             return `![${data.alt}](${data.image}#${data.align})`;
           },
 
-          toPreview: function(data) {
+          toPreview: function (data) {
             return `<div style="float: ${data.align}; max-width: 45%; margin: 1em;"><img src="${data.image}" alt="${data.alt}" style="width:100%; display:block;"/></div>`;
-          }
+          },
         });
       }
     </script>
