@@ -49,8 +49,24 @@ collections:
           label: "Body",
           name: "body",
           widget: "markdown",
+
+          # FIX A: Explicitly tell Sveltia to render your custom tool button block
           editor_components: ["floated-image"],
-          # CRITICAL FIX: Forces Sveltia to display the Visual editor toolbar workspace
+
+          # FIX B: Activates the formatting toolbar buttons. Sveltia requires this list to include custom tools!
+          buttons: [
+              "bold",
+              "italic",
+              "link",
+              "heading-one",
+              "heading-two",
+              "quote",
+              "code",
+              "bulleted-list",
+              "numbered-list",
+              "floated-image", # <-- This injects your tool right into the toolbar block
+            ],
+
           modes: ["rich_text", "raw"],
         }
 
