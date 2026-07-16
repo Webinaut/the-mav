@@ -17,5 +17,13 @@ export default defineConfig({
   // },
   site: "https://themaverick.net.au",
   output: "server",
+  server: {
+    port: 4321,
+    headers: {
+      // FIX: Prevents Astro from severing client-side fetch handshakes to api.github.com
+      "Cross-Origin-Opener-Policy": "unsafe-none",
+      "Access-Control-Allow-Origin": "*",
+    },
+  },
   adapter: netlify(),
 });
