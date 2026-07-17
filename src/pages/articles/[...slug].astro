@@ -17,30 +17,7 @@ if (entry === undefined) {
   return Astro.redirect("/404");
 }
 
-// FIX: Server-Side Shortcode Interceptor Loop
-if (entry.body) {
-  // Regex to isolate custom parameters: e.g. ![Alt](./image.jpg#left_size-medium_margin-normal)
-  const imageRegex =
-    /!\[(?<alt>[^\]]*)\]\((?:\.\/)?(?<image>[^)#\s]+)#(?<align>left|right|center)_(?<size_class>[a-zA-Z0-9_-]+)\)/g;
-
-  entry.body = entry.body.replace(
-    imageRegex,
-    (match, alt, image, align, size_class) => {
-      // Force a clean path structure that Astro's native parser can read relative to the page bundle
-      const cleanSrc = image.startsWith("./") ? image : `./${image}`;
-
-      // Parse out potential compound margin settings from the saved class token
-      const marginClass = size_class.includes("_")
-        ? size_class.split("_")[1]
-        : "margin-normal";
-      const cleanSize = size_class.split("_")[0];
-
-      // Injects valid standard HTML directly into the text stream before compilation
-      return `<img src="${cleanSrc}" alt="${alt}" class="cms-floated-image align-${align} ${cleanSize} ${marginClass}" />`;
-    },
-  );
-}
-
+// Clean and simple compilation—our Remark plugin takes care of the image classes behind the scenes!
 const { Content } = await render(entry);
 ---
 
@@ -48,9 +25,6 @@ const { Content } = await render(entry);
   <article class="article-content">
     <ViewCounter slug={slug} />
 
-    {
-      /* Content loads clean native HTML markup compiled directly on the server */
-    }
     <div class="markdown-body">
       <Content />
     </div>
@@ -72,7 +46,7 @@ const { Content } = await render(entry);
 </BlogPostLayout>
 
 <style is:global>
-  /* Base Image Configuration rules */
+  /* Base Image Styles */
   .article-content img.cms-floated-image {
     height: auto;
     display: inline-block;

@@ -17,6 +17,10 @@ export default defineConfig({
   // },
   site: "https://themaverick.net.au",
   output: "server",
+  // Register the custom image-processing block globally
+  markdown: {
+    remarkPlugins: [remarkFloatedImages],
+  },
   server: {
     port: 4321,
     headers: {
