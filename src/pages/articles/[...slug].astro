@@ -6,6 +6,7 @@ import Btn from "../../components/Button.astro";
 
 // SSR Code
 import { getEntry, render } from "astro:content";
+import { parse } from "node-html-parser"; // <-- Import the HTML parser helper
 
 const { slug } = Astro.params;
 if (slug === undefined) {
@@ -17,32 +18,23 @@ if (entry === undefined) {
   return Astro.redirect("/404");
 }
 
-// FIX: Intercept the body raw string text and map the shortcode to standard HTML output elements
-if (entry.body) {
-  const shortcodeRegex =
-    /\[floated-image\s+image="([^"]+)"\s+alt="([^"]*)"\s+align="([^"]+)"\s*\]/g;
-
-  entry.body = entry.body.replace(
-    shortcodeRegex,
-    (match, image, alt, align) => {
-      // Computes relative asset resolution path parameters if image tracks locally
-      const cleanSrc = image.startsWith("./") ? image.substring(2) : image;
-
-      return `<div class="floated-image-container align-${align}">
-      <img src="${cleanSrc}" alt="${alt}" />
-    </div>`;
-    },
-  );
-}
-
 const { Content } = await render(entry);
+
+// 1. Render the initial Content to a raw static HTML string layout
+const rawHtml = await Astro.slots.render("default");
 ---
 
 <BlogPostLayout frontmatter={entry.data}>
   <article class="article-content">
     <ViewCounter slug={slug} />
-    {/* Safely render the compiled contents cleanly */}
-    <Content />
+
+    {
+      /* 2. Execute a dynamic pipeline check on Content to intercept and clean the hashes */
+    }
+    <div id="markdown-container">
+      <Content />
+    </div>
+
     <Btn buttonlink="/articles/" buttontext="Back To Articles" />
   </article>
 
@@ -59,23 +51,51 @@ const { Content } = await render(entry);
   </article>
 </BlogPostLayout>
 
+<!-- 3. Server-side script injection processing block -->
+<script is:inline>
+  // Runs immediately upon DOM load to unpack parameters into native HTML classes
+  const container = document.getElementById("markdown-container");
+  if (container) {
+    const images = container.getElementsByTagName("img");
+    for (let img of images) {
+      const src = img.getAttribute("src");
+
+      // Look for our custom delimiter hash sequence inside the path payload
+      if (src && src.includes("#")) {
+        const [cleanSrc, hashParams] = src.split("#");
+
+        // Split our style settings: e.g. "left_size-medium_margin-normal"
+        const [align, sizeClass, marginClass] = hashParams.split("_");
+
+        // Strip the trailing query string from the physical img source to fix rendering
+        img.setAttribute("src", cleanSrc);
+
+        // Apply clean, valid HTML classes instead of relying on URL selectors
+        if (align) img.classList.add(`align-${align}`);
+        if (sizeClass) img.classList.add(sizeClass);
+        if (marginClass) img.classList.add(marginClass);
+      }
+    }
+  }
+</script>
+
 <style is:global>
   /* Base Image Configuration rules */
   .article-content img {
     height: auto;
     display: inline-block;
     border-radius: 6px;
+    max-width: 100%;
   }
 
-  /* --- ALIGNMENT CLASSES --- */
-  /* FIX: Look for the style string anywhere in the compiled path */
-  .article-content img[src*="#left_"] {
+  /* --- ALIGNMENT NATIVE CLASSES --- */
+  .article-content img.align-left {
     float: left;
   }
-  .article-content img[src*="#right_"] {
+  .article-content img.align-right {
     float: right;
   }
-  .article-content img[src*="#center_"] {
+  .article-content img.align-center {
     display: block;
     float: none;
     margin-left: auto;
@@ -83,16 +103,16 @@ const { Content } = await render(entry);
   }
 
   /* --- WIDTH LAYOUT CLASSES --- */
-  .article-content img[src*="_size-small"] {
+  .article-content img.size-small {
     width: 30% !important;
   }
-  .article-content img[src*="_size-medium"] {
+  .article-content img.size-medium {
     width: 45% !important;
   }
-  .article-content img[src*="_size-large"] {
+  .article-content img.size-large {
     width: 60% !important;
   }
-  .article-content img[src*="_size-full"] {
+  .article-content img.size-full {
     width: 100% !important;
     display: block;
     margin-top: 2rem;
@@ -100,17 +120,17 @@ const { Content } = await render(entry);
   }
 
   /* --- MARGIN CONFIGURATION CLASSES --- */
-  .article-content img[src*="#left_"][src*="_margin-normal"] {
+  .article-content img.align-left.margin-normal {
     margin: 0.5rem 1.5rem 1rem 0;
   }
-  .article-content img[src*="#left_"][src*="_margin-wide"] {
+  .article-content img.align-left.margin-wide {
     margin: 1.5rem 2.5rem 2rem 0;
   }
 
-  .article-content img[src*="#right_"][src*="_margin-normal"] {
+  .article-content img.align-right.margin-normal {
     margin: 0.5rem 0 1rem 1.5rem;
   }
-  .article-content img[src*="#right_"][src*="_margin-wide"] {
+  .article-content img.align-right.margin-wide {
     margin: 1.5rem 0 2rem 2.5rem;
   }
 
