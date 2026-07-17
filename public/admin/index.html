@@ -44,7 +44,6 @@
               ],
               default: "right",
             },
-            // NEW FIELD: Easily select widths and custom margin styling classes
             {
               name: "size_class",
               label: "Image Display Style",
@@ -68,16 +67,19 @@
             },
           ],
 
-          // Match string: looks for layout pattern like `filename.jpg#left_size-medium_margin-normal`
+          // FIX A: Added optional dot-slash tracking validation parameter to the asset name catcher
           pattern:
-            /!\[(?<alt>[^\]]*)\]\((?<image>[^)#]+)#(?<align>left|right|center)_(?<size_class>[a-zA-Z0-9_-]+)\)/,
+            /!\[(?<alt>[^\]]*)\]\((?:\.\/)?(?<image>[^)#]+)#(?<align>left|right|center)_(?<size_class>[a-zA-Z0-9_-]+)\)/,
 
           toBlock: function (data) {
-            return `![${data.alt}](${data.image}#${data.align}_${data.size_class})`;
+            // FIX B: Forces a clean relative prefix directly into your markdown document syntax
+            const cleanImage = data.image.startsWith("./")
+              ? data.image
+              : `./${data.image}`;
+            return `![${data.alt}](${cleanImage}#${data.align}_${data.size_class})`;
           },
 
           toPreview: function (data) {
-            // Extracts basic preview settings for Sveltia dashboard rendering comfort
             const isCenter = data.align === "center";
             return `<div style="float: ${isCenter ? "none" : data.align}; margin: 1em auto; max-width: 50%; border: 1px dashed #ccc; padding: 4px;">
             <img src="${data.image}" alt="${data.alt}" style="width:100%; display:block;"/>

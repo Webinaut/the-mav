@@ -60,7 +60,7 @@ const { Content } = await render(entry);
 </BlogPostLayout>
 
 <style is:global>
-  /* Base Image Styles */
+  /* Base Image Configuration rules */
   .article-content img {
     height: auto;
     display: inline-block;
@@ -68,6 +68,7 @@ const { Content } = await render(entry);
   }
 
   /* --- ALIGNMENT CLASSES --- */
+  /* FIX: Look for the style string anywhere in the compiled path */
   .article-content img[src*="#left_"] {
     float: left;
   }
@@ -83,39 +84,37 @@ const { Content } = await render(entry);
 
   /* --- WIDTH LAYOUT CLASSES --- */
   .article-content img[src*="_size-small"] {
-    width: 30%;
+    width: 30% !important;
   }
   .article-content img[src*="_size-medium"] {
-    width: 45%;
+    width: 45% !important;
   }
   .article-content img[src*="_size-large"] {
-    width: 60%;
+    width: 60% !important;
   }
   .article-content img[src*="_size-full"] {
-    width: 100%;
+    width: 100% !important;
     display: block;
     margin-top: 2rem;
     margin-bottom: 2rem;
   }
 
   /* --- MARGIN CONFIGURATION CLASSES --- */
-  /* Left Aligned Spacing rules */
-  .article-content img[src*="#left"][src*="_margin-normal"] {
+  .article-content img[src*="#left_"][src*="_margin-normal"] {
     margin: 0.5rem 1.5rem 1rem 0;
   }
-  .article-content img[src*="#left"][src*="_margin-wide"] {
+  .article-content img[src*="#left_"][src*="_margin-wide"] {
     margin: 1.5rem 2.5rem 2rem 0;
   }
 
-  /* Right Aligned Spacing rules */
-  .article-content img[src*="#right"][src*="_margin-normal"] {
+  .article-content img[src*="#right_"][src*="_margin-normal"] {
     margin: 0.5rem 0 1rem 1.5rem;
   }
-  .article-content img[src*="#right"][src*="_margin-wide"] {
+  .article-content img[src*="#right_"][src*="_margin-wide"] {
     margin: 1.5rem 0 2rem 2.5rem;
   }
 
-  /* Layout container clearfix to keep text flowing smoothly */
+  /* Layout container clearfix to keep content structured cleanly */
   .article-content::after {
     content: "";
     display: table;
