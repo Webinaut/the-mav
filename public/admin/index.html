@@ -67,9 +67,9 @@
             },
           ],
 
-          // Flexible fallback pattern matching various markdown image variants
+          // REWRITTEN REGEX: Explicitly handles dashes and underscores within the size block identifier
           pattern:
-            /!\[(?<alt>[^\]]*)\]\((?<image>[^)#\s]+)(?:#(?<align>left|right|center)?(?:_(?<size_class>[a-zA-Z0-9_-]+))?)?\)/,
+            /!\[(?<alt>[^\]]*)\]\((?<image>[^)#\s]+)#(?<align>left|right|center)_(?<size_class>[a-zA-Z0-9_-]+)\)/,
 
           fromBlock: function (match) {
             return {
@@ -82,9 +82,7 @@
           },
 
           toBlock: function (data) {
-            // FIX: Defends against undefined/null strings using logical OR and optional chaining
             let cleanImage = data.image || "";
-
             if (
               cleanImage &&
               !cleanImage.startsWith("./") &&
@@ -93,16 +91,27 @@
             ) {
               cleanImage = `./${cleanImage}`;
             }
-
             const align = data.align || "right";
             const size = data.size_class || "size-medium_margin-normal";
             return `![${data.alt || ""}](${cleanImage}#${align}_${size})`;
           },
 
+          // FIXED PREVIEW INTERCEPTOR: Maps the selected classes directly to the Sveltia preview view layer
           toPreview: function (data) {
             const isCenter = data.align === "center";
-            return `<div style="float: ${isCenter ? "none" : data.align}; margin: 1em auto; max-width: 50%; border: 1px dashed #ccc; padding: 4px;">
-            <img src="${data.image || ""}" alt="${data.alt || ""}" style="width:100%; display:block;"/>
+            const floatValue = isCenter ? "none" : data.align;
+            const marginValue = isCenter
+              ? "1.5rem auto"
+              : "0.5rem 1.5rem 1rem 1.5rem";
+
+            // Fallback width constraints mapping matrix
+            let widthPercent = "45%";
+            if (data.size_class?.includes("small")) widthPercent = "30%";
+            if (data.size_class?.includes("large")) widthPercent = "60%";
+            if (data.size_class?.includes("full")) widthPercent = "100%";
+
+            return `<div style="float: ${floatValue}; max-width: ${widthPercent}; width: ${widthPercent}; margin: ${marginValue}; box-sizing: border-box; display: inline-block;">
+            <img src="${data.image || ""}" alt="${data.alt || ""}" style="width:100%; height:auto; display:block; border-radius:6px;"/>
           </div>`;
           },
         });
