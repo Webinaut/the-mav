@@ -67,11 +67,10 @@
             },
           ],
 
-          // FAIL-SAFE REGEX: Matches your newest format, your older #left format, or plain markdown images
+          // Flexible fallback pattern matching various markdown image variants
           pattern:
             /!\[(?<alt>[^\]]*)\]\((?<image>[^)#\s]+)(?:#(?<align>left|right|center)?(?:_(?<size_class>[a-zA-Z0-9_-]+))?)?\)/,
 
-          // Maps missing parameters to smart defaults when loading older files
           fromBlock: function (match) {
             return {
               alt: match.groups.alt || "",
@@ -83,23 +82,27 @@
           },
 
           toBlock: function (data) {
-            let cleanImage = data.image;
+            // FIX: Defends against undefined/null strings using logical OR and optional chaining
+            let cleanImage = data.image || "";
+
             if (
+              cleanImage &&
               !cleanImage.startsWith("./") &&
               !cleanImage.startsWith("/") &&
               !cleanImage.startsWith("http")
             ) {
               cleanImage = `./${cleanImage}`;
             }
+
             const align = data.align || "right";
             const size = data.size_class || "size-medium_margin-normal";
-            return `![${data.alt}](${cleanImage}#${align}_${size})`;
+            return `![${data.alt || ""}](${cleanImage}#${align}_${size})`;
           },
 
           toPreview: function (data) {
             const isCenter = data.align === "center";
             return `<div style="float: ${isCenter ? "none" : data.align}; margin: 1em auto; max-width: 50%; border: 1px dashed #ccc; padding: 4px;">
-            <img src="${data.image}" alt="${data.alt}" style="width:100%; display:block;"/>
+            <img src="${data.image || ""}" alt="${data.alt || ""}" style="width:100%; display:block;"/>
           </div>`;
           },
         });
