@@ -67,15 +67,20 @@
             },
           ],
 
-          // FIX A: Added optional dot-slash tracking validation parameter to the asset name catcher
+          // FIX: Completely universal pattern that captures paths with OR without the relative dot-slash safely
           pattern:
-            /!\[(?<alt>[^\]]*)\]\((?:\.\/)?(?<image>[^)#]+)#(?<align>left|right|center)_(?<size_class>[a-zA-Z0-9_-]+)\)/,
+            /!\[(?<alt>[^\]]*)\]\((?<image>[^)#]+)#(?<align>left|right|center)_(?<size_class>[a-zA-Z0-9_-]+)\)/,
 
           toBlock: function (data) {
-            // FIX B: Forces a clean relative prefix directly into your markdown document syntax
-            const cleanImage = data.image.startsWith("./")
-              ? data.image
-              : `./${data.image}`;
+            // Ensures a clean, relative dot-slash path is written out to satisfy Astro's compiler
+            let cleanImage = data.image;
+            if (
+              !cleanImage.startsWith("./") &&
+              !cleanImage.startsWith("/") &&
+              !cleanImage.startsWith("http")
+            ) {
+              cleanImage = `./${cleanImage}`;
+            }
             return `![${data.alt}](${cleanImage}#${data.align}_${data.size_class})`;
           },
 
