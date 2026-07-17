@@ -67,13 +67,13 @@
             },
           ],
 
-          // NEW PATTERN: Looks for a raw native HTML img tag with our custom marker class
+          // REGEX PATTERN: Safely handles paths using either an absolute slash (/) or a relative dot-slash (./)
           pattern:
-            /<img\s+src="(?<image>[^"]*)"\s+alt="(?<alt>[^"]*)"\s+class="cms-floated-image\s+align-(?<align>[^\s"]*)\s+(?<size_class>[^"]*)"\s*\/>/,
+            /<img\s+src="(?:\.\/|\/)?(?<image>[^"]*)"\s+alt="(?<alt>[^"]*)"\s+class="cms-floated-image\s+align-(?<align>[^\s"]*)\s+(?<size_class>[^"]*)"\s*\/>/,
 
           fromBlock: function (match) {
             return {
-              image: match.groups.image || "",
+              image: match.groups.image ? `/${match.groups.image}` : "",
               alt: match.groups.alt || "",
               align: match.groups.align || "right",
               size_class:
@@ -83,7 +83,8 @@
 
           toBlock: function (data) {
             let cleanImage = data.image || "";
-            // Astro 5 asset pipelines route public uploads paths relative from the public directory
+
+            // Ensure file paths are saved using a clean absolute forward slash structure
             if (cleanImage.startsWith("./")) {
               cleanImage = cleanImage.replace("./", "/");
             }
@@ -100,7 +101,15 @@
             return `<img src="${cleanImage}" alt="${data.alt || ""}" class="cms-floated-image align-${data.align || "right"} ${size} ${margin}" />`;
           },
 
+          // FIXED PREVIEW HANDLER: Strips the leading slash for the editor preview pane
           toPreview: function (data) {
+            let previewImageSrc = data.image || "";
+
+            // FIX: Converts absolute root links into relative links for Sveltia's internal viewer
+            if (previewImageSrc.startsWith("/")) {
+              previewImageSrc = previewImageSrc.substring(1);
+            }
+
             const isCenter = data.align === "center";
             const floatValue = isCenter ? "none" : data.align;
             const marginValue = isCenter
@@ -113,7 +122,7 @@
             if (data.size_class?.includes("full")) widthPercent = "100%";
 
             return `<div style="float: ${floatValue}; max-width: ${widthPercent}; width: ${widthPercent}; margin: ${marginValue}; box-sizing: border-box; display: inline-block;">
-            <img src="${data.image || ""}" alt="${data.alt || ""}" style="width:100%; height:auto; display:block; border-radius:6px;"/>
+            <img src="${previewImageSrc}" alt="${data.alt || ""}" style="width:100%; height:auto; display:block; border-radius:6px;"/>
           </div>`;
           },
         });
