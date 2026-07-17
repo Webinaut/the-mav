@@ -17,46 +17,16 @@ if (entry === undefined) {
 }
 
 const { Content } = await render(entry);
-
-// 1. Render markdown elements to a raw HTML text block
-let htmlContent = await Astro.slots.render("default", []);
-if (!htmlContent) {
-  // Fallback rendering container helper if slots execution returns empty payload loops
-  htmlContent = `<div id="astro-rendered-content"></div>`;
-}
-
-// 2. Server-Side HTML Regex transformation script
-// Target matches: src="/_astro/image.hashname.jpg#left_size-medium_margin-normal"
-const imgTagRegex =
-  /<img([^>]+)src=["']([^"']+)#(?<align>left|right|center)_(?<size_class>[a-zA-Z0-9_-]+)["']([^>]*)>/g;
-
-const processedHtml = htmlContent.replace(
-  imgTagRegex,
-  (match, beforeSrc, srcPath, align, size_class, afterSrc) => {
-    const parts = size_class.split("_");
-    const size = parts[0] || "size-medium";
-    const margin = parts[1] || "margin-normal";
-
-    // Return a clean HTML tag string with the hash stripped from the source path
-    return `<img ${beforeSrc} src="${srcPath}" class="cms-floated-image align-${align} ${size} ${margin}" ${afterSrc} />`;
-  },
-);
 ---
 
 <BlogPostLayout frontmatter={entry.data}>
   <article class="article-content">
     <ViewCounter slug={slug} />
 
-    {/* 3. Output the processed layout directly to the server stream wrapper */}
-    {
-      processedHtml.includes("cms-floated-image") ? (
-        <div class="markdown-body" set:html={processedHtml} />
-      ) : (
-        <div class="markdown-body">
-          <Content />
-        </div>
-      )
-    }
+    {/* Clean, standard content execution canvas hook */}
+    <div id="cms-rendering-wrapper" class="markdown-body">
+      <Content />
+    </div>
 
     <Btn buttonlink="/articles/" buttontext="Back To Articles" />
   </article>
@@ -74,8 +44,52 @@ const processedHtml = htmlContent.replace(
   </article>
 </BlogPostLayout>
 
+{
+  /* INLINE RENDERING SCRIPT: Strips image hash values and maps configuration parameters to CSS classes */
+}
+<script is:inline>
+  (function () {
+    const wrapper = document.getElementById("cms-rendering-wrapper");
+    if (!wrapper) return;
+
+    // Scan the content block looking for rendered image elements
+    const images = wrapper.getElementsByTagName("img");
+
+    for (let i = 0; i < images.length; i++) {
+      const img = images[i];
+      const src = img.getAttribute("src");
+
+      // Intercept our custom parameter hashes (e.g., #left_size-medium_margin-normal)
+      if (src && src.includes("#")) {
+        const parts = src.split("#");
+        const cleanSrc = parts[0];
+        const hashParams = parts[1];
+
+        if (hashParams) {
+          const config = hashParams.split("_");
+          const align = config[0] || "right";
+          const size = config[1] || "size-medium";
+          const margin = config[2] || "margin-normal";
+
+          // 1. Strip the hash string from the image element source so the file displays properly
+          img.setAttribute("src", cleanSrc);
+
+          // 2. Clear any data parameters that could break the layout engine
+          img.removeAttribute("srcset");
+
+          // 3. Inject clean HTML classes directly onto the active rendering node
+          img.classList.add("cms-floated-image");
+          img.classList.add(`align-${align}`);
+          img.classList.add(size);
+          img.classList.add(margin);
+        }
+      }
+    }
+  })();
+</script>
+
 <style is:global>
-  /* Global Float Layout Style Variables */
+  /* Global Float Layout Styles */
   .article-content img.cms-floated-image {
     height: auto;
     display: inline-block;
@@ -116,19 +130,20 @@ const processedHtml = htmlContent.replace(
 
   /* --- MARGIN CONFIGURATION CLASSES --- */
   .article-content img.align-left.margin-normal {
-    margin: 0.5rem 1.5rem 1rem 0;
+    margin: 0.5rem 1.5rem 1rem 0 !important;
   }
   .article-content img.align-left.margin-wide {
-    margin: 1.5rem 2.5rem 2rem 0;
+    margin: 1.5rem 2.5rem 2rem 0 !important;
   }
 
   .article-content img.align-right.margin-normal {
-    margin: 0.5rem 0 1rem 1.5rem;
+    margin: 0.5rem 0 1rem 1.5rem !important;
   }
   .article-content img.align-right.margin-wide {
-    margin: 1.5rem 0 2rem 2.5rem;
+    margin: 1.5rem 0 2rem 2.5rem !important;
   }
 
+  /* Clearfix layout guard rule to prevent flowing elements from clipping content containers */
   .article-content::after {
     content: "";
     display: table;
