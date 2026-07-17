@@ -1,33 +1,52 @@
 import { defineConfig } from "astro/config";
-import sitemap from "@astrojs/sitemap";
-// import preact from "@astrojs/preact";
 import netlify from "@astrojs/netlify";
-// import mdx from "@astrojs/mdx";
-// import node from "@astrojs/node";
+import { visit } from "unist-util-visit"; // <-- Ensure you installed this via npm in the previous step
+
+// Unified local plugin function block
+function remarkFloatedImages() {
+  return (tree) => {
+    visit(tree, "image", (node) => {
+      const { url } = node;
+
+      // Intercept and parse our custom Sveltia configuration hash parameters
+      if (url && url.includes("#")) {
+        const [cleanUrl, hashParams] = url.split("#");
+        const [align, sizeClass, marginClass] = hashParams.split("_");
+
+        // 1. Strip the hash payload so Astro's asset pipeline can bundle the image natively
+        node.url = cleanUrl;
+
+        // 2. Initialize layout data layers on the rendering node
+        node.data = node.data || {};
+        node.data.hProperties = node.data.hProperties || {};
+
+        // 3. Assemble clean, production-ready HTML stylesheet classes
+        const classes = ["cms-floated-image"];
+        if (align) classes.push(`align-${align}`);
+        if (sizeClass) classes.push(sizeClass);
+        if (marginClass) classes.push(marginClass);
+
+        // Assign classes directly to the final compiled HTML element string
+        node.data.hProperties.class = classes.join(" ");
+      }
+    });
+  };
+}
 
 export default defineConfig({
-  devToolbar: {
-    enabled: false,
-  },
-  trailingSlash: "always",
-  site: "https://themaverick.net.au",
-  integrations: [sitemap()],
-  // markdown: {
-  //   extendDefaultPlugins: true,
-  // },
-  site: "https://themaverick.net.au",
   output: "server",
-  // Register the custom image-processing block globally
+  adapter: netlify(),
+
+  // Registers your layout processor directly into the core Markdown engine
   markdown: {
     remarkPlugins: [remarkFloatedImages],
   },
+
   server: {
     port: 4321,
     headers: {
-      // FIX: Prevents Astro from severing client-side fetch handshakes to api.github.com
       "Cross-Origin-Opener-Policy": "unsafe-none",
       "Access-Control-Allow-Origin": "*",
     },
   },
-  adapter: netlify(),
 });
