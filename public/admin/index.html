@@ -67,12 +67,22 @@
             },
           ],
 
-          // FIX: Completely universal pattern that captures paths with OR without the relative dot-slash safely
+          // FAIL-SAFE REGEX: Matches your newest format, your older #left format, or plain markdown images
           pattern:
-            /!\[(?<alt>[^\]]*)\]\((?<image>[^)#]+)#(?<align>left|right|center)_(?<size_class>[a-zA-Z0-9_-]+)\)/,
+            /!\[(?<alt>[^\]]*)\]\((?<image>[^)#\s]+)(?:#(?<align>left|right|center)?(?:_(?<size_class>[a-zA-Z0-9_-]+))?)?\)/,
+
+          // Maps missing parameters to smart defaults when loading older files
+          fromBlock: function (match) {
+            return {
+              alt: match.groups.alt || "",
+              image: match.groups.image || "",
+              align: match.groups.align || "right",
+              size_class:
+                match.groups.size_class || "size-medium_margin-normal",
+            };
+          },
 
           toBlock: function (data) {
-            // Ensures a clean, relative dot-slash path is written out to satisfy Astro's compiler
             let cleanImage = data.image;
             if (
               !cleanImage.startsWith("./") &&
@@ -81,14 +91,15 @@
             ) {
               cleanImage = `./${cleanImage}`;
             }
-            return `![${data.alt}](${cleanImage}#${data.align}_${data.size_class})`;
+            const align = data.align || "right";
+            const size = data.size_class || "size-medium_margin-normal";
+            return `![${data.alt}](${cleanImage}#${align}_${size})`;
           },
 
           toPreview: function (data) {
             const isCenter = data.align === "center";
             return `<div style="float: ${isCenter ? "none" : data.align}; margin: 1em auto; max-width: 50%; border: 1px dashed #ccc; padding: 4px;">
             <img src="${data.image}" alt="${data.alt}" style="width:100%; display:block;"/>
-            <small style="display:block; text-align:center; color:#666;">[${data.align} | ${data.size_class}]</small>
           </div>`;
           },
         });
