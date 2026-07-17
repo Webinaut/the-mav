@@ -1,26 +1,22 @@
-// Import utilities from `astro:content`
-import { z, defineCollection } from "astro:content";
-// Import the glob loader
-import { glob } from "astro/loaders";
+import { defineCollection, z } from "astro:content";
+import { glob } from "astro/loaders"; //
 
-// Define a `loader` and `schema` for each collection
-const articleCollection = defineCollection({
-  loader: glob({ pattern: "**/index.md", base: "./src/content/articles" }),
-  // loader: glob({ pattern: "**/[^_]*.md", base: "./src/content/articles" }),
+const articles = defineCollection({
+  loader: glob({
+    pattern: "**/[^_]*.{md,mdx}",
+    base: "./src/content/articles",
+  }), //
   schema: ({ image }) =>
     z.object({
       title: z.string(),
       description: z.string(),
-      hero: image(),
-      caption: z.string(),
-      summary: z.string(),
       ranking: z.number(),
-      tags: z.array(z.string()),
-      readingTime: z.number(),
-      view_count: z.number(),
+      view_count: z.number().default(0),
+      hero: image(),
+      caption: z.string().optional(),
+      summary: z.string(),
+      tags: z.array(z.string()).default(["articles"]),
     }),
 });
-// Export a single `collections` object to register your collection(s)
-export const collections = {
-  articles: articleCollection,
-};
+
+export const collections = { articles }; //

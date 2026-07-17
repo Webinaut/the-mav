@@ -4,7 +4,6 @@ import ViewCounter from "../../components/ViewCounter.astro";
 import PostComments from "../../components/PostComments.astro";
 import Btn from "../../components/Button.astro";
 
-// SSR Code
 import { getEntry, render } from "astro:content";
 
 const { slug } = Astro.params;
@@ -17,17 +16,47 @@ if (entry === undefined) {
   return Astro.redirect("/404");
 }
 
-// Clean and simple compilation—our Remark plugin takes care of the image classes behind the scenes!
 const { Content } = await render(entry);
+
+// 1. Render markdown elements to a raw HTML text block
+let htmlContent = await Astro.slots.render("default", []);
+if (!htmlContent) {
+  // Fallback rendering container helper if slots execution returns empty payload loops
+  htmlContent = `<div id="astro-rendered-content"></div>`;
+}
+
+// 2. Server-Side HTML Regex transformation script
+// Target matches: src="/_astro/image.hashname.jpg#left_size-medium_margin-normal"
+const imgTagRegex =
+  /<img([^>]+)src=["']([^"']+)#(?<align>left|right|center)_(?<size_class>[a-zA-Z0-9_-]+)["']([^>]*)>/g;
+
+const processedHtml = htmlContent.replace(
+  imgTagRegex,
+  (match, beforeSrc, srcPath, align, size_class, afterSrc) => {
+    const parts = size_class.split("_");
+    const size = parts[0] || "size-medium";
+    const margin = parts[1] || "margin-normal";
+
+    // Return a clean HTML tag string with the hash stripped from the source path
+    return `<img ${beforeSrc} src="${srcPath}" class="cms-floated-image align-${align} ${size} ${margin}" ${afterSrc} />`;
+  },
+);
 ---
 
 <BlogPostLayout frontmatter={entry.data}>
   <article class="article-content">
     <ViewCounter slug={slug} />
 
-    <div class="markdown-body">
-      <Content />
-    </div>
+    {/* 3. Output the processed layout directly to the server stream wrapper */}
+    {
+      processedHtml.includes("cms-floated-image") ? (
+        <div class="markdown-body" set:html={processedHtml} />
+      ) : (
+        <div class="markdown-body">
+          <Content />
+        </div>
+      )
+    }
 
     <Btn buttonlink="/articles/" buttontext="Back To Articles" />
   </article>
@@ -46,7 +75,7 @@ const { Content } = await render(entry);
 </BlogPostLayout>
 
 <style is:global>
-  /* Base Image Styles */
+  /* Global Float Layout Style Variables */
   .article-content img.cms-floated-image {
     height: auto;
     display: inline-block;
@@ -100,7 +129,6 @@ const { Content } = await render(entry);
     margin: 1.5rem 0 2rem 2.5rem;
   }
 
-  /* Layout container clearfix to keep content structured cleanly */
   .article-content::after {
     content: "";
     display: table;
