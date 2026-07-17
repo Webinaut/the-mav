@@ -16,6 +16,7 @@ if (entry === undefined) {
   return Astro.redirect("/404");
 }
 
+// FIXED: Clean single-argument execution satisfies the Astro 5 Sätteri architecture
 const { Content } = await render(entry);
 ---
 
@@ -23,8 +24,7 @@ const { Content } = await render(entry);
   <article class="article-content">
     <ViewCounter slug={slug} />
 
-    {/* Clean, standard content execution canvas hook */}
-    <div id="cms-rendering-wrapper" class="markdown-body">
+    <div class="markdown-body">
       <Content />
     </div>
 
@@ -43,50 +43,6 @@ const { Content } = await render(entry);
     <PostComments />
   </article>
 </BlogPostLayout>
-
-{
-  /* INLINE RENDERING SCRIPT: Strips image hash values and maps configuration parameters to CSS classes */
-}
-<script is:inline>
-  (function () {
-    const wrapper = document.getElementById("cms-rendering-wrapper");
-    if (!wrapper) return;
-
-    // Scan the content block looking for rendered image elements
-    const images = wrapper.getElementsByTagName("img");
-
-    for (let i = 0; i < images.length; i++) {
-      const img = images[i];
-      const src = img.getAttribute("src");
-
-      // Intercept our custom parameter hashes (e.g., #left_size-medium_margin-normal)
-      if (src && src.includes("#")) {
-        const parts = src.split("#");
-        const cleanSrc = parts[0];
-        const hashParams = parts[1];
-
-        if (hashParams) {
-          const config = hashParams.split("_");
-          const align = config[0] || "right";
-          const size = config[1] || "size-medium";
-          const margin = config[2] || "margin-normal";
-
-          // 1. Strip the hash string from the image element source so the file displays properly
-          img.setAttribute("src", cleanSrc);
-
-          // 2. Clear any data parameters that could break the layout engine
-          img.removeAttribute("srcset");
-
-          // 3. Inject clean HTML classes directly onto the active rendering node
-          img.classList.add("cms-floated-image");
-          img.classList.add(`align-${align}`);
-          img.classList.add(size);
-          img.classList.add(margin);
-        }
-      }
-    }
-  })();
-</script>
 
 <style is:global>
   /* Global Float Layout Styles */
@@ -143,7 +99,6 @@ const { Content } = await render(entry);
     margin: 1.5rem 0 2rem 2.5rem !important;
   }
 
-  /* Clearfix layout guard rule to prevent flowing elements from clipping content containers */
   .article-content::after {
     content: "";
     display: table;

@@ -67,14 +67,14 @@
             },
           ],
 
-          // REWRITTEN REGEX: Explicitly handles dashes and underscores within the size block identifier
+          // NEW PATTERN: Looks for a raw native HTML img tag with our custom marker class
           pattern:
-            /!\[(?<alt>[^\]]*)\]\((?<image>[^)#\s]+)#(?<align>left|right|center)_(?<size_class>[a-zA-Z0-9_-]+)\)/,
+            /<img\s+src="(?<image>[^"]*)"\s+alt="(?<alt>[^"]*)"\s+class="cms-floated-image\s+align-(?<align>[^\s"]*)\s+(?<size_class>[^"]*)"\s*\/>/,
 
           fromBlock: function (match) {
             return {
-              alt: match.groups.alt || "",
               image: match.groups.image || "",
+              alt: match.groups.alt || "",
               align: match.groups.align || "right",
               size_class:
                 match.groups.size_class || "size-medium_margin-normal",
@@ -83,20 +83,23 @@
 
           toBlock: function (data) {
             let cleanImage = data.image || "";
-            if (
-              cleanImage &&
-              !cleanImage.startsWith("./") &&
-              !cleanImage.startsWith("/") &&
-              !cleanImage.startsWith("http")
-            ) {
-              cleanImage = `./${cleanImage}`;
+            // Astro 5 asset pipelines route public uploads paths relative from the public directory
+            if (cleanImage.startsWith("./")) {
+              cleanImage = cleanImage.replace("./", "/");
             }
-            const align = data.align || "right";
-            const size = data.size_class || "size-medium_margin-normal";
-            return `![${data.alt || ""}](${cleanImage}#${align}_${size})`;
+            if (!cleanImage.startsWith("/") && !cleanImage.startsWith("http")) {
+              cleanImage = `/${cleanImage}`;
+            }
+
+            const parts = (
+              data.size_class || "size-medium_margin-normal"
+            ).split("_");
+            const size = parts[0] || "size-medium";
+            const margin = parts[1] || "margin-normal";
+
+            return `<img src="${cleanImage}" alt="${data.alt || ""}" class="cms-floated-image align-${data.align || "right"} ${size} ${margin}" />`;
           },
 
-          // FIXED PREVIEW INTERCEPTOR: Maps the selected classes directly to the Sveltia preview view layer
           toPreview: function (data) {
             const isCenter = data.align === "center";
             const floatValue = isCenter ? "none" : data.align;
@@ -104,7 +107,6 @@
               ? "1.5rem auto"
               : "0.5rem 1.5rem 1rem 1.5rem";
 
-            // Fallback width constraints mapping matrix
             let widthPercent = "45%";
             if (data.size_class?.includes("small")) widthPercent = "30%";
             if (data.size_class?.includes("large")) widthPercent = "60%";
