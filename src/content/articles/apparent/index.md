@@ -14,7 +14,7 @@ readingTime: 0
 
 Have you ever experienced the frustration of trying to solve a problem and discovering that your solution isn't a solution at all? It happens to me far too often. And, after disappearing down a rabbit hole, you end up being annoyed and frustrated with yourself.
 
-![Test Image](./absurd.design-chapter-1-03.png#left_size-medium_margin-normal)It reminds me of a presentation given by a friend, Teddy Langschmidt, who had a market research company called Integrated Marketing. He started with words to the effect of - "for almost everything in life there is a given reason and a real reason". He then went on to say that our job as researchers was to uncover real reasons.
+<img src="/RabbitHole.jpg" alt="" class="cms-floated-image align-left size-medium margin-normal" />It reminds me of a presentation given by a friend, Teddy Langschmidt, who had a market research company called Integrated Marketing. He started with words to the effect of - "for almost everything in life there is a given reason and a real reason". He then went on to say that our job as researchers was to uncover real reasons.
 
 It seems to me that this applies to problem-solving too. Too often problems are ill-defined, leading to good solutions to the wrong problem.
 
