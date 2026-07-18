@@ -45,76 +45,93 @@ const { Content } = await render(entry);
   </article>
 </BlogPostLayout>
 
-{/* CLEAN RE-MAPPING SCRIPT */}
+{/* DEFENSIVE MUTATION OBSERVER PATH RESOLVER */}
 <script is:inline>
   (function () {
-    const contentArea = document.getElementById("production-markdown-content");
-    if (!contentArea) return;
+    function processImages() {
+      const contentArea = document.getElementById(
+        "production-markdown-content",
+      );
+      if (!contentArea) return;
 
-    const images = contentArea.getElementsByTagName("img");
-    const isLocalhost =
-      window.location.hostname === "localhost" ||
-      window.location.hostname === "127.0.0.1";
+      const images = contentArea.getElementsByTagName("img");
+      const isLocalhost =
+        window.location.hostname === "localhost" ||
+        window.location.hostname === "127.0.0.1";
 
-    for (let i = 0; i < images.length; i++) {
-      const img = images[i];
-      let rawConfigString = "";
+      for (let i = 0; i < images.length; i++) {
+        const img = images[i];
+        let rawConfigString = "";
 
-      // 1. Unpack Astro 5's internal metadata object configuration tracking map
-      if (img.hasAttribute("__astro_image_")) {
-        try {
-          const astroData = JSON.parse(img.getAttribute("__astro_image_"));
-          if (astroData && astroData.src) {
-            rawConfigString = astroData.src;
+        // 1. Intercept Astro 5's modern internal JSON metadata object tracking block
+        if (img.hasAttribute("__astro_image_")) {
+          try {
+            const astroData = JSON.parse(img.getAttribute("__astro_image_"));
+            if (astroData && astroData.src) {
+              rawConfigString = astroData.src;
+            }
+          } catch (e) {
+            console.error(
+              "Failed parsing internal __astro_image_ metadata block:",
+              e,
+            );
           }
-        } catch (e) {
-          console.error(
-            "Failed parsing internal __astro_image_ metadata block:",
-            e,
-          );
+        }
+
+        // Fallback to standard src attribute if meta tag is missing
+        if (!rawConfigString) {
+          rawConfigString = img.getAttribute("src") || "";
+        }
+
+        // 2. Extract our custom style hash parameters from Sveltia
+        if (rawConfigString && rawConfigString.includes("#")) {
+          const parts = rawConfigString.split("#");
+          const cleanAstroSrc = parts[0];
+          const hashConfig = parts[1];
+
+          if (hashConfig) {
+            const styles = hashConfig.split("_");
+            const align = styles[0] || "right";
+            const size = styles[1] || "size-medium";
+            const margin = styles[2] || "margin-normal";
+
+            // 3. Map paths dynamically based on your active server environment
+            if (isLocalhost) {
+              // Local Development: Force directory mapping for the Vite middleware to catch
+              let currentPath = window.location.pathname;
+              if (!currentPath.endsWith("/")) currentPath += "/";
+              const fileFragment = cleanAstroSrc.split("/").pop();
+              img.setAttribute("src", currentPath + fileFragment);
+            } else {
+              // Live Production (Netlify): Fallback safely to Astro's built-in target source string
+              img.setAttribute("src", cleanAstroSrc);
+            }
+
+            // 4. Remove temporary attributes to prevent browser rendering loops
+            img.removeAttribute("srcset");
+            img.removeAttribute("__astro_image_");
+
+            // 5. Inject your custom styles as clean CSS classes for Flexbox to take over
+            img.className = "";
+            img.classList.add("cms-floated-image");
+            img.classList.add("align-" + align);
+            img.classList.add(size);
+            img.classList.add(margin);
+          }
         }
       }
+    }
 
-      if (!rawConfigString) {
-        rawConfigString = img.getAttribute("src") || "";
-      }
+    // Run immediately on initial load sequence
+    processImages();
 
-      // 2. Parse out your custom configuration options
-      if (rawConfigString && rawConfigString.includes("#")) {
-        const parts = rawConfigString.split("#");
-        const cleanAstroSrc = parts;
-        const hashConfig = parts;
-
-        if (hashConfig) {
-          const styles = hashConfig.split("_");
-          const align = styles || "right";
-          const size = styles || "size-medium";
-          const margin = styles || "margin-normal";
-
-          // 3. Map the source path dynamically based on your active server environment
-          if (isLocalhost) {
-            // Local Development: Force directory matching for the Vite middleware to catch
-            let currentPath = window.location.pathname;
-            if (!currentPath.endsWith("/")) currentPath += "/";
-            const fileFragment = cleanAstroSrc.split("/").pop();
-            img.setAttribute("src", currentPath + fileFragment);
-          } else {
-            // Live Netlify Production: Use Astro's natively built, optimized, hashed image path string directly
-            img.setAttribute("src", cleanAstroSrc);
-          }
-
-          // 4. Clean up temporary parameters to prevent layout conflicts
-          img.removeAttribute("srcset");
-          img.removeAttribute("__astro_image_");
-
-          // 5. Apply your Flexbox display classes
-          img.className = "";
-          img.classList.add("cms-floated-image");
-          img.classList.add("align-" + align);
-          img.classList.add(size);
-          img.classList.add(margin);
-        }
-      }
+    // Setup the Mutation Observer to catch asynchronous layout rendering states
+    const targetNode = document.getElementById("production-markdown-content");
+    if (targetNode) {
+      const observer = new MutationObserver(function (mutations) {
+        processImages();
+      });
+      observer.observe(targetNode, { childList: true, subtree: true });
     }
   })();
 </script>
