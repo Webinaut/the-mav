@@ -45,7 +45,7 @@ const { Content } = await render(entry);
   </article>
 </BlogPostLayout>
 
-{/* STABLE PRODUCTION PATH RESOLVER */}
+{/* DEFENSIVE MARGIN-AWARE ASSET PATH RESOLVER */}
 <script is:inline>
   (function () {
     function processImages() {
@@ -62,16 +62,18 @@ const { Content } = await render(entry);
       for (let i = 0; i < images.length; i++) {
         const img = images[i];
         let rawConfigString = "";
-        let liveProductionUrl = "";
+        let verifiedProductionUrl = "";
 
-        // 1. Capture Astro's live optimized asset route string from the srcset payload
-        const rawSrcset = img.getAttribute("srcset") || "";
-        if (rawSrcset) {
-          // Extracts the first compiled URL path string out of the asset compilation grid array
-          liveProductionUrl = rawSrcset.split(",")[0].trim().split(" ")[0];
+        // 1. EXTRACT FROM SRCSET FIRST: Catch Astro's live optimized compiled URL path strings
+        const srcsetAttr = img.getAttribute("srcset") || "";
+        if (srcsetAttr) {
+          // Astro's srcset looks like: "/_astro/image.hash_400w.jpg 400w, /_astro/image.hash_800w.jpg 800w"
+          // We break the comma arrays, take the first string, and isolate the pure path parameter
+          const firstSourceBlock = srcsetAttr.split(",")[0].trim();
+          verifiedProductionUrl = firstSourceBlock.split(" ")[0];
         }
 
-        // 2. Intercept Astro 5's internal metadata tracking object to extract your style hashes
+        // 2. Fallback to intercepting Astro 5's internal metadata object tracking data payload
         if (img.hasAttribute("__astro_image_")) {
           try {
             const astroData = JSON.parse(img.getAttribute("__astro_image_"));
@@ -86,14 +88,15 @@ const { Content } = await render(entry);
           }
         }
 
-        // Fallback to reading standard src parameters if metadata trackers are blank
+        // 3. Absolute backup fallback to normal src strings if metadata tracking maps are empty
         if (!rawConfigString) {
           rawConfigString = img.getAttribute("src") || "";
         }
 
-        // 3. Process your custom configuration options if your Sveltia hash is present
+        // 4. Execute re-mapping pipeline loop if our custom Sveltia style hash is present
         if (rawConfigString && rawConfigString.includes("#")) {
           const parts = rawConfigString.split("#");
+          const cleanAstroSrc = parts[0];
           const hashConfig = parts[1];
 
           if (hashConfig) {
@@ -102,29 +105,31 @@ const { Content } = await render(entry);
             const size = styles[1] || "size-medium";
             const margin = styles[2] || "margin-normal";
 
-            // 4. Resolve the image source dynamically based on your active host environment
+            // 5. Apply environment-aware asset paths mapping
             if (isLocalhost) {
-              // Local Development: Build directory path pointing to our Vite middleware helper
+              // Local Development: Map route paths back to our Vite asset middleware handler
               let currentPath = window.location.pathname;
               if (!currentPath.endsWith("/")) currentPath += "/";
-              const fileFragment = parts[0].split("/").pop();
+              const fileFragment = cleanAstroSrc.split("/").pop();
               img.setAttribute("src", currentPath + fileFragment);
             } else {
-              // Live Production (Netlify): Map directly to Astro's real compiled production link
-              // If the srcset array is blank, fallback safely to the native source reference root
-              const finalLivePath = liveProductionUrl || img.src || "";
-              if (finalLivePath.includes("#")) {
-                img.setAttribute("src", finalLivePath.split("#")[0]);
+              // Live Production (Netlify): Pull the optimized path string isolated from srcset
+              // If srcset extraction failed, use the baseline source fallbacks
+              const finalPathTarget =
+                verifiedProductionUrl || cleanAstroSrc || img.src || "";
+
+              if (finalPathTarget.includes("#")) {
+                img.setAttribute("src", finalPathTarget.split("#")[0]);
               } else {
-                img.setAttribute("src", finalLivePath);
+                img.setAttribute("src", finalPathTarget);
               }
             }
 
-            // 5. Remove temporary attributes to prevent browser layout conflicts
+            // 6. Remove temporary processing tags to ensure clean DOM rendering loops
             img.removeAttribute("srcset");
             img.removeAttribute("__astro_image_");
 
-            // 6. Inject your custom styles as clean CSS classes for Flexbox layout control
+            // 7. Initialize clean CSS class properties so our Flexbox styling rules bind
             img.className = "";
             img.classList.add("cms-floated-image");
             img.classList.add("align-" + align);
@@ -135,10 +140,10 @@ const { Content } = await render(entry);
       }
     }
 
-    // Run layout calculation rules immediately upon DOM tree initialization
+    // Initialize the processing rules immediately on document load states
     processImages();
 
-    // Attach Mutation Observer safety net to handle complex asynchronous content updates
+    // Attach Mutation Observer safety net to handle complex server hydration updates loops
     const targetNode = document.getElementById("production-markdown-content");
     if (targetNode) {
       const observer = new MutationObserver(function () {
