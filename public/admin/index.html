@@ -66,16 +66,14 @@
             },
           ],
 
-          // Match string: Looks for relative paths starting with or without ./ or /
+          // STABLE PARSING REGEX: Explicitly handles word boundary capturing groups perfectly
           pattern:
-            /<img\s+src="(?:\.\/|\/)?(?<image>[^"]*)"\s+alt="(?<alt>[^"]*)"\s+class="cms-floated-image\s+align-(?<align>[^\s"]*)\s+(?<size_class>[^"]*)"\s*\/>/,
+            /!\[(?<alt>[^\]]*)\]\((?<image>[^)#\s]+)#(?<align>[a-z]+)_(?<size_class>[a-zA-Z0-9_-]+)\)/,
 
           fromBlock: function (match) {
             return {
-              image: match.groups.image
-                ? `./${match.groups.image.replace(/^\.\/|^\//, "")}`
-                : "",
               alt: match.groups.alt || "",
+              image: match.groups.image || "",
               align: match.groups.align || "right",
               size_class:
                 match.groups.size_class || "size-medium_margin-normal",
@@ -84,22 +82,30 @@
 
           toBlock: function (data) {
             let cleanImage = data.image || "";
-            // Force file paths to save with a clean relative dot-slash (./) prefix
-            cleanImage = cleanImage.replace(/^\.\/|^\//, "");
+
+            // Clear any duplicate folder prefixes if they slip through the editor layout loops
+            if (cleanImage.startsWith("./")) {
+              cleanImage = cleanImage.replace("./", "");
+            }
+            if (cleanImage.startsWith("/")) {
+              cleanImage = cleanImage.replace("/", "");
+            }
+
+            // Keep a uniform, clean relative tracking link that Astro can bundle smoothly
             cleanImage = `./${cleanImage}`;
 
-            const parts = (
-              data.size_class || "size-medium_margin-normal"
-            ).split("_");
-            const size = parts[0] || "size-medium";
-            const margin = parts[1] || "margin-normal";
+            const align = data.align || "right";
+            const size = data.size_class || "size-medium_margin-normal";
 
-            return `<img src="${cleanImage}" alt="${data.alt || ""}" class="cms-floated-image align-${data.align || "right"} ${size} ${margin}" />`;
+            return `![${data.alt || ""}](${cleanImage}#${align}_${size})`;
           },
 
           toPreview: function (data) {
             let previewSrc = data.image || "";
-            previewSrc = previewSrc.replace(/^\.\/|^\//, ""); // Clean prefix for Sveltia's internal render
+            if (previewSrc.startsWith("./"))
+              previewSrc = previewSrc.replace("./", "");
+            if (previewSrc.startsWith("/"))
+              previewSrc = previewSrc.replace("/", "");
 
             const isCenter = data.align === "center";
             const floatValue = isCenter ? "none" : data.align;
