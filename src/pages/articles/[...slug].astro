@@ -1,8 +1,8 @@
 ---
-import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
-import ViewCounter from "../../components/ViewCounter.astro";
-import PostComments from "../../components/PostComments.astro";
-import Btn from "../../components/Button.astro";
+import BlogPostLayout from "../layouts/BlogPostLayout.astro";
+import ViewCounter from "../components/ViewCounter.astro";
+import PostComments from "../components/PostComments.astro";
+import Btn from "../components/Button.astro";
 
 import { getEntry, render } from "astro:content";
 
@@ -16,7 +16,6 @@ if (entry === undefined) {
   return Astro.redirect("/404");
 }
 
-// FIXED: Clean single-argument execution satisfies the Astro 5 Sätteri architecture
 const { Content } = await render(entry);
 ---
 
@@ -24,7 +23,8 @@ const { Content } = await render(entry);
   <article class="article-content">
     <ViewCounter slug={slug} />
 
-    <div class="markdown-body">
+    {/* Wrap your content area in a designated container */}
+    <div id="article-markdown-body" class="markdown-body">
       <Content />
     </div>
 
@@ -43,6 +43,33 @@ const { Content } = await render(entry);
     <PostComments />
   </article>
 </BlogPostLayout>
+
+{/* POST-RENDER PATH RESOLVER SCRIPT */}
+<script is:inline>
+  (function () {
+    const container = document.getElementById("article-markdown-body");
+    if (!container) return;
+
+    // Scan the content block looking for any embedded image elements
+    const images = container.getElementsByTagName("img");
+
+    for (let img of images) {
+      const src = img.getAttribute("src");
+
+      // If the image tag contains our target relative prefix string
+      if (src && src.startsWith("./")) {
+        const cleanFilename = src.replace("./", "");
+
+        // Find the current window path location context (e.g., /articles/my-post/)
+        let baseRoute = window.location.pathname;
+        if (!baseRoute.endsWith("/")) baseRoute += "/";
+
+        // Direct the browser to resolve the image from the compiled post folder asset bundle
+        img.setAttribute("src", baseRoute + cleanFilename);
+      }
+    }
+  })();
+</script>
 
 <style is:global>
   /* Global Float Layout Styles */

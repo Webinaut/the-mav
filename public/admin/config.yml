@@ -3,8 +3,9 @@ backend:
   repo: Webinaut/the-mav
   branch: main
   base_url: https://netlify.com
-media_folder: "src/assets/images"
-public_folder: "/src/assets/images"
+# Tells Sveltia to upload assets straight into the directory of the post being edited
+media_folder: "src/content/articles/{{slug}}"
+public_folder: "./"
 media_folder_relative: true
 publish_mode: editorial_workflow
 

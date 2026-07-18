@@ -11,7 +11,6 @@
     <!-- STEP 1: Load Sveltia CMS library from the external source CDN -->
     <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
 
-    <!-- STEP 2: Create a completely separate, dedicated script tag for your custom plugin -->
     <script>
       window.CMS = window.CMS || {};
 
@@ -67,13 +66,15 @@
             },
           ],
 
-          // REGEX PATTERN: Safely handles paths using either an absolute slash (/) or a relative dot-slash (./)
+          // Match string: Looks for relative paths starting with or without ./ or /
           pattern:
             /<img\s+src="(?:\.\/|\/)?(?<image>[^"]*)"\s+alt="(?<alt>[^"]*)"\s+class="cms-floated-image\s+align-(?<align>[^\s"]*)\s+(?<size_class>[^"]*)"\s*\/>/,
 
           fromBlock: function (match) {
             return {
-              image: match.groups.image ? `/${match.groups.image}` : "",
+              image: match.groups.image
+                ? `./${match.groups.image.replace(/^\.\/|^\//, "")}`
+                : "",
               alt: match.groups.alt || "",
               align: match.groups.align || "right",
               size_class:
@@ -83,14 +84,9 @@
 
           toBlock: function (data) {
             let cleanImage = data.image || "";
-
-            // Ensure file paths are saved using a clean absolute forward slash structure
-            if (cleanImage.startsWith("./")) {
-              cleanImage = cleanImage.replace("./", "/");
-            }
-            if (!cleanImage.startsWith("/") && !cleanImage.startsWith("http")) {
-              cleanImage = `/${cleanImage}`;
-            }
+            // Force file paths to save with a clean relative dot-slash (./) prefix
+            cleanImage = cleanImage.replace(/^\.\/|^\//, "");
+            cleanImage = `./${cleanImage}`;
 
             const parts = (
               data.size_class || "size-medium_margin-normal"
@@ -101,14 +97,9 @@
             return `<img src="${cleanImage}" alt="${data.alt || ""}" class="cms-floated-image align-${data.align || "right"} ${size} ${margin}" />`;
           },
 
-          // FIXED PREVIEW HANDLER: Strips the leading slash for the editor preview pane
           toPreview: function (data) {
-            let previewImageSrc = data.image || "";
-
-            // FIX: Converts absolute root links into relative links for Sveltia's internal viewer
-            if (previewImageSrc.startsWith("/")) {
-              previewImageSrc = previewImageSrc.substring(1);
-            }
+            let previewSrc = data.image || "";
+            previewSrc = previewSrc.replace(/^\.\/|^\//, ""); // Clean prefix for Sveltia's internal render
 
             const isCenter = data.align === "center";
             const floatValue = isCenter ? "none" : data.align;
@@ -122,7 +113,7 @@
             if (data.size_class?.includes("full")) widthPercent = "100%";
 
             return `<div style="float: ${floatValue}; max-width: ${widthPercent}; width: ${widthPercent}; margin: ${marginValue}; box-sizing: border-box; display: inline-block;">
-            <img src="${previewImageSrc}" alt="${data.alt || ""}" style="width:100%; height:auto; display:block; border-radius:6px;"/>
+            <img src="${previewSrc}" alt="${data.alt || ""}" style="width:100%; height:auto; display:block; border-radius:6px;"/>
           </div>`;
           },
         });
