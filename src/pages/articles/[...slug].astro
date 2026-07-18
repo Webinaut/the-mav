@@ -45,7 +45,7 @@ const { Content } = await render(entry);
   </article>
 </BlogPostLayout>
 
-{/* DEFENSIVE MUTATION OBSERVER PATH RESOLVER */}
+{/* FINAL PRODUCTION PATH RESOLVER */}
 <script is:inline>
   (function () {
     function processImages() {
@@ -63,7 +63,7 @@ const { Content } = await render(entry);
         const img = images[i];
         let rawConfigString = "";
 
-        // 1. Intercept Astro 5's modern internal JSON metadata object tracking block
+        // 1. Intercept Astro 5's internal metadata tracking configurations block
         if (img.hasAttribute("__astro_image_")) {
           try {
             const astroData = JSON.parse(img.getAttribute("__astro_image_"));
@@ -78,15 +78,13 @@ const { Content } = await render(entry);
           }
         }
 
-        // Fallback to standard src attribute if meta tag is missing
         if (!rawConfigString) {
           rawConfigString = img.getAttribute("src") || "";
         }
 
-        // 2. Extract our custom style hash parameters from Sveltia
+        // 2. Extract your custom configuration options
         if (rawConfigString && rawConfigString.includes("#")) {
           const parts = rawConfigString.split("#");
-          const cleanAstroSrc = parts[0];
           const hashConfig = parts[1];
 
           if (hashConfig) {
@@ -95,23 +93,27 @@ const { Content } = await render(entry);
             const size = styles[1] || "size-medium";
             const margin = styles[2] || "margin-normal";
 
-            // 3. Map paths dynamically based on your active server environment
+            // 3. Resolve the image source dynamically based on your environment
             if (isLocalhost) {
-              // Local Development: Force directory mapping for the Vite middleware to catch
+              // Local Development: Build directory path pointing to our Vite middleware helper
               let currentPath = window.location.pathname;
               if (!currentPath.endsWith("/")) currentPath += "/";
-              const fileFragment = cleanAstroSrc.split("/").pop();
+              const fileFragment = parts[0].split("/").pop();
               img.setAttribute("src", currentPath + fileFragment);
             } else {
-              // Live Production (Netlify): Fallback safely to Astro's built-in target source string
-              img.setAttribute("src", cleanAstroSrc);
+              // Live Production (Netlify): Extract the optimized production URL from the browser
+              // If currentSrc isn't ready yet, fall back safely to Astro's processed base source
+              const productionUrl = img.currentSrc || img.src;
+              if (productionUrl && productionUrl.includes("#")) {
+                img.setAttribute("src", productionUrl.split("#")[0]);
+              }
             }
 
-            // 4. Remove temporary attributes to prevent browser rendering loops
+            // 4. Remove temporary attributes to prevent rendering loops
             img.removeAttribute("srcset");
             img.removeAttribute("__astro_image_");
 
-            // 5. Inject your custom styles as clean CSS classes for Flexbox to take over
+            // 5. Inject your custom styles as clean CSS classes for Flexbox
             img.className = "";
             img.classList.add("cms-floated-image");
             img.classList.add("align-" + align);
@@ -122,13 +124,13 @@ const { Content } = await render(entry);
       }
     }
 
-    // Run immediately on initial load sequence
+    // Run layout calculation rules immediately on content viewport mounting
     processImages();
 
-    // Setup the Mutation Observer to catch asynchronous layout rendering states
+    // Attach Mutation Observer safety net to handle complex server hydration updates loops
     const targetNode = document.getElementById("production-markdown-content");
     if (targetNode) {
-      const observer = new MutationObserver(function (mutations) {
+      const observer = new MutationObserver(function () {
         processImages();
       });
       observer.observe(targetNode, { childList: true, subtree: true });
