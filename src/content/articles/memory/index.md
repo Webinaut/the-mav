@@ -22,7 +22,9 @@ His “secret” party trick is revealed below in the Rhyming Number Peg System.
 
 I’m sure you have heard about people like Ben Pridmore, the former world memory champion. He broke the 30 seconds barrier when he memorised the order of an entire shuffled deck of cards and recalled them in order in 26 seconds. We may not all be potential memory champions, but we are all capable of amazing memory feats.
 
-![Simonedes](./simonides-of-ceos.png#right_size-medium_margin-normal)Let’s go back a little, 2500 years or so, to the time of Simonides of Ceos. He was the Ancient Greek lyric poet, who lived from 556 to 468 BC.
+![Simonedes](./simonides-of-ceos.png#right_size-medium_margin-normal)
+
+Let’s go back a little, 2500 years or so, to the time of Simonides of Ceos. He was the Ancient Greek lyric poet, who lived from 556 to 468 BC.
 
 Simonides was at a feast hosted by one of his patrons when he was called out of the feast hall to see two visitors who had arrived and were asking for him. As soon as he left the hall, it collapsed, killing everyone inside. During the subsequent excavation of the rubble of the dining hall, Simonides was called upon to identify each person killed. Their bodies had been crushed beyond recognition, but he completed the gruesome task by correlating their identities to their positions (loci in Latin) at the table before his departure. This events were said to have inspired him to develop a system of mnemonics based on images and places called the method of loci (today known as the memory theatre or memory palace).
 
