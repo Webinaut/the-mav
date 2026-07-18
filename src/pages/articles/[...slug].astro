@@ -43,18 +43,22 @@ const { Content } = await render(entry);
   </article>
 </BlogPostLayout>
 
-{/* FIXED CLIENT-SIDE INTERCEPTOR RESOLVER SCRIPT */}
+{/* COMPREHENSIVE PATH RESOLUTION SCRIPT */}
 <script is:inline>
   (function () {
     const contentArea = document.getElementById("production-markdown-content");
     if (!contentArea) return;
 
     const images = contentArea.getElementsByTagName("img");
+    const isLocalhost =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1";
 
     for (let i = 0; i < images.length; i++) {
       const img = images[i];
       let rawConfigString = "";
 
+      // 1. Intercept Astro 5's modern internal JSON metadata object
       if (img.hasAttribute("__astro_image_")) {
         try {
           const astroData = JSON.parse(img.getAttribute("__astro_image_"));
@@ -69,12 +73,15 @@ const { Content } = await render(entry);
         }
       }
 
+      // Fallback to reading standard source values if metadata is empty
       if (!rawConfigString) {
         rawConfigString = img.getAttribute("src") || "";
       }
 
+      // 2. Parse out our custom style hash parameters
       if (rawConfigString && rawConfigString.includes("#")) {
         const parts = rawConfigString.split("#");
+        const cleanAstroSrc = parts[0]; // This is Astro's optimized production path on live site
         const hashConfig = parts[1];
 
         if (hashConfig) {
@@ -83,22 +90,25 @@ const { Content } = await render(entry);
           const size = styles[1] || "size-medium";
           const margin = styles[2] || "margin-normal";
 
-          // 1. Calculate clean absolute routing variables pointing directly to your article content directory context
-          let currentPath = window.location.pathname;
-          if (!currentPath.endsWith("/")) currentPath += "/";
+          // 3. Environment-aware source mapping
+          if (isLocalhost) {
+            // Local development: Force exact folder structure for the Vite middleware to catch
+            let currentPath = window.location.pathname;
+            if (!currentPath.endsWith("/")) currentPath += "/";
 
-          // Isolate the clean file name string (e.g., RabbitHole.jpg)
-          const fileFragment = parts[0].split("/").pop();
+            const fileFragment = cleanAstroSrc.split("/").pop();
+            img.setAttribute("src", currentPath + fileFragment);
+          } else {
+            // Live Netlify Production: Use Astro's optimized hashed image path natively!
+            img.setAttribute("src", cleanAstroSrc);
+          }
 
-          // 2. Direct the element back to the explicit subfolder URL layout
-          img.setAttribute("src", currentPath + fileFragment);
-
-          // 3. Clear data tracking entries that could clash with styling overrides
+          // 4. Clean up tracking parameters that cause rendering conflicts
           img.removeAttribute("srcset");
           img.removeAttribute("__astro_image_");
 
-          // 4. Inject clean CSS display classes onto the layout node
-          img.className = ""; // Clear default or duplicate configurations strings
+          // 5. Apply layout utility classes
+          img.className = "";
           img.classList.add("cms-floated-image");
           img.classList.add("align-" + align);
           img.classList.add(size);
