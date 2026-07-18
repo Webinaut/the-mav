@@ -4,7 +4,9 @@ import ViewCounter from "../../components/ViewCounter.astro";
 import PostComments from "../../components/PostComments.astro";
 import Btn from "../../components/Button.astro";
 
+// Import collection rendering tools and our text preprocessor function
 import { getEntry, render } from "astro:content";
+import { processArticleMarkdown } from "../../content.config";
 
 const { slug } = Astro.params;
 if (slug === undefined) {
@@ -16,6 +18,11 @@ if (entry === undefined) {
   return Astro.redirect("/404");
 }
 
+// FIX: Pre-process the body string on the server before compilation!
+if (entry.body) {
+  entry.body = processArticleMarkdown(entry.body);
+}
+
 const { Content } = await render(entry);
 ---
 
@@ -23,7 +30,8 @@ const { Content } = await render(entry);
   <article class="article-content">
     <ViewCounter slug={slug} />
 
-    <div id="production-markdown-content" class="markdown-body">
+    {/* Body elements render optimized HTML natively built on the server */}
+    <div class="markdown-body">
       <Content />
     </div>
 
@@ -43,91 +51,13 @@ const { Content } = await render(entry);
   </article>
 </BlogPostLayout>
 
-{/* COMPREHENSIVE PATH RESOLUTION SCRIPT */}
-<script is:inline>
-  (function () {
-    const contentArea = document.getElementById("production-markdown-content");
-    if (!contentArea) return;
-
-    const images = contentArea.getElementsByTagName("img");
-    const isLocalhost =
-      window.location.hostname === "localhost" ||
-      window.location.hostname === "127.0.0.1";
-
-    for (let i = 0; i < images.length; i++) {
-      const img = images[i];
-      let rawConfigString = "";
-
-      // 1. Intercept Astro 5's modern internal JSON metadata object
-      if (img.hasAttribute("__astro_image_")) {
-        try {
-          const astroData = JSON.parse(img.getAttribute("__astro_image_"));
-          if (astroData && astroData.src) {
-            rawConfigString = astroData.src;
-          }
-        } catch (e) {
-          console.error(
-            "Failed parsing internal __astro_image_ metadata block:",
-            e,
-          );
-        }
-      }
-
-      // Fallback to reading standard source values if metadata is empty
-      if (!rawConfigString) {
-        rawConfigString = img.getAttribute("src") || "";
-      }
-
-      // 2. Parse out our custom style hash parameters
-      if (rawConfigString && rawConfigString.includes("#")) {
-        const parts = rawConfigString.split("#");
-        const cleanAstroSrc = parts[0]; // This is Astro's optimized production path on live site
-        const hashConfig = parts[1];
-
-        if (hashConfig) {
-          const styles = hashConfig.split("_");
-          const align = styles[0] || "right";
-          const size = styles[1] || "size-medium";
-          const margin = styles[2] || "margin-normal";
-
-          // 3. Environment-aware source mapping
-          if (isLocalhost) {
-            // Local development: Force exact folder structure for the Vite middleware to catch
-            let currentPath = window.location.pathname;
-            if (!currentPath.endsWith("/")) currentPath += "/";
-
-            const fileFragment = cleanAstroSrc.split("/").pop();
-            img.setAttribute("src", currentPath + fileFragment);
-          } else {
-            // Live Netlify Production: Use Astro's optimized hashed image path natively!
-            img.setAttribute("src", cleanAstroSrc);
-          }
-
-          // 4. Clean up tracking parameters that cause rendering conflicts
-          img.removeAttribute("srcset");
-          img.removeAttribute("__astro_image_");
-
-          // 5. Apply layout utility classes
-          img.className = "";
-          img.classList.add("cms-floated-image");
-          img.classList.add("align-" + align);
-          img.classList.add(size);
-          img.classList.add(margin);
-        }
-      }
-    }
-  })();
-</script>
-
 <style is:global>
   /* --- MODERN FLEXBOX IMAGE CONTAINER LAYOUT --- */
-
-  /* Target any paragraph that contains our floated image plugin */
   .article-content p:has(img.cms-floated-image) {
     display: flex;
     flex-direction: row;
-    gap: 2rem; /* Clean, reliable spacing between text and image */
-    align-items: flex-start; /* Aligns text and image squarely at the top */
+    gap: 2rem;
+    align-items: flex-start;
     margin-bottom: 2rem;
     width: 100%;
   }
@@ -136,22 +66,16 @@ const { Content } = await render(entry);
   .article-content img.cms-floated-image {
     height: auto;
     border-radius: 6px;
-    flex-shrink: 0; /* Prevents the image from getting squished */
+    flex-shrink: 0;
   }
 
   /* --- ALIGNMENT CLASSES USING FLEX ORDER --- */
-
-  /* Pushes image to the left, text flows to the right */
   .article-content img.align-left {
     order: -1;
   }
-
-  /* Default flex row flow: text stays left, image moves right */
   .article-content img.align-right {
     order: 1;
   }
-
-  /* Centers the image and forces text to drop cleanly to a new line */
   .article-content p:has(img.align-center) {
     flex-direction: column;
     align-items: center;
@@ -171,8 +95,6 @@ const { Content } = await render(entry);
   .article-content img.size-large {
     width: 60% !important;
   }
-
-  /* Full width forces the layout container to behave like a block column stacked vertically */
   .article-content p:has(img.size-full) {
     flex-direction: column;
     align-items: stretch;
@@ -181,30 +103,20 @@ const { Content } = await render(entry);
     width: 100% !important;
   }
 
-  /* --- REFINING CONFLICTING CONTENT ELEMENTS --- */
+  /* Repurpose Sveltia margins into dynamic flex gaps */
+  .article-content p:has(img.margin-normal) {
+    gap: 1.5rem;
+  }
+  .article-content p:has(img.margin-wide) {
+    gap: 2.5rem;
+  }
 
-  /* Blockquotes and headings now stay naturally self-contained */
+  /* Layout container constraints to keep page blocks organized */
   .article-content blockquote {
     margin: 2rem 0;
     padding: 1rem 1.5rem;
     border-left: 4px solid #ccc;
     width: 100%;
     box-sizing: border-box;
-  }
-
-  .article-content h1,
-  .article-content h2,
-  .article-content h3,
-  .article-content h4 {
-    width: 100%;
-    margin-top: 2rem;
-  }
-
-  /* Repurpose Sveltia margin choices into dynamic flex gaps */
-  .article-content p:has(img.margin-normal) {
-    gap: 1.5rem;
-  }
-  .article-content p:has(img.margin-wide) {
-    gap: 2.5rem;
   }
 </style>
