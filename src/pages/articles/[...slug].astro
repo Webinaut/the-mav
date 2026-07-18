@@ -45,7 +45,7 @@ const { Content } = await render(entry);
   </article>
 </BlogPostLayout>
 
-{/* FINAL PRODUCTION PATH RESOLVER */}
+{/* STABLE PRODUCTION PATH RESOLVER */}
 <script is:inline>
   (function () {
     function processImages() {
@@ -62,8 +62,16 @@ const { Content } = await render(entry);
       for (let i = 0; i < images.length; i++) {
         const img = images[i];
         let rawConfigString = "";
+        let liveProductionUrl = "";
 
-        // 1. Intercept Astro 5's internal metadata tracking configurations block
+        // 1. Capture Astro's live optimized asset route string from the srcset payload
+        const rawSrcset = img.getAttribute("srcset") || "";
+        if (rawSrcset) {
+          // Extracts the first compiled URL path string out of the asset compilation grid array
+          liveProductionUrl = rawSrcset.split(",")[0].trim().split(" ")[0];
+        }
+
+        // 2. Intercept Astro 5's internal metadata tracking object to extract your style hashes
         if (img.hasAttribute("__astro_image_")) {
           try {
             const astroData = JSON.parse(img.getAttribute("__astro_image_"));
@@ -78,11 +86,12 @@ const { Content } = await render(entry);
           }
         }
 
+        // Fallback to reading standard src parameters if metadata trackers are blank
         if (!rawConfigString) {
           rawConfigString = img.getAttribute("src") || "";
         }
 
-        // 2. Extract your custom configuration options
+        // 3. Process your custom configuration options if your Sveltia hash is present
         if (rawConfigString && rawConfigString.includes("#")) {
           const parts = rawConfigString.split("#");
           const hashConfig = parts[1];
@@ -93,7 +102,7 @@ const { Content } = await render(entry);
             const size = styles[1] || "size-medium";
             const margin = styles[2] || "margin-normal";
 
-            // 3. Resolve the image source dynamically based on your environment
+            // 4. Resolve the image source dynamically based on your active host environment
             if (isLocalhost) {
               // Local Development: Build directory path pointing to our Vite middleware helper
               let currentPath = window.location.pathname;
@@ -101,19 +110,21 @@ const { Content } = await render(entry);
               const fileFragment = parts[0].split("/").pop();
               img.setAttribute("src", currentPath + fileFragment);
             } else {
-              // Live Production (Netlify): Extract the optimized production URL from the browser
-              // If currentSrc isn't ready yet, fall back safely to Astro's processed base source
-              const productionUrl = img.currentSrc || img.src;
-              if (productionUrl && productionUrl.includes("#")) {
-                img.setAttribute("src", productionUrl.split("#")[0]);
+              // Live Production (Netlify): Map directly to Astro's real compiled production link
+              // If the srcset array is blank, fallback safely to the native source reference root
+              const finalLivePath = liveProductionUrl || img.src || "";
+              if (finalLivePath.includes("#")) {
+                img.setAttribute("src", finalLivePath.split("#")[0]);
+              } else {
+                img.setAttribute("src", finalLivePath);
               }
             }
 
-            // 4. Remove temporary attributes to prevent rendering loops
+            // 5. Remove temporary attributes to prevent browser layout conflicts
             img.removeAttribute("srcset");
             img.removeAttribute("__astro_image_");
 
-            // 5. Inject your custom styles as clean CSS classes for Flexbox
+            // 6. Inject your custom styles as clean CSS classes for Flexbox layout control
             img.className = "";
             img.classList.add("cms-floated-image");
             img.classList.add("align-" + align);
@@ -124,10 +135,10 @@ const { Content } = await render(entry);
       }
     }
 
-    // Run layout calculation rules immediately on content viewport mounting
+    // Run layout calculation rules immediately upon DOM tree initialization
     processImages();
 
-    // Attach Mutation Observer safety net to handle complex server hydration updates loops
+    // Attach Mutation Observer safety net to handle complex asynchronous content updates
     const targetNode = document.getElementById("production-markdown-content");
     if (targetNode) {
       const observer = new MutationObserver(function () {
