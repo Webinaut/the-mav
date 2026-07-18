@@ -66,14 +66,16 @@
             },
           ],
 
-          // STABLE PARSING REGEX: Explicitly handles word boundary capturing groups perfectly
+          // REGEX PATTERN: Matches regular images or deep directory tracking artifacts seamlessly
           pattern:
-            /!\[(?<alt>[^\]]*)\]\((?<image>[^)#\s]+)#(?<align>[a-z]+)_(?<size_class>[a-zA-Z0-9_-]+)\)/,
+            /!\[(?<alt>[^\]]*)\]\((?:\.\/)?(?<image>[^)#\s]+)#(?<align>[a-z]+)_(?<size_class>[a-zA-Z0-9_-]+)\)/,
 
           fromBlock: function (match) {
+            // Extracts the raw image filename and attaches a relative prefix to satisfy Sveltia's lookup engine
+            const fileFragment = match.groups.image.split("/").pop();
             return {
               alt: match.groups.alt || "",
-              image: match.groups.image || "",
+              image: `./${fileFragment}`,
               align: match.groups.align || "right",
               size_class:
                 match.groups.size_class || "size-medium_margin-normal",
@@ -81,19 +83,11 @@
           },
 
           toBlock: function (data) {
-            let cleanImage = data.image || "";
+            // Isolate the clean file name fragment (e.g. simonides-of-ceos.png)
+            const fileFragment = (data.image || "").split("/").pop();
 
-            // Clear any duplicate folder prefixes if they slip through the editor layout loops
-            if (cleanImage.startsWith("./")) {
-              cleanImage = cleanImage.replace("./", "");
-            }
-            if (cleanImage.startsWith("/")) {
-              cleanImage = cleanImage.replace("/", "");
-            }
-
-            // Keep a uniform, clean relative tracking link that Astro can bundle smoothly
-            cleanImage = `./${cleanImage}`;
-
+            // CRITICAL: Force a clean, standard markdown path so Astro's asset pipeline compiles it
+            const cleanImage = `./${fileFragment}`;
             const align = data.align || "right";
             const size = data.size_class || "size-medium_margin-normal";
 
@@ -101,11 +95,7 @@
           },
 
           toPreview: function (data) {
-            let previewSrc = data.image || "";
-            if (previewSrc.startsWith("./"))
-              previewSrc = previewSrc.replace("./", "");
-            if (previewSrc.startsWith("/"))
-              previewSrc = previewSrc.replace("/", "");
+            const fileFragment = (data.image || "").split("/").pop();
 
             const isCenter = data.align === "center";
             const floatValue = isCenter ? "none" : data.align;
@@ -119,7 +109,7 @@
             if (data.size_class?.includes("full")) widthPercent = "100%";
 
             return `<div style="float: ${floatValue}; max-width: ${widthPercent}; width: ${widthPercent}; margin: ${marginValue}; box-sizing: border-box; display: inline-block;">
-            <img src="${previewSrc}" alt="${data.alt || ""}" style="width:100%; height:auto; display:block; border-radius:6px;"/>
+            <img src="${fileFragment}" alt="${data.alt || ""}" style="width:100%; height:auto; display:block; border-radius:6px;"/>
           </div>`;
           },
         });
