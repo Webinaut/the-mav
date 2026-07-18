@@ -66,15 +66,14 @@
             },
           ],
 
-          // REGEX PATTERN: Matches regular images or deep directory tracking artifacts seamlessly
+          // REGEX PATTERN: Captures your text details and layout settings using a pipe separator format
           pattern:
-            /!\[(?<alt>[^\]]*)\]\((?:\.\/)?(?<image>[^)#\s]+)#(?<align>[a-z]+)_(?<size_class>[a-zA-Z0-9_-]+)\)/,
+            /!\[(?<alt>[^|\]]*)(?:\|\s*(?<align>left|right|center)\s*\|\s*(?<size_class>[a-zA-Z0-9_-]+))?\]\((?:\.\/)?(?<image>[^)\s]+)\)/,
 
           fromBlock: function (match) {
-            // Extracts the raw image filename and attaches a relative prefix to satisfy Sveltia's lookup engine
             const fileFragment = match.groups.image.split("/").pop();
             return {
-              alt: match.groups.alt || "",
+              alt: (match.groups.alt || "").trim(),
               image: `./${fileFragment}`,
               align: match.groups.align || "right",
               size_class:
@@ -83,20 +82,18 @@
           },
 
           toBlock: function (data) {
-            // Isolate the clean file name fragment (e.g. simonides-of-ceos.png)
             const fileFragment = (data.image || "").split("/").pop();
-
-            // CRITICAL: Force a clean, standard markdown path so Astro's asset pipeline compiles it
             const cleanImage = `./${fileFragment}`;
+            const cleanAlt = (data.alt || "").replace("|", "").trim();
             const align = data.align || "right";
             const size = data.size_class || "size-medium_margin-normal";
 
-            return `![${data.alt || ""}](${cleanImage}#${align}_${size})`;
+            // Returns valid markdown syntax that Astro 5 parses and optimizes automatically
+            return `![${cleanAlt} | ${align} | ${size}](${cleanImage})`;
           },
 
           toPreview: function (data) {
             const fileFragment = (data.image || "").split("/").pop();
-
             const isCenter = data.align === "center";
             const floatValue = isCenter ? "none" : data.align;
             const marginValue = isCenter

@@ -45,7 +45,7 @@ const { Content } = await render(entry);
   </article>
 </BlogPostLayout>
 
-{/* DEFENSIVE MARGIN-AWARE ASSET PATH RESOLVER */}
+{/* CLEAN ALT-BASED LAYOUT MAPPING SCRIPT */}
 <script is:inline>
   (function () {
     function processImages() {
@@ -55,100 +55,48 @@ const { Content } = await render(entry);
       if (!contentArea) return;
 
       const images = contentArea.getElementsByTagName("img");
-      const isLocalhost =
-        window.location.hostname === "localhost" ||
-        window.location.hostname === "127.0.0.1";
 
       for (let i = 0; i < images.length; i++) {
         const img = images[i];
-        let rawConfigString = "";
-        let verifiedProductionUrl = "";
+        const altText = img.getAttribute("alt") || "";
 
-        // 1. EXTRACT FROM SRCSET FIRST: Catch Astro's live optimized compiled URL path strings
-        const srcsetAttr = img.getAttribute("srcset") || "";
-        if (srcsetAttr) {
-          // Astro's srcset looks like: "/_astro/image.hash_400w.jpg 400w, /_astro/image.hash_800w.jpg 800w"
-          // We break the comma arrays, take the first string, and isolate the pure path parameter
-          const firstSourceBlock = srcsetAttr.split(",")[0].trim();
-          verifiedProductionUrl = firstSourceBlock.split(" ")[0];
-        }
+        // Check if our custom layout string is present inside the alt text attribute
+        if (altText && altText.includes("|")) {
+          const configurationParts = altText.split("|");
 
-        // 2. Fallback to intercepting Astro 5's internal metadata object tracking data payload
-        if (img.hasAttribute("__astro_image_")) {
-          try {
-            const astroData = JSON.parse(img.getAttribute("__astro_image_"));
-            if (astroData && astroData.src) {
-              rawConfigString = astroData.src;
-            }
-          } catch (e) {
-            console.error(
-              "Failed parsing internal __astro_image_ metadata block:",
-              e,
-            );
-          }
-        }
+          // Isolate the clean text title descriptor, stripping layout configurations out
+          const cleanAltLabel = configurationParts[0].trim();
+          const align = configurationParts[1]
+            ? configurationParts[1].trim()
+            : "right";
+          const sizeConfig = configurationParts[2]
+            ? configurationParts[2].trim()
+            : "size-medium_margin-normal";
 
-        // 3. Absolute backup fallback to normal src strings if metadata tracking maps are empty
-        if (!rawConfigString) {
-          rawConfigString = img.getAttribute("src") || "";
-        }
+          const styles = sizeConfig.split("_");
+          const size = styles[0] || "size-medium";
+          const margin = styles[1] || "margin-normal";
 
-        // 4. Execute re-mapping pipeline loop if our custom Sveltia style hash is present
-        if (rawConfigString && rawConfigString.includes("#")) {
-          const parts = rawConfigString.split("#");
-          const cleanAstroSrc = parts[0];
-          const hashConfig = parts[1];
+          // 1. Clean the visible alt text layout label attribute mapping
+          img.setAttribute("alt", cleanAltLabel);
 
-          if (hashConfig) {
-            const styles = hashConfig.split("_");
-            const align = styles[0] || "right";
-            const size = styles[1] || "size-medium";
-            const margin = styles[2] || "margin-normal";
-
-            // 5. Apply environment-aware asset paths mapping
-            if (isLocalhost) {
-              // Local Development: Map route paths back to our Vite asset middleware handler
-              let currentPath = window.location.pathname;
-              if (!currentPath.endsWith("/")) currentPath += "/";
-              const fileFragment = cleanAstroSrc.split("/").pop();
-              img.setAttribute("src", currentPath + fileFragment);
-            } else {
-              // Live Production (Netlify): Pull the optimized path string isolated from srcset
-              // If srcset extraction failed, use the baseline source fallbacks
-              const finalPathTarget =
-                verifiedProductionUrl || cleanAstroSrc || img.src || "";
-
-              if (finalPathTarget.includes("#")) {
-                img.setAttribute("src", finalPathTarget.split("#")[0]);
-              } else {
-                img.setAttribute("src", finalPathTarget);
-              }
-            }
-
-            // 6. Remove temporary processing tags to ensure clean DOM rendering loops
-            img.removeAttribute("srcset");
-            img.removeAttribute("__astro_image_");
-
-            // 7. Initialize clean CSS class properties so our Flexbox styling rules bind
-            img.className = "";
-            img.classList.add("cms-floated-image");
-            img.classList.add("align-" + align);
-            img.classList.add(size);
-            img.classList.add(margin);
-          }
+          // 2. Inject your custom styles as clean CSS classes for Flexbox layout control
+          img.className = "";
+          img.classList.add("cms-floated-image");
+          img.classList.add("align-" + align);
+          img.classList.add(size);
+          img.classList.add(margin);
         }
       }
     }
 
-    // Initialize the processing rules immediately on document load states
+    // Run layout processing rules immediately on document load states
     processImages();
 
-    // Attach Mutation Observer safety net to handle complex server hydration updates loops
+    // Attach Mutation Observer safety net to handle asynchronous hydration updates
     const targetNode = document.getElementById("production-markdown-content");
     if (targetNode) {
-      const observer = new MutationObserver(function () {
-        processImages();
-      });
+      const observer = new MutationObserver(processImages);
       observer.observe(targetNode, { childList: true, subtree: true });
     }
   })();
