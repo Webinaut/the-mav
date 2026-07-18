@@ -4,9 +4,7 @@ import ViewCounter from "../../components/ViewCounter.astro";
 import PostComments from "../../components/PostComments.astro";
 import Btn from "../../components/Button.astro";
 
-// Import collection rendering tools and our text preprocessor function
 import { getEntry, render } from "astro:content";
-import { processArticleMarkdown } from "../../content.config";
 
 const { slug } = Astro.params;
 if (slug === undefined) {
@@ -18,11 +16,7 @@ if (entry === undefined) {
   return Astro.redirect("/404");
 }
 
-// FIX: Pre-process the body string on the server before compilation!
-if (entry.body) {
-  entry.body = processArticleMarkdown(entry.body);
-}
-
+// Fixed: Single argument rendering prevents Astro 5 server-side template crashes
 const { Content } = await render(entry);
 ---
 
@@ -30,8 +24,8 @@ const { Content } = await render(entry);
   <article class="article-content">
     <ViewCounter slug={slug} />
 
-    {/* Body elements render optimized HTML natively built on the server */}
-    <div class="markdown-body">
+    {/* Bound container for our client script to process */}
+    <div id="production-markdown-content" class="markdown-body">
       <Content />
     </div>
 
@@ -51,12 +45,86 @@ const { Content } = await render(entry);
   </article>
 </BlogPostLayout>
 
+{/* FAIL-SAFE PATH RESOLVER SCRIPT */}
+<script is:inline>
+  (function () {
+    const contentArea = document.getElementById("production-markdown-content");
+    if (!contentArea) return;
+
+    const images = contentArea.getElementsByTagName("img");
+    const isLocalhost =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1";
+
+    for (let i = 0; i < images.length; i++) {
+      const img = images[i];
+      let rawConfigString = "";
+
+      // 1. Check if Astro 5 has hidden its metadata inside its internal object mapping tracking key
+      if (img.hasAttribute("__astro_image_")) {
+        try {
+          const astroData = JSON.parse(img.getAttribute("__astro_image_"));
+          if (astroData && astroData.src) {
+            rawConfigString = astroData.src;
+          }
+        } catch (e) {
+          console.error(
+            "Failed parsing internal __astro_image_ metadata block:",
+            e,
+          );
+        }
+      }
+
+      // 2. Fallback to standard sources if internal trackers aren't visible
+      if (!rawConfigString) {
+        rawConfigString = img.getAttribute("src") || "";
+      }
+
+      // 3. Process if our custom Sveltia configuration hash is present
+      if (rawConfigString && rawConfigString.includes("#")) {
+        const parts = rawConfigString.split("#");
+        const cleanAstroSrc = parts[0];
+        const hashConfig = parts[1];
+
+        if (hashConfig) {
+          const styles = hashConfig.split("_");
+          const align = styles[0] || "right";
+          const size = styles[1] || "size-medium";
+          const margin = styles[2] || "margin-normal";
+
+          // 4. Resolve the image source dynamically based on your active web host
+          if (isLocalhost) {
+            // Local Development: Build the local path folder layout so our Vite plugin serves it
+            let currentPath = window.location.pathname;
+            if (!currentPath.endsWith("/")) currentPath += "/";
+            const fileFragment = cleanAstroSrc.split("/").pop();
+            img.setAttribute("src", currentPath + fileFragment);
+          } else {
+            // Live Production: Read the pure, production-hashing link from Astro natively
+            img.setAttribute("src", cleanAstroSrc);
+          }
+
+          // 5. Purge conflicting old structural configuration metrics
+          img.removeAttribute("srcset");
+          img.removeAttribute("__astro_image_");
+
+          // 6. Map options directly into your modern Flexbox layout CSS classes
+          img.className = "";
+          img.classList.add("cms-floated-image");
+          img.classList.add("align-" + align);
+          img.classList.add(size);
+          img.classList.add(margin);
+        }
+      }
+    }
+  })();
+</script>
+
 <style is:global>
-  /* --- MODERN FLEXBOX IMAGE CONTAINER LAYOUT --- */
+  /* --- MODERN FLEXBOX PARAGRAPH STRUCTURE --- */
   .article-content p:has(img.cms-floated-image) {
     display: flex;
     flex-direction: row;
-    gap: 2rem;
     align-items: flex-start;
     margin-bottom: 2rem;
     width: 100%;
@@ -69,7 +137,7 @@ const { Content } = await render(entry);
     flex-shrink: 0;
   }
 
-  /* --- ALIGNMENT CLASSES USING FLEX ORDER --- */
+  /* --- ALIGNMENT CLASSES VIA FLEX ORDER --- */
   .article-content img.align-left {
     order: -1;
   }
@@ -79,7 +147,6 @@ const { Content } = await render(entry);
   .article-content p:has(img.align-center) {
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
   }
   .article-content img.align-center {
     order: 0;
@@ -103,7 +170,7 @@ const { Content } = await render(entry);
     width: 100% !important;
   }
 
-  /* Repurpose Sveltia margins into dynamic flex gaps */
+  /* Map spacing parameters directly to modern layout gaps */
   .article-content p:has(img.margin-normal) {
     gap: 1.5rem;
   }
@@ -111,7 +178,7 @@ const { Content } = await render(entry);
     gap: 2.5rem;
   }
 
-  /* Layout container constraints to keep page blocks organized */
+  /* Keep blockquotes beautifully isolated from overlapping margins */
   .article-content blockquote {
     margin: 2rem 0;
     padding: 1rem 1.5rem;
