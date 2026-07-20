@@ -16,7 +16,6 @@ if (entry === undefined) {
   return Astro.redirect("/404");
 }
 
-// Fixed: Single argument rendering prevents Astro 5 server-side template crashes
 const { Content } = await render(entry);
 ---
 
@@ -24,7 +23,7 @@ const { Content } = await render(entry);
   <article class="article-content">
     <ViewCounter slug={slug} />
 
-    {/* Bound container for our client script to process */}
+    {/* Target container for our property script */}
     <div id="production-markdown-content" class="markdown-body">
       <Content />
     </div>
@@ -45,8 +44,82 @@ const { Content } = await render(entry);
   </article>
 </BlogPostLayout>
 
+{/* ROBUST DYNAMIC ALT PROPERTY PARSER SCRIPT */}
+<script is:inline>
+  (function () {
+    function processImages() {
+      const contentArea = document.getElementById(
+        "production-markdown-content",
+      );
+      if (!contentArea) return;
+
+      const images = contentArea.getElementsByTagName("img");
+
+      for (let i = 0; i < images.length; i++) {
+        const img = images[i];
+        const altText = img.getAttribute("alt") || "";
+
+        // Extract styling data from pipe delimiters saved by Sveltia
+        if (altText && altText.includes("|")) {
+          const parts = altText.split("|");
+
+          // Isolate the clean display title description
+          const cleanAltLabel = parts[0].trim();
+
+          // Intelligent fallbacks
+          let align = "right";
+          let size = "size-medium";
+          let margin = "margin-normal";
+
+          // Scan variable positions safely
+          for (let j = 1; j < parts.length; j++) {
+            const segment = parts[j].trim();
+
+            if (
+              segment === "left" ||
+              segment === "right" ||
+              segment === "center"
+            ) {
+              align = segment;
+            }
+            if (segment.includes("size-")) {
+              if (segment.includes("_")) {
+                const subStyles = segment.split("_");
+                size = subStyles[0];
+                margin = subStyles[1];
+              } else {
+                size = segment;
+              }
+            }
+          }
+
+          // 1. Reassign clean alt title label string
+          img.setAttribute("alt", cleanAltLabel);
+
+          // 2. Inject active design layout CSS classes
+          img.className = "";
+          img.classList.add("cms-floated-image");
+          img.classList.add("align-" + align);
+          img.classList.add(size);
+          img.classList.add(margin);
+        }
+      }
+    }
+
+    // Process variables instantly upon DOM element generation
+    processImages();
+
+    // Structural observer fallback map
+    const targetNode = document.getElementById("production-markdown-content");
+    if (targetNode) {
+      const observer = new MutationObserver(processImages);
+      observer.observe(targetNode, { childList: true, subtree: true });
+    }
+  })();
+</script>
+
 <style is:global>
-  /* --- MODERN ADVANCED FLOAT LAYOUT --- */
+  /* --- CLEAN UNIFIED ADVANCED FLOATING LAYOUT --- */
 
   /* Base Image Configuration rules */
   .article-content img.cms-floated-image {
@@ -107,7 +180,7 @@ const { Content } = await render(entry);
     margin: 1.5rem 0 2rem 2.5rem !important;
   }
 
-  /* --- VERTICAL BLEEDING LAYOUT GUARDS --- */
+  /* --- VERTICAL LAYOUT CONTROLS --- */
 
   /* Forces headings, blockquotes, and dividers to wait until the image is finished before rendering vertically */
   .article-content blockquote,
@@ -121,78 +194,17 @@ const { Content } = await render(entry);
     display: flow-root; /* Keeps layout blocks structurally square and self-contained */
   }
 
+  .article-content blockquote {
+    margin: 2rem 0;
+    padding: 1rem 1.5rem;
+    border-left: 4px solid #ccc;
+    box-sizing: border-box;
+  }
+
   /* Container clearfix helper */
   .article-content::after {
     content: "";
     display: table;
     clear: both;
-  }
-</style>
-
-<style is:global>
-  /* --- MODERN FLEXBOX PARAGRAPH STRUCTURE --- */
-  .article-content p:has(img.cms-floated-image) {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    margin-bottom: 2rem;
-    width: 100%;
-  }
-
-  /* Base Image Styles */
-  .article-content img.cms-floated-image {
-    height: auto;
-    border-radius: 6px;
-    flex-shrink: 0;
-  }
-
-  /* --- ALIGNMENT CLASSES VIA FLEX ORDER --- */
-  .article-content img.align-left {
-    order: -1;
-  }
-  .article-content img.align-right {
-    order: 1;
-  }
-  .article-content p:has(img.align-center) {
-    flex-direction: column;
-    align-items: center;
-  }
-  .article-content img.align-center {
-    order: 0;
-  }
-
-  /* --- WIDTH LAYOUT CLASSES --- */
-  .article-content img.size-small {
-    width: 30% !important;
-  }
-  .article-content img.size-medium {
-    width: 45% !important;
-  }
-  .article-content img.size-large {
-    width: 60% !important;
-  }
-  .article-content p:has(img.size-full) {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .article-content img.size-full {
-    width: 100% !important;
-  }
-
-  /* Map spacing parameters directly to modern layout gaps */
-  .article-content p:has(img.margin-normal) {
-    gap: 1.5rem;
-  }
-  .article-content p:has(img.margin-wide) {
-    gap: 2.5rem;
-  }
-
-  /* Keep blockquotes beautifully isolated from overlapping margins */
-  .article-content blockquote {
-    margin: 2rem 0;
-    padding: 1rem 1.5rem;
-    border-left: 4px solid #ccc;
-    width: 100%;
-    box-sizing: border-box;
   }
 </style>
