@@ -95,17 +95,20 @@
           toPreview: function (data) {
             const fileFragment = (data.image || "").split("/").pop();
             const isCenter = data.align === "center";
+
+            // Layout variables to sync with frontend CSS
             const floatValue = isCenter ? "none" : data.align;
-            const marginValue = isCenter
-              ? "1.5rem auto"
-              : "0.5rem 1.5rem 1rem 1.5rem";
+
+            let marginValue = "0.5rem 0 1rem 1.5rem"; // Default Right Margin
+            if (data.align === "left") marginValue = "0.5rem 1.5rem 1rem 0";
+            if (isCenter) marginValue = "1.5rem auto";
 
             let widthPercent = "45%";
             if (data.size_class?.includes("small")) widthPercent = "30%";
             if (data.size_class?.includes("large")) widthPercent = "60%";
             if (data.size_class?.includes("full")) widthPercent = "100%";
 
-            return `<div style="float: ${floatValue}; max-width: ${widthPercent}; width: ${widthPercent}; margin: ${marginValue}; box-sizing: border-box; display: inline-block;">
+            return `<div style="float: ${floatValue}; max-width: ${widthPercent}; width: ${widthPercent}; margin: ${marginValue}; box-sizing: border-box; clear: ${isCenter ? "both" : "none"};">
             <img src="${fileFragment}" alt="${data.alt || ""}" style="width:100%; height:auto; display:block; border-radius:6px;"/>
           </div>`;
           },

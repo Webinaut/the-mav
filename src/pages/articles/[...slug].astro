@@ -45,62 +45,89 @@ const { Content } = await render(entry);
   </article>
 </BlogPostLayout>
 
-{/* CLEAN ALT-BASED LAYOUT MAPPING SCRIPT */}
-<script is:inline>
-  (function () {
-    function processImages() {
-      const contentArea = document.getElementById(
-        "production-markdown-content",
-      );
-      if (!contentArea) return;
+<style is:global>
+  /* --- MODERN ADVANCED FLOAT LAYOUT --- */
 
-      const images = contentArea.getElementsByTagName("img");
+  /* Base Image Configuration rules */
+  .article-content img.cms-floated-image {
+    height: auto;
+    display: inline-block;
+    border-radius: 6px;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
 
-      for (let i = 0; i < images.length; i++) {
-        const img = images[i];
-        const altText = img.getAttribute("alt") || "";
+  /* --- ALIGNMENT STYLES --- */
+  .article-content img.align-left {
+    float: left;
+    clear: left;
+  }
+  .article-content img.align-right {
+    float: right;
+    clear: right;
+  }
+  .article-content img.align-center {
+    display: block;
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+    clear: both;
+  }
 
-        // Check if our custom layout string is present inside the alt text attribute
-        if (altText && altText.includes("|")) {
-          const configurationParts = altText.split("|");
+  /* --- WIDTH LAYOUT CLASSES --- */
+  .article-content img.size-small {
+    width: 30% !important;
+  }
+  .article-content img.size-medium {
+    width: 45% !important;
+  }
+  .article-content img.size-large {
+    width: 60% !important;
+  }
+  .article-content img.size-full {
+    width: 100% !important;
+    display: block;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    clear: both;
+  }
 
-          // Isolate the clean text title descriptor, stripping layout configurations out
-          const cleanAltLabel = configurationParts[0].trim();
-          const align = configurationParts[1]
-            ? configurationParts[1].trim()
-            : "right";
-          const sizeConfig = configurationParts[2]
-            ? configurationParts[2].trim()
-            : "size-medium_margin-normal";
+  /* --- MARGIN CONFIGURATION CLASSES --- */
+  .article-content img.align-left.margin-normal {
+    margin: 0.5rem 1.5rem 1rem 0 !important;
+  }
+  .article-content img.align-left.margin-wide {
+    margin: 1.5rem 2.5rem 2rem 0 !important;
+  }
 
-          const styles = sizeConfig.split("_");
-          const size = styles[0] || "size-medium";
-          const margin = styles[1] || "margin-normal";
+  .article-content img.align-right.margin-normal {
+    margin: 0.5rem 0 1rem 1.5rem !important;
+  }
+  .article-content img.align-right.margin-wide {
+    margin: 1.5rem 0 2rem 2.5rem !important;
+  }
 
-          // 1. Clean the visible alt text layout label attribute mapping
-          img.setAttribute("alt", cleanAltLabel);
+  /* --- VERTICAL BLEEDING LAYOUT GUARDS --- */
 
-          // 2. Inject your custom styles as clean CSS classes for Flexbox layout control
-          img.className = "";
-          img.classList.add("cms-floated-image");
-          img.classList.add("align-" + align);
-          img.classList.add(size);
-          img.classList.add(margin);
-        }
-      }
-    }
+  /* Forces headings, blockquotes, and dividers to wait until the image is finished before rendering vertically */
+  .article-content blockquote,
+  .article-content h1,
+  .article-content h2,
+  .article-content h3,
+  .article-content h4,
+  .article-content hr,
+  .article-content pre {
+    clear: both;
+    display: flow-root; /* Keeps layout blocks structurally square and self-contained */
+  }
 
-    // Run layout processing rules immediately on document load states
-    processImages();
-
-    // Attach Mutation Observer safety net to handle asynchronous hydration updates
-    const targetNode = document.getElementById("production-markdown-content");
-    if (targetNode) {
-      const observer = new MutationObserver(processImages);
-      observer.observe(targetNode, { childList: true, subtree: true });
-    }
-  })();
-</script>
+  /* Container clearfix helper */
+  .article-content::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+</style>
 
 <style is:global>
   /* --- MODERN FLEXBOX PARAGRAPH STRUCTURE --- */
