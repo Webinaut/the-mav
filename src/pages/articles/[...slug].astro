@@ -44,7 +44,7 @@ const { Content } = await render(entry);
   </article>
 </BlogPostLayout>
 
-{/* ROBUST DYNAMIC ALT PROPERTY PARSER SCRIPT */}
+{/* ROBUST DYNAMIC PROPERTY PARSER & PERFORMANCE INJECTOR SCRIPT */}
 <script is:inline>
   (function () {
     function processImages() {
@@ -62,19 +62,14 @@ const { Content } = await render(entry);
         // Extract styling data from pipe delimiters saved by Sveltia
         if (altText && altText.includes("|")) {
           const parts = altText.split("|");
-
-          // Isolate the clean display title description
           const cleanAltLabel = parts[0].trim();
 
-          // Intelligent fallbacks
           let align = "right";
           let size = "size-medium";
           let margin = "margin-normal";
 
-          // Scan variable positions safely
           for (let j = 1; j < parts.length; j++) {
             const segment = parts[j].trim();
-
             if (
               segment === "left" ||
               segment === "right" ||
@@ -96,7 +91,11 @@ const { Content } = await render(entry);
           // 1. Reassign clean alt title label string
           img.setAttribute("alt", cleanAltLabel);
 
-          // 2. Inject active design layout CSS classes
+          // 2. PERFORMANCE TWEEKS: Enable asynchronous hardware decoding and native lazy-loading
+          img.setAttribute("loading", "lazy");
+          img.setAttribute("decoding", "async");
+
+          // 3. Inject active design layout CSS classes
           img.className = "";
           img.classList.add("cms-floated-image");
           img.classList.add("align-" + align);
@@ -106,10 +105,7 @@ const { Content } = await render(entry);
       }
     }
 
-    // Process variables instantly upon DOM element generation
     processImages();
-
-    // Structural observer fallback map
     const targetNode = document.getElementById("production-markdown-content");
     if (targetNode) {
       const observer = new MutationObserver(processImages);
@@ -119,7 +115,7 @@ const { Content } = await render(entry);
 </script>
 
 <style is:global>
-  /* --- CLEAN UNIFIED ADVANCED FLOATING LAYOUT --- */
+  /* --- MASTER ADVANCED FLOATING LAYOUT (PICO CSS REFINED) --- */
 
   /* Base Image Configuration rules */
   .article-content img.cms-floated-image {
@@ -128,61 +124,74 @@ const { Content } = await render(entry);
     border-radius: 6px;
     max-width: 100%;
     box-sizing: border-box;
+    transition:
+      width 0.2s ease,
+      margin 0.2s ease; /* Smooth layout shifts */
   }
 
-  /* --- ALIGNMENT STYLES --- */
-  .article-content img.align-left {
-    float: left;
-    clear: left;
-  }
-  .article-content img.align-right {
-    float: right;
-    clear: right;
-  }
-  .article-content img.align-center {
-    display: block;
-    float: none;
-    margin-left: auto;
-    margin-right: auto;
-    clear: both;
+  /* --- DESKTOP / TABLET VIEWPORTS --- */
+  @media (min-width: 577px) {
+    .article-content img.align-left {
+      float: left;
+      clear: left;
+    }
+    .article-content img.align-right {
+      float: right;
+      clear: right;
+    }
+    .article-content img.align-center {
+      display: block;
+      float: none;
+      margin-left: auto;
+      margin-right: auto;
+      clear: both;
+    }
+
+    /* Width Scalers */
+    .article-content img.size-small {
+      width: 30% !important;
+    }
+    .article-content img.size-medium {
+      width: 45% !important;
+    }
+    .article-content img.size-large {
+      width: 60% !important;
+    }
+    .article-content img.size-full {
+      width: 100% !important;
+      display: block;
+      margin: 2rem 0;
+      clear: both;
+    }
+
+    /* Desktop Spacing Gaps */
+    .article-content img.align-left.margin-normal {
+      margin: 0.5rem 1.5rem 1rem 0 !important;
+    }
+    .article-content img.align-left.margin-wide {
+      margin: 1.5rem 2.5rem 2rem 0 !important;
+    }
+    .article-content img.align-right.margin-normal {
+      margin: 0.5rem 0 1rem 1.5rem !important;
+    }
+    .article-content img.align-right.margin-wide {
+      margin: 1.5rem 0 2rem 2.5rem !important;
+    }
   }
 
-  /* --- WIDTH LAYOUT CLASSES --- */
-  .article-content img.size-small {
-    width: 30% !important;
-  }
-  .article-content img.size-medium {
-    width: 45% !important;
-  }
-  .article-content img.size-large {
-    width: 60% !important;
-  }
-  .article-content img.size-full {
-    width: 100% !important;
-    display: block;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-    clear: both;
-  }
-
-  /* --- MARGIN CONFIGURATION CLASSES --- */
-  .article-content img.align-left.margin-normal {
-    margin: 0.5rem 1.5rem 1rem 0 !important;
-  }
-  .article-content img.align-left.margin-wide {
-    margin: 1.5rem 2.5rem 2rem 0 !important;
-  }
-
-  .article-content img.align-right.margin-normal {
-    margin: 0.5rem 0 1rem 1.5rem !important;
-  }
-  .article-content img.align-right.margin-wide {
-    margin: 1.5rem 0 2rem 2.5rem !important;
+  /* --- SMARTPHONE MOBILE VIEWPORTS (Pico CSS Mobile Target) --- */
+  @media (max-width: 576px) {
+    .article-content img.cms-floated-image {
+      float: none !important; /* Disables all horizontal wrap wrapping */
+      display: block !important; /* Forces its own block channel line stack */
+      width: 100% !important; /* Scales image up to safely fit small screens */
+      max-width: 100% !important;
+      margin: 1.5rem auto !important; /* Centers image with touch-friendly spacing */
+      clear: both !important;
+    }
   }
 
   /* --- VERTICAL LAYOUT CONTROLS --- */
-
-  /* Forces headings, blockquotes, and dividers to wait until the image is finished before rendering vertically */
   .article-content blockquote,
   .article-content h1,
   .article-content h2,
@@ -191,17 +200,17 @@ const { Content } = await render(entry);
   .article-content hr,
   .article-content pre {
     clear: both;
-    display: flow-root; /* Keeps layout blocks structurally square and self-contained */
+    display: flow-root;
   }
 
+  /* Keep Pico blockquotes matching your custom theme variables smoothly */
   .article-content blockquote {
     margin: 2rem 0;
     padding: 1rem 1.5rem;
-    border-left: 4px solid #ccc;
     box-sizing: border-box;
   }
 
-  /* Container clearfix helper */
+  /* Clearfix helper block */
   .article-content::after {
     content: "";
     display: table;
