@@ -108,7 +108,8 @@
             if (data.size_class?.includes("large")) widthPercent = "60%";
             if (data.size_class?.includes("full")) widthPercent = "100%";
 
-            return `<div style="float: ${floatValue}; max-width: ${widthPercent}; width: ${widthPercent}; margin: ${marginValue}; box-sizing: border-box; clear: ${isCenter ? "both" : "none"};">
+            // Fixes line spacing by setting line-height explicitly and adding a clear rendering block
+            return `<div style="float: ${floatValue}; max-width: ${widthPercent}; width: ${widthPercent}; margin: ${marginValue}; box-sizing: border-box; clear: ${isCenter ? "both" : "none"}; line-height: 1.6; display: inline-block; vertical-align: top;">
             <img src="${fileFragment}" alt="${data.alt || ""}" style="width:100%; height:auto; display:block; border-radius:6px;"/>
           </div>`;
           },
